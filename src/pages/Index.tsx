@@ -5,7 +5,6 @@ import { SidebarMenu } from "@/components/SidebarMenu";
 import ProjectGallery from "@/components/ProjectGallery";
 import Navbar from "@/components/Navbar";
 import About from "./About";
-import { useState } from "react";
 import ProjectView from "@/components/ProjectView";
 import { useFadeTransition } from "@/hooks/useFadeTransition";
 
@@ -76,3 +75,4 @@ const Index = () => {
 };
 
 export default Index;
+
