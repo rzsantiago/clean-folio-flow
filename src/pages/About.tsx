@@ -1,8 +1,8 @@
 
 // Sección About sencilla, personalizable
 
-const About = () => (
-  <div className="max-w-xl mx-auto py-12 px-4 font-inter text-stone-700 text-lg">
+const About = ({ minimal }: { minimal?: boolean }) => (
+  <div className={`max-w-xl mx-auto py-12 px-4 font-inter text-stone-700 text-lg ${minimal ? "" : "bg-white rounded-xl shadow"}`}>
     <h1 className="text-3xl font-bold mb-4">Sobre mí</h1>
     <p>
       ¡Hola! Soy un/a diseñador/a multidisciplinar con pasión por el diseño industrial, artes gráficas y el CGI. 
