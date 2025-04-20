@@ -1,15 +1,22 @@
 
-// Estructura básica de proyectos. Personalizable fácilmente.
-
-// type: '4x3' | '3x4'
 export type Project = {
   id: string
   title: string
   category: "Diseño Industrial" | "Graphics" | "CGI"
-  image: string // url o import
   ratio: "4x3" | "3x4"
+  coverColor?: string
   excerpt?: string
+  contentImages?: string[] // solid backgrounds
   content?: string
+}
+
+const solidColors = [
+  "#FEF7CD", "#D3E4FD", "#FDE1D3", "#E5DEFF", "#FFDEE2",
+  "#FEC6A1", "#9b87f5", "#F2FCE2", "#8B5CF6", "#F97316", "#0EA5E9", "#D946EF"
+];
+
+function randomColor(idx: number) {
+  return solidColors[idx % solidColors.length];
 }
 
 export const projects: Project[] = [
@@ -17,54 +24,115 @@ export const projects: Project[] = [
     id: "1",
     title: "Silla Minimalista",
     category: "Diseño Industrial",
-    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=600&q=80",
     ratio: "4x3",
-    excerpt: "Silla de madera minimalista con curvas orgánicas.",
-    content: "Descripción y detalles completos del proyecto 'Silla Minimalista'...",
+    coverColor: randomColor(0),
+    excerpt: "",
+    content: "",
+    contentImages: [solidColors[1], solidColors[4], solidColors[7]]
   },
   {
     id: "2",
     title: "Poster Festival 2023",
     category: "Graphics",
-    image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&w=400&q=80",
     ratio: "3x4",
-    excerpt: "Póster experimental para festival de música.",
-    content: "Descripción y detalles completos del proyecto de póster gráfico...",
+    coverColor: randomColor(1),
+    excerpt: "",
+    content: "",
+    contentImages: [solidColors[5], solidColors[2]]
   },
   {
     id: "3",
     title: "Render 3D Concept",
     category: "CGI",
-    image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=600&q=80",
     ratio: "4x3",
-    excerpt: "Render CGI para arquitectura conceptual.",
-    content: "Descripción larga del render 3D...",
+    coverColor: randomColor(2),
+    excerpt: "",
+    content: "",
+    contentImages: [solidColors[6], solidColors[10], solidColors[3]]
   },
   {
     id: "4",
     title: "Identidad CoffeeCo",
     category: "Graphics",
-    image: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=400&q=80",
     ratio: "3x4",
-    excerpt: "Rediseño de branding para una cafetería local.",
-    content: "Descripción completa de la identidad visual de CoffeeCo...",
+    coverColor: randomColor(3),
+    excerpt: "",
+    content: "",
+    contentImages: [solidColors[1], solidColors[9], solidColors[0], solidColors[8]]
   },
   {
     id: "5",
     title: "Lámpara Modular",
     category: "Diseño Industrial",
-    image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?auto=format&fit=crop&w=600&q=80",
     ratio: "4x3",
-    excerpt: "Luminaria modular de fácil ensamblaje.",
-    content: "Texto extendido sobre lámpara modular...",
+    coverColor: randomColor(4),
+    excerpt: "",
+    content: "",
+    contentImages: [solidColors[4], solidColors[10]]
   },
   {
     id: "6",
     title: "Escultura Digital",
     category: "CGI",
-    image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=400&q=80",
     ratio: "3x4",
-    excerpt: "Obra de arte digital esculpida en 3D.",
-    content: "Texto completo sobre la escultura digital...",
+    coverColor: randomColor(5),
+    excerpt: "",
+    content: "",
+    contentImages: [solidColors[1], solidColors[3], solidColors[7]]
+  },
+  // Más proyectos...
+  {
+    id: "7",
+    title: "Mesa Abstracta",
+    category: "Diseño Industrial",
+    ratio: "3x4",
+    coverColor: randomColor(6),
+    content: "",
+    contentImages: [solidColors[3], solidColors[0]]
+  },
+  {
+    id: "8",
+    title: "Cartel Tipografía",
+    category: "Graphics",
+    ratio: "4x3",
+    coverColor: randomColor(7),
+    content: "",
+    contentImages: [solidColors[8], solidColors[7], solidColors[2]]
+  },
+  {
+    id: "9",
+    title: "Escena CGI Luz",
+    category: "CGI",
+    ratio: "4x3",
+    coverColor: randomColor(8),
+    content: "",
+    contentImages: [solidColors[9], solidColors[4], solidColors[6]]
+  },
+  {
+    id: "10",
+    title: "Gráfica Minimal",
+    category: "Graphics",
+    ratio: "4x3",
+    coverColor: randomColor(9),
+    content: "",
+    contentImages: [solidColors[11], solidColors[1]]
+  },
+  {
+    id: "11",
+    title: "Lámpara Prisma",
+    category: "Diseño Industrial",
+    ratio: "3x4",
+    coverColor: randomColor(10),
+    content: "",
+    contentImages: [solidColors[10], solidColors[6], solidColors[0]]
+  },
+  {
+    id: "12",
+    title: "Composición Color",
+    category: "CGI",
+    ratio: "3x4",
+    coverColor: randomColor(11),
+    content: "",
+    contentImages: [solidColors[2], solidColors[11], solidColors[7], solidColors[0]]
   },
 ];

@@ -1,27 +1,20 @@
 
-import { Link, useLocation } from "react-router-dom";
-
-const menu = [
-  { label: "Proyectos", to: "/" },
-  { label: "About", to: "/about" }
-];
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Navbar() {
+  const navigate = useNavigate();
   const location = useLocation();
+
   return (
-    <nav className="w-full px-4 py-5 flex justify-between items-center bg-stone-100/90 sticky top-0 z-30 backdrop-blur border-b border-stone-200">
-      <div className="text-xl font-bold font-inter tracking-tight text-stone-600">
+    <header className="fixed left-0 top-0 w-full z-20 py-6 px-8 bg-transparent">
+      <button
+        className={`text-2xl md:text-3xl font-bold font-inter tracking-tight text-stone-700 hover:underline duration-100`}
+        onClick={() => navigate("/")}
+        aria-current={location.pathname === "/" ? "page" : undefined}
+        tabIndex={0}
+      >
         cleanfolio
-      </div>
-      <ul className="flex space-x-8">
-        {menu.map(item => (
-          <li key={item.to}>
-            <Link to={item.to} className={`font-inter text-base transition-colors duration-200 hover:text-stone-900 ${location.pathname === item.to ? "font-semibold underline underline-offset-4" : "text-stone-600"}`}>
-              {item.label}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </nav>
+      </button>
+    </header>
   );
 }
