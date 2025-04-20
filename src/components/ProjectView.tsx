@@ -1,4 +1,3 @@
-
 import { projects } from "@/data/projects";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import React, { useRef, useState } from "react";
@@ -60,7 +59,7 @@ export default function ProjectView({ projectId, onNavigate }: Props) {
         </div>
       )}
 
-      <div className="flex flex-col gap-8 w-full pb-10">
+      <div className="flex flex-col gap-3 w-full pb-10">
         {project.contentImages.map((color, i) => (
           <div
             key={i}

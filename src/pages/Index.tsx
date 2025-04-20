@@ -53,7 +53,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-stone-100 flex flex-col font-inter">
       <Navbar onHome={() => setMain({ type: "gallery", filter: null })} />
-      <div className="flex-1 flex flex-row w-full max-w-[1600px] mx-auto mt-20 md:mt-28 px-0 md:px-10 gap-0 md:gap-0 transition-none">
+      <div className="flex-1 flex flex-row w-full max-w-[1600px] mx-auto mt-20 md:mt-28 px-0 md:px-10 gap-0 md:gap-14 transition-none">
         <main className={`w-full md:w-[70%] max-w-[100%] pt-4 pb-14 md:pb-0 flex items-start justify-center transition-none`}>
           <div className={`w-full transition-none ${fadeClass}`}>
             {content}
