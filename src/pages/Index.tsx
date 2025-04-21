@@ -91,7 +91,7 @@ const Index = () => {
       />
     );
     fadeDeps = [main.id, "project"];
-  } else {
+  } else if (main.type === "gallery") {
     content = (
       <ProjectGallery
         projects={filteredProjects}
@@ -116,6 +116,7 @@ const Index = () => {
   if (main.type === "contact") activeSection = "contact";
 
   // SEPARACIÓN MENU LATERAL
+  // Compute menuPart1 and menuPart2 without assuming filter always present
   const menuPart1 = menuEntries.slice(0, 4);
   const menuPart2 = menuEntries.slice(4);
 
@@ -148,16 +149,23 @@ const Index = () => {
                   key={entry.label}
                   className={`px-0 py-1 text-lg font-medium text-left transition-none ${
                     main.type === entry.type &&
-                    ((entry.type === "gallery" &&
-                      ((main.filter == null && entry.filter == null) ||
-                        main.filter === entry.filter)) ||
-                      (entry.type !== "gallery")) // non-gallery exact match
+                    (entry.type === "gallery"
+                      // Check 'filter' in both main and entry!
+                      ? (main.type === "gallery" &&
+                        ((main.filter == null && 'filter' in entry && entry.filter == null) ||
+                        (main.filter === ('filter' in entry ? entry.filter : undefined)))
+                      )
+                      : false // only highlight if type is not gallery in other branch
+                    )
                       ? "text-black"
                       : "text-stone-500"
                   } hover:text-black`}
                   onClick={() => {
                     if (entry.type === "gallery") {
-                      setMain({ type: "gallery", filter: entry.filter ?? null });
+                      setMain({
+                        type: "gallery",
+                        filter: 'filter' in entry ? entry.filter ?? null : null
+                      });
                     } else if (entry.type === "about") {
                       setMain({ type: "about" });
                     } else if (entry.type === "contact") {
@@ -222,17 +230,23 @@ const Index = () => {
                       key={entry.label}
                       className={`text-left w-full py-2 px-2 rounded-md text-lg ${
                         main.type === entry.type &&
-                        ((entry.type === "gallery" &&
-                          ((main.filter == null && entry.filter == null) ||
-                            main.filter === entry.filter)) ||
-                          (entry.type !== "gallery"))
+                        (entry.type === "gallery"
+                          ? (main.type === "gallery" &&
+                            ((main.filter == null && 'filter' in entry && entry.filter == null) ||
+                            (main.filter === ('filter' in entry ? entry.filter : undefined)))
+                          )
+                          : false
+                        )
                           ? "text-black bg-stone-100"
                           : "text-stone-500"
                       } hover:bg-stone-100`}
                       onClick={() => {
                         setMenuOpen(false);
                         if (entry.type === "gallery") {
-                          setMain({ type: "gallery", filter: entry.filter ?? null });
+                          setMain({
+                            type: "gallery",
+                            filter: 'filter' in entry ? entry.filter ?? null : null
+                          });
                         } else if (entry.type === "about") {
                           setMain({ type: "about" });
                         } else if (entry.type === "contact") {
@@ -258,3 +272,4 @@ const Index = () => {
 };
 
 export default Index;
+
