@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+
+import React, { useState, useEffect, useRef } from "react";
 import { projects as baseProjects } from "@/data/projects";
 import ProjectGallery from "@/components/ProjectGallery";
 import Navbar from "@/components/Navbar";
@@ -30,16 +31,12 @@ type MainSection =
   | { type: "contact"; }
   | { type: "project"; id: string; fromFilter: string | null };
 
-// -------- COMPONENTE PRINCIPAL --------
 const Index = () => {
-  // Eliminar el padding global del body al abrir el menú mobile
-  useEffect(() => {
-    if (!isMobile) document.body.style.overflow = "";
-  });
-
   const [main, setMain] = useState<MainSection>({ type: "gallery", filter: null });
   const [menuOpen, setMenuOpen] = useState(false);
   const isMobile = useIsMobile();
+  // --- SCROLL TO TOP EN NAVEGACIÓN DE PROYECTOS ---
+  const mainContentRef = useRef<HTMLDivElement>(null);
 
   // Bloquear scroll body cuando menu está abierto
   useEffect(() => {
@@ -49,6 +46,14 @@ const Index = () => {
       document.body.style.overflow = "";
     }
   }, [menuOpen, isMobile]);
+
+  // Scroll to top cuando cambiamos de proyecto
+  useEffect(() => {
+    if (main.type === "project") {
+      mainContentRef.current?.scrollIntoView({ behavior: "auto" });
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
+  }, [main]);
 
   // Determinar proyectos filtrados según contexto actual
   let filteredProjects = baseProjects;
@@ -75,7 +80,6 @@ const Index = () => {
     content = <Contact minimal />;
     fadeDeps = ["contact"];
   } else if (main.type === "project") {
-    // Pasar la lógica de navegación y los límites correctos
     const filtered = filteredProjects;
     const idx = filtered.findIndex(p => p.id === main.id);
     const prev = idx > 0 ? filtered[idx - 1] : null;
@@ -109,13 +113,12 @@ const Index = () => {
 
   const { fadeClass } = useFadeTransition(fadeDeps);
 
-  // For highlighting which static section is active in SidebarMenu
+  // actives para sidebar
   let activeSection: "about" | "contact" | null = null;
   if (main.type === "about") activeSection = "about";
   if (main.type === "contact") activeSection = "contact";
 
-  // SEPARACIÓN MENU LATERAL
-  // Compute menuPart1 and menuPart2 without assuming filter always present
+  // Separación menú
   const menuPart1 = menuEntries.slice(0, 4);
   const menuPart2 = menuEntries.slice(4);
 
@@ -123,8 +126,12 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-white flex flex-col font-inter">
       <Navbar onHome={() => setMain({ type: "gallery", filter: null })} />
-      <div className="flex-1 flex flex-row w-full max-w-[1600px] mx-auto mt-20 md:mt-28 px-0 md:px-10 gap-4 md:gap-8 transition-none"> {/* menos gap horizontal */}
-        <main className="w-full md:w-[71%] max-w-[100%] pt-4 pb-14 md:pb-0 flex items-start justify-center transition-none">
+      <div className="flex-1 flex flex-row w-full max-w-[1600px] mx-auto mt-20 md:mt-28 px-0 md:px-10 gap-4 md:gap-8 transition-none">
+        {/* MAIN + RESPONSIVE SIDEBAR: Flex row para que ambos sean iguales en todas las vistas */}
+        <main
+          ref={mainContentRef}
+          className="w-full md:w-[71%] max-w-[100%] pt-4 pb-14 md:pb-0 flex items-start justify-center transition-none"
+        >
           <div
             className={`w-full transition-none ${fadeClass} ${isMobile ? "px-3" : ""}`}
             style={{
@@ -135,13 +142,18 @@ const Index = () => {
             {content}
           </div>
         </main>
-        {/* Sidebar en desktop, sticky y alineado mejor */}
+        {/* Sidebar con sticky y responsivo siempre activo */}
         <section
           className="hidden md:flex w-[29%] max-w-xs min-w-[180px] flex-col items-end"
-          style={{ position: "sticky", top: 88, height: "fit-content", marginLeft: "0px" }}
+          style={{
+            position: "sticky",
+            top: 88,
+            height: "fit-content",
+            marginLeft: "0px"
+          }}
         >
           <div className="w-full pr-0">
-            <nav className="flex flex-col gap-0.5 mt-0 select-none"> {/* menos gap vertical */}
+            <nav className="flex flex-col gap-0.5 mt-0 select-none">
               {/* Parte 1: Overview + categorias */}
               {menuPart1.map(entry => (
                 <button
@@ -149,7 +161,6 @@ const Index = () => {
                   className={`px-0 py-0.5 text-lg font-medium text-left transition-none ${
                     main.type === entry.type &&
                     (entry.type === "gallery"
-                      // Check 'filter' in both main and entry!
                       ? (main.type === "gallery" &&
                         ((main.filter == null && 'filter' in entry && entry.filter == null) ||
                         (main.filter === ('filter' in entry ? entry.filter : undefined)))
@@ -175,7 +186,7 @@ const Index = () => {
                   {entry.label}
                 </button>
               ))}
-              <div className="border-t border-stone-200 my-2 md:my-3" /> {/* separación más notable */}
+              <div className="border-t border-stone-200 my-2 md:my-3" /> 
               {/* Parte 2: About + Contact */}
               {menuPart2.map(entry => (
                 <button
