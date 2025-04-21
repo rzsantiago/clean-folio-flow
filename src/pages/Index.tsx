@@ -1,14 +1,10 @@
 
-import React, { useState, useEffect, useRef } from "react";
-import { projects as baseProjects } from "@/data/projects";
-import ProjectGallery from "@/components/ProjectGallery";
-import Navbar from "@/components/Navbar";
-import About from "./About";
-import Contact from "./Contact";
-import ProjectView from "@/components/ProjectView";
-import { useFadeTransition } from "@/hooks/useFadeTransition";
+import React, { useState, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Menu } from "lucide-react";
+import Navbar from "@/components/Navbar";
+import MainContent, { MainSection } from "@/components/MainContent";
+import SidebarNavigation from "@/components/SidebarNavigation";
 
 // --- CATEGORIAS ---
 const categories = [
@@ -25,18 +21,10 @@ const menuEntries = [
   { type: "contact", label: "Contact" },
 ];
 
-type MainSection =
-  | { type: "gallery"; filter: string | null }
-  | { type: "about"; }
-  | { type: "contact"; }
-  | { type: "project"; id: string; fromFilter: string | null };
-
 const Index = () => {
   const [main, setMain] = useState<MainSection>({ type: "gallery", filter: null });
   const [menuOpen, setMenuOpen] = useState(false);
   const isMobile = useIsMobile();
-  // --- SCROLL TO TOP EN NAVEGACIÓN DE PROYECTOS ---
-  const mainContentRef = useRef<HTMLDivElement>(null);
 
   // Bloquear scroll body cuando menu está abierto
   useEffect(() => {
@@ -47,169 +35,13 @@ const Index = () => {
     }
   }, [menuOpen, isMobile]);
 
-  // Scroll to top cuando cambiamos de proyecto
-  useEffect(() => {
-    if (main.type === "project") {
-      mainContentRef.current?.scrollIntoView({ behavior: "auto" });
-      window.scrollTo({ top: 0, behavior: "instant" });
-    }
-  }, [main]);
-
-  // Determinar proyectos filtrados según contexto actual
-  let filteredProjects = baseProjects;
-  let filterLabel: string | null = null;
-
-  if (main.type === "gallery") {
-    filteredProjects = main.filter ? baseProjects.filter(p => p.category === main.filter) : baseProjects;
-    filterLabel = main.filter || null;
-  } else if (main.type === "project") {
-    filteredProjects = main.fromFilter
-      ? baseProjects.filter(p => p.category === main.fromFilter)
-      : baseProjects;
-    filterLabel = main.fromFilter || null;
-  }
-
-  // Contenido principal
-  let content: React.ReactNode = null;
-  let fadeDeps: any[] = [];
-
-  if (main.type === "about") {
-    content = <About minimal />;
-    fadeDeps = ["about"];
-  } else if (main.type === "contact") {
-    content = <Contact minimal />;
-    fadeDeps = ["contact"];
-  } else if (main.type === "project") {
-    const filtered = filteredProjects;
-    const idx = filtered.findIndex(p => p.id === main.id);
-    const prev = idx > 0 ? filtered[idx - 1] : null;
-    const next = idx >= 0 && idx < filtered.length - 1 ? filtered[idx + 1] : null;
-    content = (
-      <ProjectView
-        projectId={main.id}
-        onNavigate={id => setMain({ type: "project", id, fromFilter: main.fromFilter })}
-        prevId={prev?.id}
-        nextId={next?.id}
-        showProjectHeader
-      />
-    );
-    fadeDeps = [main.id, "project"];
-  } else if (main.type === "gallery") {
-    content = (
-      <ProjectGallery
-        projects={filteredProjects}
-        onProjectClick={id =>
-          setMain({
-            type: "project",
-            id,
-            fromFilter: filterLabel
-          })
-        }
-        noOverlay
-      />
-    );
-    fadeDeps = [main.filter, "gallery"];
-  }
-
-  const { fadeClass } = useFadeTransition(fadeDeps);
-
-  // actives para sidebar
-  let activeSection: "about" | "contact" | null = null;
-  if (main.type === "about") activeSection = "about";
-  if (main.type === "contact") activeSection = "contact";
-
-  // Separación menú
-  const menuPart1 = menuEntries.slice(0, 4);
-  const menuPart2 = menuEntries.slice(4);
-
   // --- RENDER ---
   return (
     <div className="min-h-screen bg-white flex flex-col font-inter">
       <Navbar onHome={() => setMain({ type: "gallery", filter: null })} />
       <div className="flex-1 flex flex-row w-full max-w-[1600px] mx-auto mt-20 md:mt-28 px-0 md:px-10 gap-4 md:gap-8 transition-none">
-        {/* MAIN + RESPONSIVE SIDEBAR: Flex row para que ambos sean iguales en todas las vistas */}
-        <main
-          ref={mainContentRef}
-          className="w-full md:w-[71%] max-w-[100%] pt-4 pb-14 md:pb-0 flex items-start justify-center transition-none"
-        >
-          <div
-            className={`w-full transition-none ${fadeClass} ${isMobile ? "px-3" : ""}`}
-            style={{
-              minHeight: "75vh",
-              marginBottom: 0,
-            }}
-          >
-            {content}
-          </div>
-        </main>
-        {/* Sidebar con sticky y responsivo siempre activo */}
-        <section
-          className="hidden md:flex w-[29%] max-w-xs min-w-[180px] flex-col items-end"
-          style={{
-            position: "sticky",
-            top: 88,
-            height: "fit-content",
-            marginLeft: "0px"
-          }}
-        >
-          <div className="w-full pr-0">
-            <nav className="flex flex-col gap-0.5 mt-0 select-none">
-              {/* Parte 1: Overview + categorias */}
-              {menuPart1.map(entry => (
-                <button
-                  key={entry.label}
-                  className={`px-0 py-0.5 text-lg font-medium text-left transition-none ${
-                    main.type === entry.type &&
-                    (entry.type === "gallery"
-                      ? (main.type === "gallery" &&
-                        ((main.filter == null && 'filter' in entry && entry.filter == null) ||
-                        (main.filter === ('filter' in entry ? entry.filter : undefined)))
-                      )
-                      : false
-                    )
-                      ? "text-black"
-                      : "text-stone-500"
-                  } hover:text-black`}
-                  onClick={() => {
-                    if (entry.type === "gallery") {
-                      setMain({
-                        type: "gallery",
-                        filter: 'filter' in entry ? entry.filter ?? null : null
-                      });
-                    } else if (entry.type === "about") {
-                      setMain({ type: "about" });
-                    } else if (entry.type === "contact") {
-                      setMain({ type: "contact" });
-                    }
-                  }}
-                >
-                  {entry.label}
-                </button>
-              ))}
-              <div className="border-t border-stone-200 my-2 md:my-3" /> 
-              {/* Parte 2: About + Contact */}
-              {menuPart2.map(entry => (
-                <button
-                  key={entry.label}
-                  className={`px-0 py-0.5 text-lg font-medium text-left transition-none ${
-                    main.type === entry.type
-                      ? "text-black"
-                      : "text-stone-500"
-                  } hover:text-black`}
-                  onClick={() => {
-                    if (entry.type === "about") {
-                      setMain({ type: "about" });
-                    } else if (entry.type === "contact") {
-                      setMain({ type: "contact" });
-                    }
-                  }}
-                >
-                  {entry.label}
-                </button>
-              ))}
-            </nav>
-          </div>
-        </section>
+        <MainContent main={main} setMain={setMain} isMobile={isMobile} />
+        <SidebarNavigation main={main} setMain={setMain} menuEntries={menuEntries} />
         {/* Mobile Menu: hamburguesa */}
         {isMobile && (
           <>
