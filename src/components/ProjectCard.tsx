@@ -1,4 +1,3 @@
-
 import { Project } from "@/data/projects";
 
 export default function ProjectCard({ project, noOverlay }: { project: Project, noOverlay?: boolean }) {
@@ -16,12 +15,7 @@ export default function ProjectCard({ project, noOverlay }: { project: Project, 
         boxShadow: "none"
       }}
     >
-      {/* Título y descripción en galería, centrados en la parte superior */}
-      <div className="absolute top-2 left-2 right-2 bg-white/[.86] rounded-lg px-2 py-1 flex flex-col z-10">
-        <span className="font-bold text-base text-stone-900">{project.title}</span>
-        <span className="text-xs text-stone-500">{project.description}</span>
-      </div>
-      {/* Overlay podría ir aquí si noOverlay es falso */}
+      {/* Imagen o color limpio, sin overlay de título ni descripción */}
     </div>
   );
 }

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { projects as baseProjects } from "@/data/projects";
 import ProjectGallery from "@/components/ProjectGallery";
@@ -124,8 +123,8 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-white flex flex-col font-inter">
       <Navbar onHome={() => setMain({ type: "gallery", filter: null })} />
-      <div className="flex-1 flex flex-row w-full max-w-[1600px] mx-auto mt-20 md:mt-28 px-0 md:px-10 gap-10 md:gap-10 transition-none">
-        <main className="w-full md:w-[70%] max-w-[100%] pt-4 pb-14 md:pb-0 flex items-start justify-center transition-none">
+      <div className="flex-1 flex flex-row w-full max-w-[1600px] mx-auto mt-20 md:mt-28 px-0 md:px-10 gap-4 md:gap-8 transition-none"> {/* menos gap horizontal */}
+        <main className="w-full md:w-[71%] max-w-[100%] pt-4 pb-14 md:pb-0 flex items-start justify-center transition-none">
           <div
             className={`w-full transition-none ${fadeClass} ${isMobile ? "px-3" : ""}`}
             style={{
@@ -136,18 +135,18 @@ const Index = () => {
             {content}
           </div>
         </main>
-        {/* Sidebar en desktop, sticky */}
+        {/* Sidebar en desktop, sticky y alineado mejor */}
         <section
-          className="hidden md:flex w-[30%] max-w-xs min-w-[210px] flex-col items-end"
-          style={{ position: "sticky", top: 88, height: "fit-content" }}
+          className="hidden md:flex w-[29%] max-w-xs min-w-[180px] flex-col items-end"
+          style={{ position: "sticky", top: 88, height: "fit-content", marginLeft: "0px" }}
         >
           <div className="w-full pr-0">
-            <nav className="flex flex-col gap-2 mt-0 select-none">
+            <nav className="flex flex-col gap-0.5 mt-0 select-none"> {/* menos gap vertical */}
               {/* Parte 1: Overview + categorias */}
               {menuPart1.map(entry => (
                 <button
                   key={entry.label}
-                  className={`px-0 py-1 text-lg font-medium text-left transition-none ${
+                  className={`px-0 py-0.5 text-lg font-medium text-left transition-none ${
                     main.type === entry.type &&
                     (entry.type === "gallery"
                       // Check 'filter' in both main and entry!
@@ -155,7 +154,7 @@ const Index = () => {
                         ((main.filter == null && 'filter' in entry && entry.filter == null) ||
                         (main.filter === ('filter' in entry ? entry.filter : undefined)))
                       )
-                      : false // only highlight if type is not gallery in other branch
+                      : false
                     )
                       ? "text-black"
                       : "text-stone-500"
@@ -176,12 +175,12 @@ const Index = () => {
                   {entry.label}
                 </button>
               ))}
-              <div className="border-t border-stone-200 my-4" />
+              <div className="border-t border-stone-200 my-2 md:my-3" /> {/* separación más notable */}
               {/* Parte 2: About + Contact */}
               {menuPart2.map(entry => (
                 <button
                   key={entry.label}
-                  className={`px-0 py-1 text-lg font-medium text-left transition-none ${
+                  className={`px-0 py-0.5 text-lg font-medium text-left transition-none ${
                     main.type === entry.type
                       ? "text-black"
                       : "text-stone-500"
@@ -272,4 +271,3 @@ const Index = () => {
 };
 
 export default Index;
-

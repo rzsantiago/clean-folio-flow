@@ -24,11 +24,11 @@ export default function ProjectGallery({ projects, onProjectClick, noOverlay }: 
     );
   }
 
-  // 3 columnas masonry layout con menos espacio
+  // 3 columnas masonry layout con margenes consistentemente pequeños y parejos
   return (
-    <div className="w-full flex gap-2 h-max">
+    <div className="w-full flex gap-[10px] h-max">
       {[0,1,2].map(col => (
-        <div className="flex flex-col flex-1 gap-1" key={col}>
+        <div className="flex flex-col flex-1 gap-[10px]" key={col}>
           {projects.filter((_, i) => i % 3 === col).map(p => (
             <div key={p.id} onClick={() => onProjectClick?.(p.id)}>
               <ProjectCard project={p} noOverlay={noOverlay} />

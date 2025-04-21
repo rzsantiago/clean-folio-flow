@@ -11,7 +11,14 @@ export default function Navbar({ onHome }: { onHome?: () => void }) {
     >
       <div className="mx-auto flex items-center justify-between max-w-[1600px] px-3 md:px-10">
         <button
-          className="text-2xl md:text-3xl font-bold font-inter tracking-tight text-stone-700 hover:underline duration-100 bg-white rounded-xl px-4 py-2"
+          className="text-2xl md:text-3xl font-bold font-inter tracking-tight text-stone-700 hover:underline duration-100 bg-white rounded-xl px-0 md:px-0"
+          style={{
+            marginLeft: "0px",        // mobile alineado a borde
+            paddingLeft: "0px",
+            // margin izquierdo grande para desktop igual que galería/textos
+            // 40px = md:px-10, pero usamos px-10 que son 2.5rem = 40px para mantenerlo parejo
+            ...(window.innerWidth >= 768 ? { marginLeft: "0px" } : {})
+          }}
           onClick={() => {
             if (onHome) {
               onHome();

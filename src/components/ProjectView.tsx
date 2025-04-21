@@ -3,7 +3,6 @@ import { projects as allProjects } from "@/data/projects";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import React, { useState } from "react";
 
-// Props extendidas para navegación personalizada
 type Props = {
   projectId: string;
   onNavigate: (id: string) => void;
@@ -22,8 +21,17 @@ export default function ProjectView({
   const project = allProjects.find(p => p.id === projectId);
   if (!project) return null;
 
-  // Hover para flechas (en desktop, para opacidad)
   const [hover, setHover] = useState<"left" | "right" | null>(null);
+
+  // Hacer scroll arriba al navegar a otro proyecto
+  const handleNavigate = (id: string) => {
+    onNavigate(id);
+    if (typeof window !== "undefined") {
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, 10);
+    }
+  };
 
   return (
     <div className="relative w-full min-h-[70vh] select-none">
@@ -31,10 +39,10 @@ export default function ProjectView({
       {prevId && (
         <div
           className="fixed left-3 md:left-4 top-1/2 z-40 -translate-y-1/2 group"
-          style={{ width: 48, height: 60 }} // align arrow in
+          style={{ width: 48, height: 60 }}
           onMouseEnter={() => setHover("left")}
           onMouseLeave={() => setHover(null)}
-          onClick={() => onNavigate(prevId)}
+          onClick={() => handleNavigate(prevId)}
           role="button"
           tabIndex={-1}
         >
@@ -47,11 +55,11 @@ export default function ProjectView({
       )}
       {nextId && (
         <div
-          className="fixed right-[28vw] md:right-[30vw] top-1/2 z-40 -translate-y-1/2 group"
-          style={{ width: 48, height: 60 }} // para que quede entre galeria y sidebar
+          className="fixed right-0 md:right-[31vw] top-1/2 z-40 -translate-y-1/2 group"
+          style={{ width: 48, height: 60 }} // para que quede dentro del área entre galería y menú lateral (ajustado)
           onMouseEnter={() => setHover("right")}
           onMouseLeave={() => setHover(null)}
-          onClick={() => onNavigate(nextId)}
+          onClick={() => handleNavigate(nextId)}
           role="button"
           tabIndex={-1}
         >
