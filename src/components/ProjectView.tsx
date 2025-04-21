@@ -1,65 +1,97 @@
-import { projects } from "@/data/projects";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import React, { useRef, useState } from "react";
 
+import { projects as allProjects } from "@/data/projects";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import React, { useState } from "react";
+
+// Props extendidas para navegación personalizada
 type Props = {
   projectId: string;
   onNavigate: (id: string) => void;
+  prevId?: string | null;
+  nextId?: string | null;
+  showProjectHeader?: boolean;
 };
 
-export default function ProjectView({ projectId, onNavigate }: Props) {
-  const project = projects.find(p => p.id === projectId);
+export default function ProjectView({
+  projectId,
+  onNavigate,
+  prevId,
+  nextId,
+  showProjectHeader,
+}: Props) {
+  const project = allProjects.find(p => p.id === projectId);
   if (!project) return null;
 
-  // Buscar proyectos hermanos en la misma categoría
-  const siblings = projects.filter(p => p.category === project.category);
-  const idx = siblings.findIndex(p => p.id === projectId);
-  const prev = idx > 0 ? siblings[idx - 1] : null;
-  const next = idx >= 0 && idx < siblings.length - 1 ? siblings[idx + 1] : null;
-
-  // Hover lateral
+  // Hover para flechas (en desktop, para opacidad)
   const [hover, setHover] = useState<'left' | 'right' | null>(null);
 
   return (
-    <div className="w-full min-h-[70vh] relative select-none">
-      {/* Flecha prev */}
-      {prev && (
+    <div className="relative w-full min-h-[70vh] select-none">
+      {/* Flechas fijas al costado de la pantalla */}
+      {prevId && (
         <div
-          className="absolute left-0 top-0 h-full group z-10"
-          style={{ width: "60px" }}
+          className="fixed left-0 top-1/2 z-40 -translate-y-1/2 group"
+          style={{ width: "60px", height: 80 }}
           onMouseEnter={() => setHover("left")}
           onMouseLeave={() => setHover(null)}
-          onClick={() => onNavigate(prev.id)}
+          onClick={() => onNavigate(prevId)}
           role="button"
           tabIndex={-1}
         >
           <div
-            className={`flex items-center h-full justify-start pl-2 transition-opacity duration-150 ${hover === 'left' ? 'opacity-100' : 'opacity-0 group-hover:opacity-80'}`}
+            className={`flex items-center h-full justify-start pl-2 transition-opacity duration-150 ${hover === 'left' ? 'opacity-100' : 'opacity-80 group-hover:opacity-100'}`}
           >
             <ArrowLeft className="w-9 h-9 text-stone-400 hover:text-stone-800" />
           </div>
         </div>
       )}
-      {/* Flecha sig */}
-      {next && (
+      {nextId && (
         <div
-          className="absolute right-0 top-0 h-full group z-10"
-          style={{ width: "60px" }}
+          className="fixed right-0 top-1/2 z-40 -translate-y-1/2 group"
+          style={{ width: "60px", height: 80 }}
           onMouseEnter={() => setHover("right")}
           onMouseLeave={() => setHover(null)}
-          onClick={() => onNavigate(next.id)}
+          onClick={() => onNavigate(nextId)}
           role="button"
           tabIndex={-1}
         >
           <div
-            className={`flex items-center h-full justify-end pr-2 transition-opacity duration-150 ${hover === 'right' ? 'opacity-100' : 'opacity-0 group-hover:opacity-80'}`}
+            className={`flex items-center h-full justify-end pr-2 transition-opacity duration-150 ${hover === 'right' ? 'opacity-100' : 'opacity-80 group-hover:opacity-100'}`}
           >
             <ArrowRight className="w-9 h-9 text-stone-400 hover:text-stone-800" />
           </div>
         </div>
       )}
 
-      <div className="flex flex-col gap-3 w-full pb-10">
+      {/* Contenido principal del proyecto */}
+      <div className="flex flex-col gap-3 w-full pb-10 md:pl-6 md:pr-6">
+        {showProjectHeader && (
+          <div className="mb-4">
+            <h1 className="text-2xl md:text-3xl font-bold text-stone-900">
+              {project.title}
+            </h1>
+            {project.description && (
+              <p className="text-base md:text-lg text-stone-500 mt-1">
+                {project.description}
+              </p>
+            )}
+            {(project.client || project.year) && (
+              <div className="text-xs text-stone-400 mt-2">
+                {project.client && (
+                  <span>
+                    <span className="font-medium">Cliente:</span> {project.client}
+                  </span>
+                )}
+                {project.client && project.year && <span className="mx-2">|</span>}
+                {project.year && (
+                  <span>
+                    <span className="font-medium">Año:</span> {project.year}
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+        )}
         {project.contentImages.map((color, i) => (
           <div
             key={i}
@@ -75,5 +107,5 @@ export default function ProjectView({ projectId, onNavigate }: Props) {
         ))}
       </div>
     </div>
-  )
+  );
 }
