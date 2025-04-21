@@ -1,7 +1,6 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { projects as baseProjects } from "@/data/projects";
-import { SidebarMenu } from "@/components/SidebarMenu";
 import ProjectGallery from "@/components/ProjectGallery";
 import Navbar from "@/components/Navbar";
 import About from "./About";
@@ -11,23 +10,19 @@ import { useFadeTransition } from "@/hooks/useFadeTransition";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Menu } from "lucide-react";
 
-// Simular más proyectos para probar la navegación
-const extraProjects = Array.from({ length: 10 }).map((_, i) => ({
-  ...baseProjects[0],
-  id: `extra-${i}`,
-  title: `Proyecto Extra ${i + 1}`,
-}));
-const projects = [...baseProjects, ...extraProjects];
+// --- CATEGORIAS ---
+const categories = [
+  "Industrial Design",
+  "Graphics",
+  "CGI"
+];
 
-// Todas las categorías únicas
-const categories = Array.from(new Set(projects.map(p => p.category)));
-
-// Menú para sidebar y mobile
+// Menu y estructura textual
 const menuEntries = [
   { type: "gallery", label: "Overview", filter: null },
   ...categories.map(c => ({ type: "gallery", label: c, filter: c })),
-  { type: "about", label: "Sobre mí" },
-  { type: "contact", label: "Contacto" }
+  { type: "about", label: "About" },
+  { type: "contact", label: "Contact" },
 ];
 
 type MainSection =
@@ -36,22 +31,37 @@ type MainSection =
   | { type: "contact"; }
   | { type: "project"; id: string; fromFilter: string | null };
 
+// -------- COMPONENTE PRINCIPAL --------
 const Index = () => {
+  // Eliminar el padding global del body al abrir el menú mobile
+  useEffect(() => {
+    if (!isMobile) document.body.style.overflow = "";
+  });
+
   const [main, setMain] = useState<MainSection>({ type: "gallery", filter: null });
   const [menuOpen, setMenuOpen] = useState(false);
   const isMobile = useIsMobile();
 
+  // Bloquear scroll body cuando menu está abierto
+  useEffect(() => {
+    if (isMobile && menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [menuOpen, isMobile]);
+
   // Determinar proyectos filtrados según contexto actual
-  let filteredProjects: typeof projects = projects;
+  let filteredProjects = baseProjects;
   let filterLabel: string | null = null;
 
   if (main.type === "gallery") {
-    filteredProjects = main.filter ? projects.filter(p => p.category === main.filter) : projects;
+    filteredProjects = main.filter ? baseProjects.filter(p => p.category === main.filter) : baseProjects;
     filterLabel = main.filter || null;
   } else if (main.type === "project") {
     filteredProjects = main.fromFilter
-      ? projects.filter(p => p.category === main.fromFilter)
-      : projects;
+      ? baseProjects.filter(p => p.category === main.fromFilter)
+      : baseProjects;
     filterLabel = main.fromFilter || null;
   }
 
@@ -105,18 +115,18 @@ const Index = () => {
   if (main.type === "about") activeSection = "about";
   if (main.type === "contact") activeSection = "contact";
 
-  // SidebarMenu styles updates: all gray, except black when active
-  // Y quitar "Categorías"
+  // SEPARACIÓN MENU LATERAL
+  const menuPart1 = menuEntries.slice(0, 4);
+  const menuPart2 = menuEntries.slice(4);
 
+  // --- RENDER ---
   return (
-    <div className="min-h-screen bg-stone-100 flex flex-col font-inter">
+    <div className="min-h-screen bg-white flex flex-col font-inter">
       <Navbar onHome={() => setMain({ type: "gallery", filter: null })} />
-      <div className="flex-1 flex flex-row w-full max-w-[1600px] mx-auto mt-20 md:mt-28 px-0 md:px-10 gap-0 md:gap-14 transition-none">
+      <div className="flex-1 flex flex-row w-full max-w-[1600px] mx-auto mt-20 md:mt-28 px-0 md:px-10 gap-10 md:gap-10 transition-none">
         <main className="w-full md:w-[70%] max-w-[100%] pt-4 pb-14 md:pb-0 flex items-start justify-center transition-none">
           <div
-            className={`w-full transition-none ${fadeClass} ${
-              isMobile ? "px-2" : ""
-            }`}
+            className={`w-full transition-none ${fadeClass} ${isMobile ? "px-3" : ""}`}
             style={{
               minHeight: "75vh",
               marginBottom: 0,
@@ -131,8 +141,9 @@ const Index = () => {
           style={{ position: "sticky", top: 88, height: "fit-content" }}
         >
           <div className="w-full pr-0">
-            <nav className="flex flex-col gap-1 mt-0 select-none">
-              {menuEntries.map(entry => (
+            <nav className="flex flex-col gap-2 mt-0 select-none">
+              {/* Parte 1: Overview + categorias */}
+              {menuPart1.map(entry => (
                 <button
                   key={entry.label}
                   className={`px-0 py-1 text-lg font-medium text-left transition-none ${
@@ -157,6 +168,27 @@ const Index = () => {
                   {entry.label}
                 </button>
               ))}
+              <div className="border-t border-stone-200 my-4" />
+              {/* Parte 2: About + Contact */}
+              {menuPart2.map(entry => (
+                <button
+                  key={entry.label}
+                  className={`px-0 py-1 text-lg font-medium text-left transition-none ${
+                    main.type === entry.type
+                      ? "text-black"
+                      : "text-stone-500"
+                  } hover:text-black`}
+                  onClick={() => {
+                    if (entry.type === "about") {
+                      setMain({ type: "about" });
+                    } else if (entry.type === "contact") {
+                      setMain({ type: "contact" });
+                    }
+                  }}
+                >
+                  {entry.label}
+                </button>
+              ))}
             </nav>
           </div>
         </section>
@@ -164,10 +196,10 @@ const Index = () => {
         {isMobile && (
           <>
             <button
-              className="fixed z-40 top-3 right-3 p-2 rounded-md bg-white shadow-md border border-stone-200"
+              className="fixed z-40 top-3 right-3 p-2 rounded-md bg-white border border-stone-200"
               onClick={() => setMenuOpen(v => !v)}
-              style={{ top: 22 }}
-              aria-label="Menú"
+              style={{ top: 22, boxShadow: "none" }}
+              aria-label="Menu"
             >
               <Menu className="w-7 h-7 text-stone-700" />
             </button>
@@ -177,10 +209,11 @@ const Index = () => {
                 onClick={() => setMenuOpen(false)}
               >
                 <div
-                  className="fixed right-0 top-0 bg-white h-full w-64 shadow-xl flex flex-col p-6 gap-2"
+                  className="fixed right-0 top-0 bg-white h-full w-64 flex flex-col p-6 gap-1"
                   style={{
                     paddingTop: 90,
                     zIndex: 100,
+                    boxShadow: "none"
                   }}
                   onClick={e => e.stopPropagation()}
                 >
@@ -216,12 +249,12 @@ const Index = () => {
           </>
         )}
       </div>
-      <footer className="w-full text-center py-10 text-stone-300 text-xs font-inter">
-        © {new Date().getFullYear()} cleanfolio
+      <footer className="w-full text-center py-10 text-stone-300 text-xs font-inter"
+        style={{ background: "#fff", boxShadow: "none" }}>
+        © {new Date().getFullYear()} Santiago Ruiz
       </footer>
     </div>
   );
 };
 
 export default Index;
-
