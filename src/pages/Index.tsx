@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Menu } from "lucide-react";
@@ -15,10 +14,10 @@ const categories = [
 
 // Menu y estructura textual
 const menuEntries = [
-  { type: "gallery", label: "Overview", filter: null },
-  ...categories.map(c => ({ type: "gallery", label: c, filter: c })),
-  { type: "about", label: "About" },
-  { type: "contact", label: "Contact" },
+  { type: "gallery", label: "Overview", filter: null } as const,
+  ...categories.map(c => ({ type: "gallery", label: c, filter: c } as const)),
+  { type: "about", label: "About" } as const,
+  { type: "contact", label: "Contact" } as const,
 ];
 
 const Index = () => {
