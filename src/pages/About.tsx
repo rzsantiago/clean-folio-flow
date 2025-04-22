@@ -1,9 +1,20 @@
 
-// Sección About sencilla, personalizable
+import React from "react";
+
+// Puedes reemplazar esta URL por tu propia foto más adelante
+const PHOTO_URL = "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?auto=format&fit=facearea&w=1100&h=900&q=80";
 
 const About = ({ minimal }: { minimal?: boolean }) => (
   <div className={`max-w-xl mx-auto py-12 px-4 font-inter text-stone-700 text-lg ${minimal ? "" : "bg-white rounded-xl shadow"} md:ml-0 md:mr-auto md:px-0`}>
-    <h1 className="text-3xl font-bold mb-4">Sobre mí</h1>
+    <div className="w-full mb-8 rounded-xl overflow-hidden" style={{ height: 500, maxHeight: "60vw", minHeight: 240, background: "#eee" }}>
+      <img
+        src={PHOTO_URL}
+        alt="Foto personal"
+        className="w-full h-full object-cover object-center"
+        style={{ height: "100%", width: "100%", display: "block" }}
+        draggable={false}
+      />
+    </div>
     <p>
       ¡Hola! Soy un/a diseñador/a multidisciplinar con pasión por el diseño industrial, artes gráficas y el CGI. 
       Este portfolio es una selección de mis proyectos favoritos.
@@ -16,3 +27,4 @@ const About = ({ minimal }: { minimal?: boolean }) => (
 );
 
 export default About;
+
