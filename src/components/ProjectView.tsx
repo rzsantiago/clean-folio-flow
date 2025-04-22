@@ -1,4 +1,3 @@
-
 import { projects as allProjects } from "@/data/projects";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import React, { useState } from "react";
@@ -23,7 +22,6 @@ export default function ProjectView({
 
   const [hover, setHover] = useState<"left" | "right" | null>(null);
 
-  // Hacer scroll arriba al navegar a otro proyecto
   const handleNavigate = (id: string) => {
     onNavigate(id);
     if (typeof window !== "undefined") {
@@ -35,7 +33,6 @@ export default function ProjectView({
 
   return (
     <div className="relative w-full min-h-[70vh] select-none">
-      {/* Flechas fijas al costado del area de imagenes */}
       {prevId && (
         <div
           className="fixed left-3 md:left-4 top-1/2 z-40 -translate-y-1/2 group"
@@ -56,7 +53,7 @@ export default function ProjectView({
       {nextId && (
         <div
           className="fixed right-0 md:right-[31vw] top-1/2 z-40 -translate-y-1/2 group"
-          style={{ width: 48, height: 60 }} // para que quede dentro del área entre galería y menú lateral (ajustado)
+          style={{ width: 48, height: 60 }}
           onMouseEnter={() => setHover("right")}
           onMouseLeave={() => setHover(null)}
           onClick={() => handleNavigate(nextId)}
@@ -99,14 +96,13 @@ export default function ProjectView({
             )}
           </div>
         )}
-        {/* Imágenes, con menos gap */}
         <div className="flex flex-col gap-2">
           {project.contentImages.map((color, i) => (
             <div
               key={i}
               style={{
                 background: color,
-                borderRadius: 12,
+                borderRadius: 8,
                 width: "100%",
                 minHeight: 220,
                 aspectRatio: project.ratio === "3x4" ? "3/4" : "4/3",

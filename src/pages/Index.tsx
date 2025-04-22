@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Menu } from "lucide-react";
@@ -21,9 +22,15 @@ const menuEntries = [
 ];
 
 const Index = () => {
+  // Guardar tanto sección principal como "filtro/categoría de origen"
   const [main, setMain] = useState<MainSection>({ type: "gallery", filter: null });
   const [menuOpen, setMenuOpen] = useState(false);
   const isMobile = useIsMobile();
+
+  // Trackea la categoría activa para resaltar en Sidebar (persistente al entrar a proyectos)
+  const activeCategory = (main.type === "gallery")
+    ? main.filter
+    : (main.type === "project" ? main.fromFilter : null);
 
   // Bloquear scroll body cuando menu está abierto
   useEffect(() => {
@@ -40,7 +47,15 @@ const Index = () => {
       <Navbar onHome={() => setMain({ type: "gallery", filter: null })} />
       <div className="flex-1 flex flex-row w-full max-w-[1600px] mx-auto mt-20 md:mt-28 px-0 md:px-10 gap-4 md:gap-8 transition-none">
         <MainContent main={main} setMain={setMain} isMobile={isMobile} />
-        <SidebarNavigation main={main} setMain={setMain} menuEntries={menuEntries} />
+        <SidebarNavigation
+          main={main}
+          setMain={setMain}
+          menuEntries={menuEntries}
+          activeCategory={activeCategory}
+          isMobile={isMobile}
+          menuOpen={menuOpen}
+          setMenuOpen={setMenuOpen}
+        />
         {/* Mobile Menu: hamburguesa */}
         {isMobile && (
           <>
@@ -52,55 +67,6 @@ const Index = () => {
             >
               <Menu className="w-7 h-7 text-stone-700" />
             </button>
-            {menuOpen && (
-              <div
-                className="fixed z-50 inset-0 bg-black/30"
-                onClick={() => setMenuOpen(false)}
-              >
-                <div
-                  className="fixed right-0 top-0 bg-white h-full w-64 flex flex-col p-6 gap-1"
-                  style={{
-                    paddingTop: 90,
-                    zIndex: 100,
-                    boxShadow: "none"
-                  }}
-                  onClick={e => e.stopPropagation()}
-                >
-                  {menuEntries.map(entry => (
-                    <button
-                      key={entry.label}
-                      className={`text-left w-full py-2 px-2 rounded-md text-lg ${
-                        main.type === entry.type &&
-                        (entry.type === "gallery"
-                          ? (main.type === "gallery" &&
-                            ((main.filter == null && 'filter' in entry && entry.filter == null) ||
-                            (main.filter === ('filter' in entry ? entry.filter : undefined)))
-                          )
-                          : false
-                        )
-                          ? "text-black bg-stone-100"
-                          : "text-stone-500"
-                      } hover:bg-stone-100`}
-                      onClick={() => {
-                        setMenuOpen(false);
-                        if (entry.type === "gallery") {
-                          setMain({
-                            type: "gallery",
-                            filter: 'filter' in entry ? entry.filter ?? null : null
-                          });
-                        } else if (entry.type === "about") {
-                          setMain({ type: "about" });
-                        } else if (entry.type === "contact") {
-                          setMain({ type: "contact" });
-                        }
-                      }}
-                    >
-                      {entry.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
           </>
         )}
       </div>
