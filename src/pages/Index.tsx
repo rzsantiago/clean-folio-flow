@@ -46,7 +46,7 @@ const Index = () => {
     <div className="min-h-screen bg-white flex flex-col font-inter">
       <Navbar onHome={() => setMain({ type: "gallery", filter: null })} />
       <div className="flex-1 flex flex-row w-full max-w-[1600px] mx-auto mt-20 md:mt-28 px-0 md:px-10 gap-4 md:gap-8 transition-none">
-        {/* Sidebar a la izquierda, para todos los casos mantiene su min/max width */}
+        <MainContent main={main} setMain={setMain} isMobile={isMobile} />
         <SidebarNavigation
           main={main}
           setMain={setMain}
@@ -56,7 +56,6 @@ const Index = () => {
           menuOpen={menuOpen}
           setMenuOpen={setMenuOpen}
         />
-        <MainContent main={main} setMain={setMain} isMobile={isMobile} />
         {/* Mobile Menu: hamburguesa */}
         {isMobile && (
           <>

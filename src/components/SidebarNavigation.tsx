@@ -31,15 +31,15 @@ export default function SidebarNavigation({
   // Determina si esta activo segun la sección/categoría activa
   function isActive(entry: MenuEntry) {
     if (entry.type === "gallery") {
-      // Mostrar activo SOLO si estamos en una galería, nunca cuando estamos en About ni Contact
-      if (main.type !== "gallery") return false;
       if (activeCategory !== undefined) {
+        // Si estamos en una galería o proyecto, activa según categoría
         if ("filter" in entry) {
           return (activeCategory === entry.filter) ||
             (activeCategory == null && entry.filter == null);
         }
         return false;
       }
+      // Fallback legacy
       return main.type === "gallery" &&
         ((main.filter == null && "filter" in entry && entry.filter == null) ||
          (main.filter === ("filter" in entry ? entry.filter : undefined)));
@@ -101,19 +101,14 @@ export default function SidebarNavigation({
   }
 
   // Desktop sidebar
-  // Corrige el min-w y max-w para que nunca tape ni se superponga con la galería
   return (
     <section
-      className="hidden md:flex flex-col items-end"
+      className="hidden md:flex w-[29%] max-w-xs min-w-[180px] flex-col items-end"
       style={{
         position: "sticky",
         top: 88,
         height: "fit-content",
-        marginLeft: "0px",
-        width: "29%",
-        maxWidth: 250,
-        minWidth: 185,
-        zIndex: 30,
+        marginLeft: "0px"
       }}
     >
       <div className="w-full pr-0">

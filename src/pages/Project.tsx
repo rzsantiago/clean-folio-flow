@@ -23,19 +23,6 @@ const ProjectPage = () => {
     window.scrollTo({ top: 0, behavior: "smooth" })
   }, [id]);
 
-  // Agrega eventos de teclado para navegar con flechas
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft" && prev) {
-        navigate(`/project/${prev.id}`);
-      } else if (e.key === "ArrowRight" && next) {
-        navigate(`/project/${next.id}`);
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [prev, next, navigate]);
-
   if (!project)
     return (
       <div className="py-16 text-center text-stone-500 font-inter">
