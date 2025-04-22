@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { projects } from "@/data/projects";
 import { useEffect } from "react";
 
-// Muestra el proyecto, navegación y galería de imágenes (colores sólidos)
+// Muestra el proyecto, navegación y galería de imágenes (con imagen de portada si existe)
 const ProjectPage = () => {
   const { id } = useParams<{ id: string }>();
   const project = projects.find(p => p.id === id);
@@ -50,31 +50,55 @@ const ProjectPage = () => {
         </button>
       </div>
       <div
-        className={`w-full mb-8 rounded-xl`}
+        className={`w-full mb-8 rounded-xl overflow-hidden`}
         style={{
-          background: project.coverColor,
           aspectRatio: project.ratio === "4x3" ? "4/3" : "3/4",
           minHeight: 200,
+          background: project.coverImage ? undefined : project.coverColor,
         }}
-      />
+      >
+        {project.coverImage && (
+          <img
+            src={project.coverImage}
+            alt={project.title}
+            className="w-full h-full object-cover object-center"
+            style={{
+              borderRadius: 16,
+              width: "100%",
+              height: "100%",
+              aspectRatio: project.ratio === "4x3" ? "4/3" : "3/4",
+              minHeight: 200,
+              display: "block"
+            }}
+            draggable={false}
+          />
+        )}
+      </div>
       <h1 className="text-3xl font-bold mb-4 text-stone-900">{project.title}</h1>
       {/* Galería de imágenes de contenido */}
       {project.contentImages && (
         <div className="flex flex-wrap gap-6 mb-8">
-          {project.contentImages.map((color, i) => (
+          {project.contentImages.map((img, i) => (
             <div
               key={i}
+              className="w-full overflow-hidden"
               style={{
-                background: color,
-                aspectRatio: "4/3",
                 borderRadius: 16,
+                aspectRatio: "4/3",
                 minWidth: 120,
                 minHeight: 94,
                 flex: "1 0 31%",
                 maxWidth: "30%",
+                background: "#EEE"
               }}
-              className="w-full"
-            />
+            >
+              <img
+                src={img}
+                alt={`Imagen del proyecto ${project.title} ${i + 1}`}
+                className="w-full h-full object-cover object-center"
+                draggable={false}
+              />
+            </div>
           ))}
         </div>
       )}

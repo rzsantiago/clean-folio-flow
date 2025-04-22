@@ -1,3 +1,4 @@
+
 import { projects as allProjects } from "@/data/projects";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import React, { useState } from "react";
@@ -96,20 +97,42 @@ export default function ProjectView({
             )}
           </div>
         )}
+        {/* Imagen de portada principal */}
+        {project.coverImage && (
+          <div className="w-full rounded-xl overflow-hidden mb-4" style={{
+            aspectRatio: project.ratio === "3x4" ? "3/4" : "4/3",
+            minHeight: 230,
+            background: "#EEE"
+          }}>
+            <img
+              src={project.coverImage}
+              alt={`Portada de ${project.title}`}
+              className="w-full h-full object-cover object-center"
+              draggable={false}
+            />
+          </div>
+        )}
         <div className="flex flex-col gap-2">
-          {project.contentImages.map((color, i) => (
+          {project.contentImages.map((img, i) => (
             <div
               key={i}
               style={{
-                background: color,
                 borderRadius: 8,
                 width: "100%",
                 minHeight: 220,
                 aspectRatio: project.ratio === "3x4" ? "3/4" : "4/3",
-                margin: "0"
+                margin: "0",
+                background: "#EEE"
               }}
-              className="w-full"
-            />
+              className="w-full overflow-hidden"
+            >
+              <img
+                src={img}
+                alt={`Imagen del proyecto ${project.title} ${i + 1}`}
+                className="w-full h-full object-cover object-center"
+                draggable={false}
+              />
+            </div>
           ))}
         </div>
       </div>
