@@ -4,8 +4,9 @@ import AdminProjectsTable from "@/components/AdminProjectsTable";
 import { Button } from "@/components/ui/button";
 import AddProjectDialog, { AddProjectFormData } from "@/components/AddProjectDialog";
 import { Plus } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client"; // <-- Ensure we use the correct client
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import type { Project } from "@/data/projects";
 
 // Type representing a project row as returned from Supabase
 type SupabaseProject = {
@@ -18,20 +19,6 @@ type SupabaseProject = {
   coverimage: string | null;
   ratio: string | null;
   contentimages: any[] | null;
-  client: string | null;
-};
-
-// Optionally, shape for your internal Project type, for compatibility with AdminProjectsTable
-type Project = {
-  id: number;
-  title: string;
-  description: string;
-  category: string;
-  year: number | null;
-  coverColor: string | null;
-  coverImage: string | null;
-  ratio: string | null;
-  contentImages: any[] | null;
   client: string | null;
 };
 
@@ -48,18 +35,18 @@ const mapFormDataToDb = (data: AddProjectFormData) => ({
   client: null,
 });
 
-// Convert DB shape to UI shape for AdminProjectsTable if needed
+// Convert DB shape to UI shape for AdminProjectsTable (map id:number -> id:string)
 const mapDbToUiProject = (proj: SupabaseProject): Project => ({
-  id: proj.id,
+  id: proj.id.toString(),
   title: proj.title,
   description: proj.description,
   category: proj.category,
-  year: proj.year,
-  coverColor: proj.covercolor,
-  coverImage: proj.coverimage,
-  ratio: proj.ratio,
+  year: proj.year || undefined,
+  coverColor: proj.covercolor || "#D6BCFA",
+  coverImage: proj.coverimage ?? undefined,
+  ratio: (proj.ratio === "3x4" || proj.ratio === "4x3") ? proj.ratio : "4x3",
   contentImages: Array.isArray(proj.contentimages) ? proj.contentimages : [],
-  client: proj.client,
+  client: proj.client ?? undefined,
 });
 
 const AdminPage = () => {
