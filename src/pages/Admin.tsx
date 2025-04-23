@@ -6,7 +6,7 @@ import AddProjectDialog, { AddProjectFormData } from "@/components/AddProjectDia
 import { Plus } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 import type { Project } from "@/data/projects";
-import { toast } from "@/components/ui/sonner";
+import { toast } from "@/hooks/use-toast"; // <-- Use correct toast
 
 // Adaptar los datos del formulario al formato de Supabase
 const mapFormDataToDb = (data: AddProjectFormData) => ({
