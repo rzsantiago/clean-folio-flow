@@ -3,26 +3,27 @@ import React, { useState } from "react";
 import AdminProjectsTable from "@/components/AdminProjectsTable";
 import { Button } from "@/components/ui/button";
 import AddProjectDialog, { AddProjectFormData } from "@/components/AddProjectDialog";
-import { projects as defaultProjects } from "@/data/projects";
+import { projects as defaultProjects, Project } from "@/data/projects";
 import { Plus } from "lucide-react";
 
 // !! No persistente (solo frontend), se integrará con Supabase más tarde
-const mapFormDataToProject = (data: AddProjectFormData) => ({
+const mapFormDataToProject = (data: AddProjectFormData): Project => ({
   id: "local-" + Date.now(),
   title: data.title,
   category: data.category,
-  year: data.year,
+  year: isNaN(+data.year) ? undefined : +data.year, // Convert to number, fallback to undefined
   description: data.description,
   coverColor: "#D6BCFA",
   coverImage: "",
-  ratio: "4x3",
+  ratio: "4x3", // Use literal type
   contentImages: [],
+  client: undefined, // Explicit for type safety
 });
 
 const AdminPage = () => {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   // Mezclamos proyectos de ejemplo con nuevos agregados
-  const [localProjects, setLocalProjects] = useState(defaultProjects);
+  const [localProjects, setLocalProjects] = useState<Project[]>(defaultProjects);
 
   function handleAddProject(data: AddProjectFormData) {
     setLocalProjects((projects) => [
