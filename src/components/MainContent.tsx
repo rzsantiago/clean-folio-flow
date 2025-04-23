@@ -5,7 +5,7 @@ import About from "@/pages/About";
 import Contact from "@/pages/Contact";
 import ProjectView from "@/components/ProjectView";
 import { useFadeTransition } from "@/hooks/useFadeTransition";
-import { projects as baseProjects } from "@/data/projects";
+import { useProjects } from "@/hooks/useProjects"; // <-- nuevo hook
 
 export type MainSection =
   | { type: "gallery"; filter: string | null }
@@ -21,6 +21,7 @@ type Props = {
 
 export default function MainContent({ main, setMain, isMobile }: Props) {
   const mainContentRef = useRef<HTMLDivElement>(null);
+  const { data: projects = [], isLoading, error } = useProjects();
 
   // Scroll arriba al navegar entre proyectos
   useEffect(() => {
@@ -30,23 +31,37 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
     }
   }, [main]);
 
-  let filteredProjects = baseProjects;
+  let filteredProjects = projects;
   let filterLabel: string | null = null;
 
   if (main.type === "gallery") {
-    filteredProjects = main.filter ? baseProjects.filter(p => p.category === main.filter) : baseProjects;
+    filteredProjects = main.filter ? projects.filter(p => p.category === main.filter) : projects;
     filterLabel = main.filter || null;
   } else if (main.type === "project") {
     filteredProjects = main.fromFilter
-      ? baseProjects.filter(p => p.category === main.fromFilter)
-      : baseProjects;
+      ? projects.filter(p => p.category === main.fromFilter)
+      : projects;
     filterLabel = main.fromFilter || null;
   }
 
   let content: React.ReactNode = null;
   let fadeDeps: any[] = [];
 
-  if (main.type === "about") {
+  if (isLoading) {
+    content = (
+      <div className="w-full min-h-[40vh] flex items-center justify-center text-stone-400 text-lg font-inter">
+        Cargando proyectos...
+      </div>
+    );
+    fadeDeps = ["loading"];
+  } else if (error) {
+    content = (
+      <div className="w-full min-h-[40vh] flex items-center justify-center text-red-500 text-lg font-inter">
+        Error al cargar proyectos
+      </div>
+    );
+    fadeDeps = ["error"];
+  } else if (main.type === "about") {
     content = <About minimal />;
     fadeDeps = ["about"];
   } else if (main.type === "contact") {
