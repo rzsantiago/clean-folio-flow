@@ -1,20 +1,17 @@
-
 import React, { useEffect, useState } from "react";
 import AdminProjectsTable from "@/components/AdminProjectsTable";
 import { Button } from "@/components/ui/button";
 import AddProjectDialog, { AddProjectFormData } from "@/components/AddProjectDialog";
 import { Plus } from "lucide-react";
-import { supabase } from "@/lib/supabaseClient";
+import { supabase } from "@/integrations/supabase/client"; // <-- Ensure we use the correct client
 import type { Project } from "@/data/projects";
-import { toast } from "@/hooks/use-toast"; // <-- Use correct toast
+import { toast } from "@/hooks/use-toast";
 
-// Adaptar los datos del formulario al formato de Supabase
 const mapFormDataToDb = (data: AddProjectFormData) => ({
   title: data.title,
   description: data.description,
   category: data.category,
   year: data.year ? Number(data.year) : null,
-  // Puedes agregar más campos aquí si tu tabla los tiene
   coverColor: "#D6BCFA",
   coverImage: "",
   ratio: "4x3",
@@ -27,7 +24,6 @@ const AdminPage = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Carga los proyectos desde Supabase al montar el componente
   useEffect(() => {
     async function fetchProjects() {
       setLoading(true);
@@ -51,7 +47,6 @@ const AdminPage = () => {
     fetchProjects();
   }, []);
 
-  // Añadir proyecto a Supabase
   async function handleAddProject(data: AddProjectFormData) {
     const payload = mapFormDataToDb(data);
 
