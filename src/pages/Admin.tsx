@@ -28,11 +28,14 @@ const mapFormDataToDb = (data: AddProjectFormData) => ({
   description: data.description,
   category: data.category,
   year: data.year ? Number(data.year) : null,
-  covercolor: "#D6BCFA",
-  coverimage: "",
-  ratio: "4x3",
-  contentimages: [],
-  client: null,
+  covercolor: data.coverColor || "#D6BCFA",
+  coverimage: data.coverImage || "",
+  ratio: data.ratio || "4x3",
+  contentimages: data.contentImages
+    // Si hay contenido, hacer split por saltos de línea y filtrar vacíos
+    ? data.contentImages.split("\n").map(s => s.trim()).filter(Boolean)
+    : [],
+  client: data.client?.trim() || null,
 });
 
 // Convert DB shape to UI shape for AdminProjectsTable (map id:number -> id:string)

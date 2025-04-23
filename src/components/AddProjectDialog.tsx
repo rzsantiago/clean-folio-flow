@@ -21,6 +21,11 @@ export type AddProjectFormData = {
   description: string;
   category: string;
   year: string;
+  ratio: "3x4" | "4x3";
+  client?: string;
+  coverColor?: string;
+  coverImage?: string;
+  contentImages?: string; // Usaremos un textarea de URLs separadas por salto de línea
 };
 
 type AddProjectDialogProps = {
@@ -33,7 +38,7 @@ const CATEGORIES = [
   "Industrial Design",
   "Graphics",
   "CGI",
-  "Other"
+  "Other",
 ];
 
 export default function AddProjectDialog({
@@ -46,7 +51,12 @@ export default function AddProjectDialog({
     handleSubmit,
     reset,
     formState: { errors, isSubmitting }
-  } = useForm<AddProjectFormData>();
+  } = useForm<AddProjectFormData>({
+    defaultValues: {
+      ratio: "4x3",
+      coverColor: "#D6BCFA",
+    }
+  });
 
   function internalSubmit(data: AddProjectFormData) {
     onSubmit(data);
@@ -100,6 +110,55 @@ export default function AddProjectDialog({
               placeholder="ej. 2024"
             />
             {errors.year && <span className="text-destructive text-xs">{errors.year.message}</span>}
+          </div>
+          <div>
+            <Label htmlFor="ratio">Ratio</Label>
+            <select
+              id="ratio"
+              className="w-full border border-input rounded-md px-3 py-2 text-base bg-background"
+              {...register("ratio", { required: "Selecciona el ratio" })}
+            >
+              <option value="4x3">4x3</option>
+              <option value="3x4">3x4</option>
+            </select>
+            {errors.ratio && <span className="text-destructive text-xs">{errors.ratio.message}</span>}
+          </div>
+          <div>
+            <Label htmlFor="client">Cliente <span className="text-muted-foreground text-xs">(opcional)</span></Label>
+            <Input
+              id="client"
+              {...register("client")}
+              placeholder="Nombre del cliente (opcional)"
+            />
+          </div>
+          <div>
+            <Label htmlFor="coverColor">Color de portada <span className="text-muted-foreground text-xs">(hex ej. #D6BCFA)</span></Label>
+            <Input
+              id="coverColor"
+              type="color"
+              {...register("coverColor")}
+              className="h-10 w-16 p-1"
+              defaultValue="#D6BCFA"
+              title="Color de portada"
+            />
+          </div>
+          <div>
+            <Label htmlFor="coverImage">URL Imagen de portada <span className="text-muted-foreground text-xs">(opcional)</span></Label>
+            <Input
+              id="coverImage"
+              type="url"
+              {...register("coverImage")}
+              placeholder="Pega la URL de la imagen de portada"
+            />
+          </div>
+          <div>
+            <Label htmlFor="contentImages">URLs de imágenes de contenido <span className="text-muted-foreground text-xs">(una por línea; opcional)</span></Label>
+            <Textarea
+              id="contentImages"
+              {...register("contentImages")}
+              placeholder="Pega URLs, una por línea"
+              rows={3}
+            />
           </div>
           <div>
             <Label htmlFor="description">Descripción</Label>
