@@ -6,9 +6,10 @@ import type { Project } from "@/data/projects";
 
 type AdminProjectsTableProps = {
   projects: Project[];
+  loading?: boolean;
 };
 
-const AdminProjectsTable = ({ projects }: AdminProjectsTableProps) => {
+const AdminProjectsTable = ({ projects, loading }: AdminProjectsTableProps) => {
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full border rounded-lg">
@@ -21,23 +22,37 @@ const AdminProjectsTable = ({ projects }: AdminProjectsTableProps) => {
           </tr>
         </thead>
         <tbody>
-          {projects.map((project) => (
-            <tr key={project.id} className="border-b last:border-b-0 hover:bg-stone-50">
-              <td className="py-2 px-3">{project.title}</td>
-              <td className="py-2 px-3">{project.category}</td>
-              <td className="py-2 px-3">{project.year || "-"}</td>
-              <td className="py-2 px-3 text-center">
-                <Button size="sm" variant="secondary" className="mr-2" disabled>
-                  <Edit className="w-4 h-4 mr-1" />
-                  Editar
-                </Button>
-                <Button size="sm" variant="destructive" disabled>
-                  <Trash2 className="w-4 h-4 mr-1" />
-                  Borrar
-                </Button>
+          {loading ? (
+            <tr>
+              <td colSpan={4} className="text-center py-8 text-muted-foreground">
+                Cargando proyectos...
               </td>
             </tr>
-          ))}
+          ) : projects.length === 0 ? (
+            <tr>
+              <td colSpan={4} className="text-center py-8 text-muted-foreground">
+                No hay proyectos registrados.
+              </td>
+            </tr>
+          ) : (
+            projects.map((project) => (
+              <tr key={project.id} className="border-b last:border-b-0 hover:bg-stone-50">
+                <td className="py-2 px-3">{project.title}</td>
+                <td className="py-2 px-3">{project.category}</td>
+                <td className="py-2 px-3">{project.year || "-"}</td>
+                <td className="py-2 px-3 text-center">
+                  <Button size="sm" variant="secondary" className="mr-2" disabled>
+                    <Edit className="w-4 h-4 mr-1" />
+                    Editar
+                  </Button>
+                  <Button size="sm" variant="destructive" disabled>
+                    <Trash2 className="w-4 h-4 mr-1" />
+                    Borrar
+                  </Button>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>

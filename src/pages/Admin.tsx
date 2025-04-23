@@ -1,35 +1,79 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AdminProjectsTable from "@/components/AdminProjectsTable";
 import { Button } from "@/components/ui/button";
 import AddProjectDialog, { AddProjectFormData } from "@/components/AddProjectDialog";
-import { projects as defaultProjects, Project } from "@/data/projects";
 import { Plus } from "lucide-react";
+import { supabase } from "@/lib/supabaseClient";
+import type { Project } from "@/data/projects";
+import { toast } from "@/components/ui/sonner";
 
-// !! No persistente (solo frontend), se integrará con Supabase más tarde
-const mapFormDataToProject = (data: AddProjectFormData): Project => ({
-  id: "local-" + Date.now(),
+// Adaptar los datos del formulario al formato de Supabase
+const mapFormDataToDb = (data: AddProjectFormData) => ({
   title: data.title,
-  category: data.category,
-  year: isNaN(+data.year) ? undefined : +data.year, // Convert to number, fallback to undefined
   description: data.description,
+  category: data.category,
+  year: data.year ? Number(data.year) : null,
+  // Puedes agregar más campos aquí si tu tabla los tiene
   coverColor: "#D6BCFA",
   coverImage: "",
-  ratio: "4x3", // Use literal type
+  ratio: "4x3",
   contentImages: [],
-  client: undefined, // Explicit for type safety
+  client: null,
 });
 
 const AdminPage = () => {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
-  // Mezclamos proyectos de ejemplo con nuevos agregados
-  const [localProjects, setLocalProjects] = useState<Project[]>(defaultProjects);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  function handleAddProject(data: AddProjectFormData) {
-    setLocalProjects((projects) => [
-      ...projects,
-      mapFormDataToProject(data),
-    ]);
+  // Carga los proyectos desde Supabase al montar el componente
+  useEffect(() => {
+    async function fetchProjects() {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("projects")
+        .select("*")
+        .order("id", { ascending: true });
+
+      if (error) {
+        toast({
+          title: "Error al cargar proyectos",
+          description: error.message,
+        });
+        setLoading(false);
+        return;
+      }
+      setProjects(data || []);
+      setLoading(false);
+    }
+
+    fetchProjects();
+  }, []);
+
+  // Añadir proyecto a Supabase
+  async function handleAddProject(data: AddProjectFormData) {
+    const payload = mapFormDataToDb(data);
+
+    const { data: created, error } = await supabase
+      .from("projects")
+      .insert([payload])
+      .select()
+      .single();
+
+    if (error) {
+      toast({
+        title: "Error al agregar proyecto",
+        description: error.message,
+      });
+      return;
+    }
+
+    setProjects((prev) => [...prev, created]);
+    toast({
+      title: "Proyecto agregado",
+      description: `El proyecto "${created.title}" fue agregado correctamente.`,
+    });
   }
 
   return (
@@ -41,7 +85,7 @@ const AdminPage = () => {
           Agregar proyecto
         </Button>
       </div>
-      <AdminProjectsTable projects={localProjects} />
+      <AdminProjectsTable projects={projects} loading={loading} />
       <AddProjectDialog
         open={addDialogOpen}
         setOpen={setAddDialogOpen}
