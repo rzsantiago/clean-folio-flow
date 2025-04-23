@@ -1,10 +1,14 @@
 
 import React from "react";
-import { projects } from "@/data/projects";
 import { Button } from "@/components/ui/button";
 import { Edit, Trash2 } from "lucide-react";
+import type { Project } from "@/data/projects";
 
-const AdminProjectsTable = () => {
+type AdminProjectsTableProps = {
+  projects: Project[];
+};
+
+const AdminProjectsTable = ({ projects }: AdminProjectsTableProps) => {
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full border rounded-lg">
@@ -23,11 +27,11 @@ const AdminProjectsTable = () => {
               <td className="py-2 px-3">{project.category}</td>
               <td className="py-2 px-3">{project.year || "-"}</td>
               <td className="py-2 px-3 text-center">
-                <Button size="sm" variant="secondary" className="mr-2" /* onClick pendiente para editar */>
+                <Button size="sm" variant="secondary" className="mr-2" disabled>
                   <Edit className="w-4 h-4 mr-1" />
                   Editar
                 </Button>
-                <Button size="sm" variant="destructive" /* onClick pendiente para eliminar */>
+                <Button size="sm" variant="destructive" disabled>
                   <Trash2 className="w-4 h-4 mr-1" />
                   Borrar
                 </Button>
