@@ -2,18 +2,15 @@
 import React, { useState, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Menu } from "lucide-react";
-import Navbar from "@/components/Navbar";
 import MainContent, { MainSection } from "@/components/MainContent";
 import SidebarNavigation from "@/components/SidebarNavigation";
 
-// --- CATEGORIAS ---
 const categories = [
   "Industrial Design",
   "Graphics",
   "CGI"
 ];
 
-// Menu y estructura textual
 const menuEntries = [
   { type: "gallery", label: "Overview", filter: null } as const,
   ...categories.map(c => ({ type: "gallery", label: c, filter: c } as const)),
@@ -22,17 +19,14 @@ const menuEntries = [
 ];
 
 const Index = () => {
-  // Guardar tanto sección principal como "filtro/categoría de origen"
   const [main, setMain] = useState<MainSection>({ type: "gallery", filter: null });
   const [menuOpen, setMenuOpen] = useState(false);
   const isMobile = useIsMobile();
 
-  // Trackea la categoría activa para resaltar en Sidebar (persistente al entrar a proyectos)
   const activeCategory = (main.type === "gallery")
     ? main.filter
     : (main.type === "project" ? main.fromFilter : null);
 
-  // Bloquear scroll body cuando menu está abierto
   useEffect(() => {
     if (isMobile && menuOpen) {
       document.body.style.overflow = "hidden";
@@ -41,26 +35,36 @@ const Index = () => {
     }
   }, [menuOpen, isMobile]);
 
-  // --- RENDER ---
   return (
     <div className="min-h-screen bg-white flex flex-col font-inter">
-      <Navbar onHome={() => setMain({ type: "gallery", filter: null })} />
-      <div className="flex-1 flex flex-row w-full max-w-[1600px] mx-auto mt-20 md:mt-28 px-0 md:px-10 gap-4 md:gap-8 transition-none">
+      <div className="flex-1 flex flex-row w-full max-w-[1600px] mx-auto">
         <MainContent main={main} setMain={setMain} isMobile={isMobile} />
-        <SidebarNavigation
-          main={main}
-          setMain={setMain}
-          menuEntries={menuEntries}
-          activeCategory={activeCategory}
-          isMobile={isMobile}
-          menuOpen={menuOpen}
-          setMenuOpen={setMenuOpen}
-        />
-        {/* Mobile Menu: hamburguesa */}
+        
+        {/* Container lateral derecho para header + navegación */}
+        <div className="hidden md:flex flex-col w-[29%] max-w-xs min-w-[180px]">
+          <button
+            className="text-2xl font-bold font-inter tracking-tight text-stone-700 hover:underline duration-100 pt-8 pb-12 text-left"
+            onClick={() => setMain({ type: "gallery", filter: null })}
+          >
+            Santiago Ruiz
+          </button>
+          
+          <SidebarNavigation
+            main={main}
+            setMain={setMain}
+            menuEntries={menuEntries}
+            activeCategory={activeCategory}
+            isMobile={isMobile}
+            menuOpen={menuOpen}
+            setMenuOpen={setMenuOpen}
+          />
+        </div>
+
+        {/* Mobile: mantenemos el header y menu hamburguesa */}
         {isMobile && (
           <>
             <button
-              className="fixed z-40 top-3 right-3 p-2 rounded-md bg-white border border-stone-200"
+              className="fixed top-3 right-3 p-2 z-40 rounded-md bg-white border border-stone-200"
               onClick={() => setMenuOpen(v => !v)}
               style={{ top: 22, boxShadow: "none" }}
               aria-label="Menu"
@@ -70,10 +74,6 @@ const Index = () => {
           </>
         )}
       </div>
-      <footer className="w-full text-center py-10 text-stone-300 text-xs font-inter"
-        style={{ background: "#fff", boxShadow: "none" }}>
-        © {new Date().getFullYear()} Santiago Ruiz
-      </footer>
     </div>
   );
 };

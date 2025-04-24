@@ -102,7 +102,7 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
   return (
     <main
       ref={mainContentRef}
-      className="w-full md:w-[71%] max-w-[100%] pt-4 pb-14 md:pb-0 flex items-start justify-center transition-none"
+      className="w-full md:w-[71%] max-w-[100%] pb-14 md:pb-0 flex items-start justify-center transition-none"
     >
       <div
         className={`w-full transition-all duration-800 ease-in-out ${fadeClass} ${isMobile ? "px-3" : ""}`}
