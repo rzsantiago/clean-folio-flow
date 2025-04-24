@@ -97,7 +97,7 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
     fadeDeps = [main.filter, "gallery"];
   }
 
-  const { fadeClass } = useFadeTransition(fadeDeps, 500);
+  const { fadeClass } = useFadeTransition(fadeDeps, 800);
 
   return (
     <main
@@ -105,7 +105,7 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
       className="w-full md:w-[71%] max-w-[100%] pt-4 pb-14 md:pb-0 flex items-start justify-center transition-none"
     >
       <div
-        className={`w-full transition-all duration-500 ease-in-out ${fadeClass} ${isMobile ? "px-3" : ""}`}
+        className={`w-full transition-all duration-800 ease-in-out ${fadeClass} ${isMobile ? "px-3" : ""}`}
         style={{
           minHeight: "75vh",
           marginBottom: 0,

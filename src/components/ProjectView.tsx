@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useProjects } from "@/hooks/useProjects";
@@ -38,7 +37,7 @@ export default function ProjectView({
       {/* Botones de navegación */}
       {prevId && (
         <div
-          className="fixed left-3 md:left-4 top-1/2 z-40 -translate-y-1/2 group"
+          className="fixed md:left-10 left-3 top-1/2 z-40 -translate-y-1/2 group"
           style={{ width: 48, height: 60 }}
           onMouseEnter={() => setHover("left")}
           onMouseLeave={() => setHover(null)}
@@ -47,7 +46,7 @@ export default function ProjectView({
           tabIndex={-1}
         >
           <div
-            className={`flex items-center h-full justify-start pl-2 transition-opacity duration-150 ${hover === "left" ? "opacity-100" : "opacity-80 group-hover:opacity-100"}`}
+            className={`flex items-center h-full justify-start pl-2 transition-opacity duration-500 ${hover === "left" ? "opacity-100" : "opacity-60 group-hover:opacity-100"}`}
           >
             <ArrowLeft className="w-8 h-8 text-stone-400 hover:text-stone-800" />
           </div>
@@ -55,7 +54,7 @@ export default function ProjectView({
       )}
       {nextId && (
         <div
-          className="fixed right-0 md:right-[31vw] top-1/2 z-40 -translate-y-1/2 group"
+          className="fixed md:right-[33vw] right-3 top-1/2 z-40 -translate-y-1/2 group"
           style={{ width: 48, height: 60 }}
           onMouseEnter={() => setHover("right")}
           onMouseLeave={() => setHover(null)}
@@ -64,7 +63,7 @@ export default function ProjectView({
           tabIndex={-1}
         >
           <div
-            className={`flex items-center h-full justify-end pr-2 transition-opacity duration-150 ${hover === "right" ? "opacity-100" : "opacity-80 group-hover:opacity-100"}`}
+            className={`flex items-center h-full justify-end pr-2 transition-opacity duration-500 ${hover === "right" ? "opacity-100" : "opacity-60 group-hover:opacity-100"}`}
           >
             <ArrowRight className="w-8 h-8 text-stone-400 hover:text-stone-800" />
           </div>
@@ -72,7 +71,6 @@ export default function ProjectView({
       )}
 
       <div className="flex flex-col gap-3 w-full pb-10 md:pl-6 md:pr-6">
-        {/* Imagen de portada principal */}
         {project.coverImage && (
           <div className="w-full rounded-xl overflow-hidden mb-6" style={{
             aspectRatio: project.ratio === "3x4" ? "3/4" : "4/3",
@@ -116,7 +114,6 @@ export default function ProjectView({
           </div>
         )}
 
-        {/* Galería de imágenes */}
         <div className="flex flex-col gap-2">
           {project.contentImages.map((img, i) => (
             <div
@@ -134,7 +131,7 @@ export default function ProjectView({
               <img
                 src={img}
                 alt={`Imagen del proyecto ${project.title} ${i + 1}`}
-                className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-[1.02]"
+                className="w-full h-full object-cover object-center"
                 draggable={false}
               />
             </div>
