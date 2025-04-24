@@ -1,11 +1,12 @@
 
 import { useParams, useNavigate } from "react-router-dom";
-import { projects } from "@/data/projects";
+import { useProjects } from "@/hooks/useProjects";
 import { useEffect } from "react";
 
 // Muestra el proyecto, navegación y galería de imágenes (con imagen de portada si existe)
 const ProjectPage = () => {
   const { id } = useParams<{ id: string }>();
+  const { data: projects = [] } = useProjects();
   const project = projects.find(p => p.id === id);
 
   // Adjacent by category
@@ -76,7 +77,7 @@ const ProjectPage = () => {
       </div>
       <h1 className="text-3xl font-bold mb-4 text-stone-900">{project.title}</h1>
       {/* Galería de imágenes de contenido */}
-      {project.contentImages && (
+      {project.contentImages && project.contentImages.length > 0 && (
         <div className="flex flex-wrap gap-6 mb-8">
           {project.contentImages.map((img, i) => (
             <div
@@ -105,6 +106,6 @@ const ProjectPage = () => {
       {/* Texto u otros contenidos si lo hubiese */}
     </div>
   );
-};
+}
 
 export default ProjectPage;

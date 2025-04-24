@@ -1,7 +1,7 @@
 
-import { projects as allProjects } from "@/data/projects";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import React, { useState } from "react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useProjects } from "@/hooks/useProjects";
 
 type Props = {
   projectId: string;
@@ -18,10 +18,11 @@ export default function ProjectView({
   nextId,
   showProjectHeader,
 }: Props) {
-  const project = allProjects.find(p => p.id === projectId);
-  if (!project) return null;
-
+  const { data: projects = [] } = useProjects();
+  const project = projects.find(p => p.id === projectId);
   const [hover, setHover] = useState<"left" | "right" | null>(null);
+
+  if (!project) return null;
 
   const handleNavigate = (id: string) => {
     onNavigate(id);

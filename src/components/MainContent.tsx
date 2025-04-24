@@ -5,7 +5,7 @@ import About from "@/pages/About";
 import Contact from "@/pages/Contact";
 import ProjectView from "@/components/ProjectView";
 import { useFadeTransition } from "@/hooks/useFadeTransition";
-import { useProjects } from "@/hooks/useProjects"; // <-- nuevo hook
+import { useProjects } from "@/hooks/useProjects"; // <-- importamos el hook
 
 export type MainSection =
   | { type: "gallery"; filter: string | null }
