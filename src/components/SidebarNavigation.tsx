@@ -1,4 +1,3 @@
-
 import React from "react";
 
 type MenuEntry =
@@ -31,18 +30,12 @@ export default function SidebarNavigation({
   // Determina si esta activo segun la sección/categoría activa
   function isActive(entry: MenuEntry) {
     if (entry.type === "gallery") {
-      if (activeCategory !== undefined) {
-        // Si estamos en una galería o proyecto, activa según categoría
-        if ("filter" in entry) {
-          return (activeCategory === entry.filter) ||
-            (activeCategory == null && entry.filter == null);
-        }
-        return false;
+      // Solo activar "Overview" si estamos en galería y no hay filtro
+      if (entry.label === "Overview") {
+        return main.type === "gallery" && !main.filter;
       }
-      // Fallback legacy
-      return main.type === "gallery" &&
-        ((main.filter == null && "filter" in entry && entry.filter == null) ||
-         (main.filter === ("filter" in entry ? entry.filter : undefined)));
+      // Para otras entradas de galería, usar activeCategory
+      return activeCategory === entry.filter;
     }
     // About/Contact
     return main.type === entry.type;

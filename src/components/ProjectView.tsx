@@ -35,6 +35,7 @@ export default function ProjectView({
 
   return (
     <div className="relative w-full min-h-[70vh] select-none">
+      {/* Botones de navegación */}
       {prevId && (
         <div
           className="fixed left-3 md:left-4 top-1/2 z-40 -translate-y-1/2 group"
@@ -71,36 +72,9 @@ export default function ProjectView({
       )}
 
       <div className="flex flex-col gap-3 w-full pb-10 md:pl-6 md:pr-6">
-        {showProjectHeader && (
-          <div className="mb-4">
-            <h1 className="text-3xl md:text-4xl font-bold text-stone-900">
-              {project.title}
-            </h1>
-            {project.description && (
-              <p className="text-base md:text-lg text-stone-500 mt-1">
-                {project.description}
-              </p>
-            )}
-            {(project.client || project.year) && (
-              <div className="text-xs text-stone-400 mt-2 flex flex-row gap-3">
-                {project.client && (
-                  <span>
-                    <span className="font-medium">Client:</span> {project.client}
-                  </span>
-                )}
-                {project.client && project.year && <span className="mx-2">|</span>}
-                {project.year && (
-                  <span>
-                    <span className="font-medium">Year:</span> {project.year}
-                  </span>
-                )}
-              </div>
-            )}
-          </div>
-        )}
         {/* Imagen de portada principal */}
         {project.coverImage && (
-          <div className="w-full rounded-xl overflow-hidden mb-4" style={{
+          <div className="w-full rounded-xl overflow-hidden mb-6" style={{
             aspectRatio: project.ratio === "3x4" ? "3/4" : "4/3",
             minHeight: 230,
             background: "#EEE"
@@ -113,6 +87,36 @@ export default function ProjectView({
             />
           </div>
         )}
+        
+        {showProjectHeader && (
+          <div className="mb-6">
+            <h1 className="text-3xl md:text-4xl font-bold text-stone-900">
+              {project.title}
+            </h1>
+            {project.description && (
+              <p className="text-base md:text-lg text-stone-500 mt-2">
+                {project.description}
+              </p>
+            )}
+            {(project.client || project.year) && (
+              <div className="text-xs text-stone-400 mt-2 flex flex-row gap-3">
+                {project.client && (
+                  <span>
+                    <span className="font-medium">Cliente:</span> {project.client}
+                  </span>
+                )}
+                {project.client && project.year && <span className="mx-2">|</span>}
+                {project.year && (
+                  <span>
+                    <span className="font-medium">Año:</span> {project.year}
+                  </span>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Galería de imágenes */}
         <div className="flex flex-col gap-2">
           {project.contentImages.map((img, i) => (
             <div
@@ -130,7 +134,7 @@ export default function ProjectView({
               <img
                 src={img}
                 alt={`Imagen del proyecto ${project.title} ${i + 1}`}
-                className="w-full h-full object-cover object-center"
+                className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-[1.02]"
                 draggable={false}
               />
             </div>

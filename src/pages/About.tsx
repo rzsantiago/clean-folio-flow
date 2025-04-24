@@ -1,11 +1,10 @@
 
 import React from "react";
 
-// Puedes reemplazar esta URL por tu propia foto más adelante
 const PHOTO_URL = "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?auto=format&fit=facearea&w=1100&h=900&q=80";
 
 const About = ({ minimal }: { minimal?: boolean }) => (
-  <div className={`max-w-xl mx-auto py-12 px-4 font-inter text-stone-700 text-lg ${minimal ? "" : "bg-white rounded-xl shadow"} md:ml-0 md:mr-auto md:px-0`}>
+  <div className={`max-w-xl mx-auto font-inter text-stone-700 text-lg ${minimal ? "" : "bg-white rounded-xl shadow"} md:ml-0 md:mr-auto md:px-0`}>
     <div className="w-full mb-8 rounded-xl overflow-hidden" style={{ height: 500, maxHeight: "60vw", minHeight: 240, background: "#eee" }}>
       <img
         src={PHOTO_URL}
@@ -27,4 +26,3 @@ const About = ({ minimal }: { minimal?: boolean }) => (
 );
 
 export default About;
-
