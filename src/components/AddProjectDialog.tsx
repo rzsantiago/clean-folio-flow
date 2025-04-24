@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   Dialog,
@@ -15,6 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { toast } from "@/hooks/use-toast";
+import { ImageUploader } from "./ImageUploader";
 
 export type AddProjectFormData = {
   title: string;
@@ -50,6 +50,8 @@ export default function AddProjectDialog({
     register,
     handleSubmit,
     reset,
+    setValue,
+    watch,
     formState: { errors, isSubmitting }
   } = useForm<AddProjectFormData>({
     defaultValues: {
@@ -58,6 +60,8 @@ export default function AddProjectDialog({
     }
   });
 
+  const coverImage = watch("coverImage");
+  
   function internalSubmit(data: AddProjectFormData) {
     onSubmit(data);
     toast({
@@ -143,21 +147,27 @@ export default function AddProjectDialog({
             />
           </div>
           <div>
-            <Label htmlFor="coverImage">URL Imagen de portada <span className="text-muted-foreground text-xs">(opcional)</span></Label>
-            <Input
-              id="coverImage"
-              type="url"
-              {...register("coverImage")}
-              placeholder="Pega la URL de la imagen de portada"
+            <Label>Imagen de portada</Label>
+            <ImageUploader
+              onChange={(url) => setValue("coverImage", url)}
+              initialImage={coverImage}
             />
           </div>
           <div>
-            <Label htmlFor="contentImages">URLs de imágenes de contenido <span className="text-muted-foreground text-xs">(una por línea; opcional)</span></Label>
+            <Label>Imágenes de contenido <span className="text-muted-foreground text-xs">(sube las imágenes y las URLs se agregarán automáticamente)</span></Label>
+            <ImageUploader
+              onChange={(url) => {
+                const current = watch("contentImages") || "";
+                const images = current ? current.split("\n").filter(Boolean) : [];
+                images.push(url);
+                setValue("contentImages", images.join("\n"));
+              }}
+            />
             <Textarea
-              id="contentImages"
               {...register("contentImages")}
-              placeholder="Pega URLs, una por línea"
+              placeholder="Las URLs de las imágenes aparecerán aquí"
               rows={3}
+              className="mt-2"
             />
           </div>
           <div>
@@ -176,7 +186,9 @@ export default function AddProjectDialog({
                 Cancelar
               </Button>
             </DialogClose>
-            <Button type="submit" disabled={isSubmitting}>Agregar</Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Agregando..." : "Agregar"}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
