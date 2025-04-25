@@ -1,7 +1,4 @@
-
 import React from "react";
-import { ArrowLeft, ArrowRight, Instagram } from "lucide-react";
-import { useProjects } from "@/hooks/useProjects";
 
 type MenuEntry =
   | { type: "gallery"; label: string; filter?: string | null }
@@ -18,6 +15,7 @@ type Props = {
   setMenuOpen?: (open: boolean) => void;
 };
 
+// Responsive, resalta categoría activa según props, y usa font más pequeña
 export default function SidebarNavigation({
   main, setMain, menuEntries,
   activeCategory,
@@ -25,33 +23,25 @@ export default function SidebarNavigation({
   menuOpen,
   setMenuOpen
 }: Props) {
-  const { data: projects = [] } = useProjects();
+  // Separación menú
   const menuPart1 = menuEntries.slice(0, 4);
   const menuPart2 = menuEntries.slice(4);
 
+  // Determina si esta activo segun la sección/categoría activa
   function isActive(entry: MenuEntry) {
     if (entry.type === "gallery") {
+      // Solo activar "Overview" si estamos en galería y no hay filtro
       if (entry.label === "Overview") {
         return main.type === "gallery" && !main.filter;
       }
+      // Para otras entradas de galería, usar activeCategory
       return activeCategory === entry.filter;
     }
+    // About/Contact
     return main.type === entry.type;
   }
 
-  const handleNavigateProject = (direction: 'prev' | 'next') => {
-    if (main.type === 'project' && Array.isArray(menuEntries)) {
-      const filteredProjects = projects.filter(p => !activeCategory || p.category === activeCategory);
-      const currentIndex = filteredProjects.findIndex(p => p.id === main.id);
-      
-      if (direction === 'prev' && currentIndex > 0) {
-        setMain({ type: 'project', id: filteredProjects[currentIndex - 1].id, fromFilter: activeCategory });
-      } else if (direction === 'next' && currentIndex < filteredProjects.length - 1) {
-        setMain({ type: 'project', id: filteredProjects[currentIndex + 1].id, fromFilter: activeCategory });
-      }
-    }
-  };
-
+  // Menú mobile: panel lateral sobre fondo
   if (isMobile) {
     return (
       <>
@@ -103,6 +93,7 @@ export default function SidebarNavigation({
     );
   }
 
+  // Desktop sidebar
   return (
     <section
       className="hidden md:flex w-[29%] max-w-xs min-w-[180px] flex-col items-end"
@@ -115,6 +106,7 @@ export default function SidebarNavigation({
     >
       <div className="w-full pr-0">
         <nav className="flex flex-col gap-0.5 mt-0 select-none">
+          {/* Parte 1: Overview + categorias */}
           {menuPart1.map(entry => (
             <button
               key={entry.label}
@@ -140,6 +132,7 @@ export default function SidebarNavigation({
             </button>
           ))}
           <div className="border-t border-stone-200 my-2 md:my-3" /> 
+          {/* Parte 2: About + Contact */}
           {menuPart2.map(entry => (
             <button
               key={entry.label}
@@ -159,23 +152,6 @@ export default function SidebarNavigation({
               {entry.label}
             </button>
           ))}
-          
-          <div className="flex justify-start gap-4 mt-4 mb-4">
-            <button 
-              className="text-stone-500 hover:text-black transition-colors"
-              aria-label="Previous"
-              onClick={() => handleNavigateProject('prev')}
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </button>
-            <button 
-              className="text-stone-500 hover:text-black transition-colors"
-              aria-label="Next"
-              onClick={() => handleNavigateProject('next')}
-            >
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
         </nav>
       </div>
     </section>

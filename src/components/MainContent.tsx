@@ -112,9 +112,6 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
         style={{
           minHeight: "75vh",
           marginBottom: 0,
-          opacity: 0,
-          transform: "translateY(20px)",
-          animation: "fadeInUp 0.8s ease-out forwards",
         }}
       >
         {content}
