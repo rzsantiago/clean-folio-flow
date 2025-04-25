@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Menu } from "lucide-react";
+import { Menu, Instagram } from "lucide-react";
 import MainContent, { MainSection } from "@/components/MainContent";
 import SidebarNavigation from "@/components/SidebarNavigation";
 
@@ -41,8 +41,8 @@ const Index = () => {
         <MainContent main={main} setMain={setMain} isMobile={isMobile} />
         
         {/* Right sidebar container with header */}
-        <div className="hidden md:flex flex-col w-[240px] min-w-[240px]">
-          <div className="sticky top-0 flex flex-col pt-8 bg-white">
+        <div className="hidden md:flex flex-col w-[240px] min-w-[240px] pl-8">
+          <div className="sticky top-0 flex flex-col pt-8 bg-white h-screen">
             <button
               className="text-lg font-normal tracking-wider text-stone-700 hover:underline duration-100 pb-12 text-left uppercase"
               onClick={() => setMain({ type: "gallery", filter: null })}
@@ -50,15 +50,27 @@ const Index = () => {
               Santiago Ruiz
             </button>
             
-            <SidebarNavigation
-              main={main}
-              setMain={setMain}
-              menuEntries={menuEntries}
-              activeCategory={activeCategory}
-              isMobile={isMobile}
-              menuOpen={menuOpen}
-              setMenuOpen={setMenuOpen}
-            />
+            <div className="flex flex-col justify-between h-full pb-8">
+              <SidebarNavigation
+                main={main}
+                setMain={setMain}
+                menuEntries={menuEntries}
+                activeCategory={activeCategory}
+                isMobile={isMobile}
+                menuOpen={menuOpen}
+                setMenuOpen={setMenuOpen}
+              />
+              
+              <a 
+                href="https://www.instagram.com/ruizsantiago/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-stone-500 hover:text-black transition-colors duration-200"
+              >
+                <Instagram className="w-4 h-4" />
+                <span className="text-sm">Instagram</span>
+              </a>
+            </div>
           </div>
         </div>
 
@@ -86,15 +98,27 @@ const Index = () => {
                 className="fixed inset-0 bg-white z-40 pt-20"
                 onClick={() => setMenuOpen(false)}
               >
-                <SidebarNavigation
-                  main={main}
-                  setMain={setMain}
-                  menuEntries={menuEntries}
-                  activeCategory={activeCategory}
-                  isMobile={isMobile}
-                  menuOpen={menuOpen}
-                  setMenuOpen={setMenuOpen}
-                />
+                <div className="flex flex-col h-full justify-between pb-8 px-4">
+                  <SidebarNavigation
+                    main={main}
+                    setMain={setMain}
+                    menuEntries={menuEntries}
+                    activeCategory={activeCategory}
+                    isMobile={isMobile}
+                    menuOpen={menuOpen}
+                    setMenuOpen={setMenuOpen}
+                  />
+                  
+                  <a 
+                    href="https://www.instagram.com/ruizsantiago/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 text-stone-500 hover:text-black transition-colors duration-200"
+                  >
+                    <Instagram className="w-4 h-4" />
+                    <span className="text-sm">Instagram</span>
+                  </a>
+                </div>
               </div>
             )}
           </>
