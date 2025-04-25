@@ -37,40 +37,66 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-white flex flex-col font-inter">
-      <div className="flex-1 flex flex-row w-full max-w-[1600px] mx-auto">
+      <div className="flex-1 flex flex-row w-full max-w-screen-2xl mx-auto">
         <MainContent main={main} setMain={setMain} isMobile={isMobile} />
         
-        {/* Container lateral derecho para header + navegación */}
-        <div className="hidden md:flex flex-col w-[29%] max-w-xs min-w-[180px]">
-          <button
-            className="text-2xl font-bold font-inter tracking-tight text-stone-700 hover:underline duration-100 pt-8 pb-12 text-left"
-            onClick={() => setMain({ type: "gallery", filter: null })}
-          >
-            Santiago Ruiz
-          </button>
-          
-          <SidebarNavigation
-            main={main}
-            setMain={setMain}
-            menuEntries={menuEntries}
-            activeCategory={activeCategory}
-            isMobile={isMobile}
-            menuOpen={menuOpen}
-            setMenuOpen={setMenuOpen}
-          />
+        {/* Right sidebar container with header */}
+        <div className="hidden md:flex flex-col w-[240px] min-w-[240px]">
+          <div className="sticky top-0 flex flex-col pt-8 bg-white">
+            <button
+              className="text-lg font-normal tracking-wider text-stone-700 hover:underline duration-100 pb-12 text-left uppercase"
+              onClick={() => setMain({ type: "gallery", filter: null })}
+            >
+              Santiago Ruiz
+            </button>
+            
+            <SidebarNavigation
+              main={main}
+              setMain={setMain}
+              menuEntries={menuEntries}
+              activeCategory={activeCategory}
+              isMobile={isMobile}
+              menuOpen={menuOpen}
+              setMenuOpen={setMenuOpen}
+            />
+          </div>
         </div>
 
-        {/* Mobile: mantenemos el header y menu hamburguesa */}
+        {/* Mobile: header and hamburger menu */}
         {isMobile && (
           <>
-            <button
-              className="fixed top-3 right-3 p-2 z-40 rounded-md bg-white border border-stone-200"
-              onClick={() => setMenuOpen(v => !v)}
-              style={{ top: 22, boxShadow: "none" }}
-              aria-label="Menu"
-            >
-              <Menu className="w-7 h-7 text-stone-700" />
-            </button>
+            <div className="fixed top-0 left-0 right-0 flex justify-between items-center px-4 py-5 bg-white z-30">
+              <button
+                className="text-lg tracking-wider text-stone-700 uppercase"
+                onClick={() => setMain({ type: "gallery", filter: null })}
+              >
+                Santiago Ruiz
+              </button>
+              <button
+                className="p-2 rounded-md"
+                onClick={() => setMenuOpen(v => !v)}
+                aria-label="Menu"
+              >
+                <Menu className="w-6 h-6 text-stone-700" />
+              </button>
+            </div>
+
+            {menuOpen && (
+              <div 
+                className="fixed inset-0 bg-white z-40 pt-20"
+                onClick={() => setMenuOpen(false)}
+              >
+                <SidebarNavigation
+                  main={main}
+                  setMain={setMain}
+                  menuEntries={menuEntries}
+                  activeCategory={activeCategory}
+                  isMobile={isMobile}
+                  menuOpen={menuOpen}
+                  setMenuOpen={setMenuOpen}
+                />
+              </div>
+            )}
           </>
         )}
       </div>

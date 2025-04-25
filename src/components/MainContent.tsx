@@ -102,10 +102,12 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
   return (
     <main
       ref={mainContentRef}
-      className="w-full md:w-[71%] max-w-[100%] pb-14 md:pb-0 flex items-start justify-center transition-none"
+      className="w-full pb-14 md:pb-0 flex items-start justify-center transition-none"
     >
       <div
-        className={`w-full transition-all duration-800 ease-in-out ${fadeClass} ${isMobile ? "px-3" : ""}`}
+        className={`w-full transition-all duration-800 ease-in-out ${fadeClass} ${
+          isMobile ? "px-4 pt-20" : "pt-8"
+        }`}
         style={{
           minHeight: "75vh",
           marginBottom: 0,
