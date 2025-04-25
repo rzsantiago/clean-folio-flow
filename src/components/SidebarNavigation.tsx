@@ -1,5 +1,6 @@
+
 import React from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Instagram } from "lucide-react";
 import { useProjects } from "@/hooks/useProjects";
 
 type MenuEntry =
@@ -24,6 +25,7 @@ export default function SidebarNavigation({
   menuOpen,
   setMenuOpen
 }: Props) {
+  const { data: projects = [] } = useProjects();
   const menuPart1 = menuEntries.slice(0, 4);
   const menuPart2 = menuEntries.slice(4);
 
