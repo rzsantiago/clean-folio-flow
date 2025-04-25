@@ -1,5 +1,6 @@
 import React from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useProjects } from "@/hooks/useProjects";
 
 type MenuEntry =
   | { type: "gallery"; label: string; filter?: string | null }
@@ -35,6 +36,19 @@ export default function SidebarNavigation({
     }
     return main.type === entry.type;
   }
+
+  const handleNavigateProject = (direction: 'prev' | 'next') => {
+    if (main.type === 'project' && Array.isArray(menuEntries)) {
+      const filteredProjects = projects.filter(p => !activeCategory || p.category === activeCategory);
+      const currentIndex = filteredProjects.findIndex(p => p.id === main.id);
+      
+      if (direction === 'prev' && currentIndex > 0) {
+        setMain({ type: 'project', id: filteredProjects[currentIndex - 1].id, fromFilter: activeCategory });
+      } else if (direction === 'next' && currentIndex < filteredProjects.length - 1) {
+        setMain({ type: 'project', id: filteredProjects[currentIndex + 1].id, fromFilter: activeCategory });
+      }
+    }
+  };
 
   if (isMobile) {
     return (
@@ -148,12 +162,14 @@ export default function SidebarNavigation({
             <button 
               className="text-stone-500 hover:text-black transition-colors"
               aria-label="Previous"
+              onClick={() => handleNavigateProject('prev')}
             >
               <ArrowLeft className="w-4 h-4" />
             </button>
             <button 
               className="text-stone-500 hover:text-black transition-colors"
               aria-label="Next"
+              onClick={() => handleNavigateProject('next')}
             >
               <ArrowRight className="w-4 h-4" />
             </button>
