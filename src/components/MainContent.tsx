@@ -67,16 +67,11 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
     content = <Contact minimal />;
     fadeDeps = ["contact"];
   } else if (main.type === "project") {
-    const filtered = filteredProjects;
-    const idx = filtered.findIndex(p => p.id === main.id);
-    const prev = idx > 0 ? filtered[idx - 1] : null;
-    const next = idx >= 0 && idx < filtered.length - 1 ? filtered[idx + 1] : null;
+    // Ya no necesitamos calcular prev/next porque se maneja desde el sidebar
     content = (
       <ProjectView
         projectId={main.id}
         onNavigate={id => setMain({ type: "project", id, fromFilter: main.fromFilter })}
-        prevId={prev?.id}
-        nextId={next?.id}
         showProjectHeader
       />
     );

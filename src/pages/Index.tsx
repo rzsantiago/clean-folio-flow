@@ -1,9 +1,10 @@
 
 import React, { useState, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Menu, Instagram } from "lucide-react";
+import { Menu, Instagram, ArrowLeft, ArrowRight } from "lucide-react";
 import MainContent, { MainSection } from "@/components/MainContent";
 import SidebarNavigation from "@/components/SidebarNavigation";
+import { useProjects } from "@/hooks/useProjects";
 
 const categories = [
   "Industrial Design",
@@ -22,10 +23,39 @@ const Index = () => {
   const [main, setMain] = useState<MainSection>({ type: "gallery", filter: null });
   const [menuOpen, setMenuOpen] = useState(false);
   const isMobile = useIsMobile();
+  const { data: projects = [] } = useProjects();
 
   const activeCategory = (main.type === "gallery")
     ? main.filter
     : (main.type === "project" ? main.fromFilter : null);
+
+  // Obtener índices para navegación
+  const filteredProjects = activeCategory 
+    ? projects.filter(p => p.category === activeCategory) 
+    : projects;
+    
+  const currentProjectIndex = main.type === "project" 
+    ? filteredProjects.findIndex(p => p.id === main.id) 
+    : -1;
+    
+  const prevProject = currentProjectIndex > 0 ? filteredProjects[currentProjectIndex - 1] : null;
+  const nextProject = currentProjectIndex >= 0 && currentProjectIndex < filteredProjects.length - 1 
+    ? filteredProjects[currentProjectIndex + 1] 
+    : null;
+
+  // Para navegación entre proyectos
+  const handleProjectNavigation = (direction: 'prev' | 'next') => {
+    if (main.type !== 'project') return;
+    
+    const targetProject = direction === 'prev' ? prevProject : nextProject;
+    if (targetProject) {
+      setMain({ 
+        type: "project", 
+        id: targetProject.id, 
+        fromFilter: main.fromFilter 
+      });
+    }
+  };
 
   useEffect(() => {
     if (isMobile && menuOpen) {
@@ -51,15 +81,40 @@ const Index = () => {
             </button>
             
             <div className="flex flex-col justify-between h-full pb-8">
-              <SidebarNavigation
-                main={main}
-                setMain={setMain}
-                menuEntries={menuEntries}
-                activeCategory={activeCategory}
-                isMobile={isMobile}
-                menuOpen={menuOpen}
-                setMenuOpen={setMenuOpen}
-              />
+              <div className="flex flex-col">
+                <SidebarNavigation
+                  main={main}
+                  setMain={setMain}
+                  menuEntries={menuEntries}
+                  activeCategory={activeCategory}
+                  isMobile={isMobile}
+                  menuOpen={menuOpen}
+                  setMenuOpen={setMenuOpen}
+                />
+                
+                {/* Controles de navegación de proyecto */}
+                {main.type === "project" && (
+                  <div className="flex justify-between mt-4 mb-2 px-0">
+                    <button
+                      onClick={() => handleProjectNavigation('prev')}
+                      disabled={!prevProject}
+                      className="text-stone-500 hover:text-black disabled:opacity-30 disabled:cursor-not-allowed"
+                      aria-label="Proyecto anterior"
+                    >
+                      <ArrowLeft size={18} />
+                    </button>
+                    
+                    <button
+                      onClick={() => handleProjectNavigation('next')}
+                      disabled={!nextProject}
+                      className="text-stone-500 hover:text-black disabled:opacity-30 disabled:cursor-not-allowed"
+                      aria-label="Proyecto siguiente"
+                    >
+                      <ArrowRight size={18} />
+                    </button>
+                  </div>
+                )}
+              </div>
               
               <a 
                 href="https://www.instagram.com/ruizsantiago/"
@@ -99,15 +154,40 @@ const Index = () => {
                 onClick={() => setMenuOpen(false)}
               >
                 <div className="flex flex-col h-full justify-between pb-8 px-4">
-                  <SidebarNavigation
-                    main={main}
-                    setMain={setMain}
-                    menuEntries={menuEntries}
-                    activeCategory={activeCategory}
-                    isMobile={isMobile}
-                    menuOpen={menuOpen}
-                    setMenuOpen={setMenuOpen}
-                  />
+                  <div className="flex flex-col">
+                    <SidebarNavigation
+                      main={main}
+                      setMain={setMain}
+                      menuEntries={menuEntries}
+                      activeCategory={activeCategory}
+                      isMobile={isMobile}
+                      menuOpen={menuOpen}
+                      setMenuOpen={setMenuOpen}
+                    />
+                    
+                    {/* Controles de navegación de proyecto en móvil */}
+                    {main.type === "project" && (
+                      <div className="flex justify-between mt-4 mb-2">
+                        <button
+                          onClick={() => handleProjectNavigation('prev')}
+                          disabled={!prevProject}
+                          className="text-stone-500 hover:text-black disabled:opacity-30 disabled:cursor-not-allowed"
+                          aria-label="Proyecto anterior"
+                        >
+                          <ArrowLeft size={18} />
+                        </button>
+                        
+                        <button
+                          onClick={() => handleProjectNavigation('next')}
+                          disabled={!nextProject}
+                          className="text-stone-500 hover:text-black disabled:opacity-30 disabled:cursor-not-allowed"
+                          aria-label="Proyecto siguiente"
+                        >
+                          <ArrowRight size={18} />
+                        </button>
+                      </div>
+                    )}
+                  </div>
                   
                   <a 
                     href="https://www.instagram.com/ruizsantiago/"

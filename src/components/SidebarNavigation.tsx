@@ -1,4 +1,6 @@
+
 import React from "react";
+import { useProjects } from "@/hooks/useProjects";
 
 type MenuEntry =
   | { type: "gallery"; label: string; filter?: string | null }
@@ -23,6 +25,8 @@ export default function SidebarNavigation({
   menuOpen,
   setMenuOpen
 }: Props) {
+  const { data: projects = [] } = useProjects();
+  
   // Separación menú
   const menuPart1 = menuEntries.slice(0, 4);
   const menuPart2 = menuEntries.slice(4);

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+
+import React from "react";
 import { useProjects } from "@/hooks/useProjects";
 
 type Props = {
@@ -13,13 +13,10 @@ type Props = {
 export default function ProjectView({
   projectId,
   onNavigate,
-  prevId,
-  nextId,
   showProjectHeader,
 }: Props) {
   const { data: projects = [] } = useProjects();
   const project = projects.find(p => p.id === projectId);
-  const [hover, setHover] = useState<"left" | "right" | null>(null);
 
   if (!project) return null;
 
@@ -34,42 +31,6 @@ export default function ProjectView({
 
   return (
     <div className="relative w-full min-h-[70vh] select-none">
-      {/* Botones de navegación */}
-      {prevId && (
-        <div
-          className="fixed md:left-10 left-3 top-1/2 z-40 -translate-y-1/2 group"
-          style={{ width: 48, height: 60 }}
-          onMouseEnter={() => setHover("left")}
-          onMouseLeave={() => setHover(null)}
-          onClick={() => handleNavigate(prevId)}
-          role="button"
-          tabIndex={-1}
-        >
-          <div
-            className={`flex items-center h-full justify-start pl-2 transition-opacity duration-500 ${hover === "left" ? "opacity-100" : "opacity-60 group-hover:opacity-100"}`}
-          >
-            <ArrowLeft className="w-8 h-8 text-stone-400 hover:text-stone-800" />
-          </div>
-        </div>
-      )}
-      {nextId && (
-        <div
-          className="fixed md:right-[33vw] right-3 top-1/2 z-40 -translate-y-1/2 group"
-          style={{ width: 48, height: 60 }}
-          onMouseEnter={() => setHover("right")}
-          onMouseLeave={() => setHover(null)}
-          onClick={() => handleNavigate(nextId)}
-          role="button"
-          tabIndex={-1}
-        >
-          <div
-            className={`flex items-center h-full justify-end pr-2 transition-opacity duration-500 ${hover === "right" ? "opacity-100" : "opacity-60 group-hover:opacity-100"}`}
-          >
-            <ArrowRight className="w-8 h-8 text-stone-400 hover:text-stone-800" />
-          </div>
-        </div>
-      )}
-
       <div className="flex flex-col gap-3 w-full pb-10 md:pl-6 md:pr-6">
         {project.coverImage && (
           <div className="w-full rounded-xl overflow-hidden mb-6" style={{
