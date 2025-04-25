@@ -1,4 +1,5 @@
 import React from "react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 type MenuEntry =
   | { type: "gallery"; label: string; filter?: string | null }
@@ -15,7 +16,6 @@ type Props = {
   setMenuOpen?: (open: boolean) => void;
 };
 
-// Responsive, resalta categoría activa según props, y usa font más pequeña
 export default function SidebarNavigation({
   main, setMain, menuEntries,
   activeCategory,
@@ -23,25 +23,19 @@ export default function SidebarNavigation({
   menuOpen,
   setMenuOpen
 }: Props) {
-  // Separación menú
   const menuPart1 = menuEntries.slice(0, 4);
   const menuPart2 = menuEntries.slice(4);
 
-  // Determina si esta activo segun la sección/categoría activa
   function isActive(entry: MenuEntry) {
     if (entry.type === "gallery") {
-      // Solo activar "Overview" si estamos en galería y no hay filtro
       if (entry.label === "Overview") {
         return main.type === "gallery" && !main.filter;
       }
-      // Para otras entradas de galería, usar activeCategory
       return activeCategory === entry.filter;
     }
-    // About/Contact
     return main.type === entry.type;
   }
 
-  // Menú mobile: panel lateral sobre fondo
   if (isMobile) {
     return (
       <>
@@ -93,7 +87,6 @@ export default function SidebarNavigation({
     );
   }
 
-  // Desktop sidebar
   return (
     <section
       className="hidden md:flex w-[29%] max-w-xs min-w-[180px] flex-col items-end"
@@ -106,7 +99,6 @@ export default function SidebarNavigation({
     >
       <div className="w-full pr-0">
         <nav className="flex flex-col gap-0.5 mt-0 select-none">
-          {/* Parte 1: Overview + categorias */}
           {menuPart1.map(entry => (
             <button
               key={entry.label}
@@ -132,7 +124,6 @@ export default function SidebarNavigation({
             </button>
           ))}
           <div className="border-t border-stone-200 my-2 md:my-3" /> 
-          {/* Parte 2: About + Contact */}
           {menuPart2.map(entry => (
             <button
               key={entry.label}
@@ -152,6 +143,21 @@ export default function SidebarNavigation({
               {entry.label}
             </button>
           ))}
+          
+          <div className="flex justify-start gap-4 mt-4 mb-4">
+            <button 
+              className="text-stone-500 hover:text-black transition-colors"
+              aria-label="Previous"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+            <button 
+              className="text-stone-500 hover:text-black transition-colors"
+              aria-label="Next"
+            >
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
         </nav>
       </div>
     </section>
