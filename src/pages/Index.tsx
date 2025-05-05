@@ -147,15 +147,15 @@ const Index = () => {
                 )}
               </div>
               
-              {/* Instagram en desktop con el mismo tamaño de texto que el menú */}
+              {/* Instagram en desktop sin el texto */}
               <a 
                 href="https://www.instagram.com/ruizsantiago/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-stone-500 hover:text-black transition-colors duration-200"
+                className="flex items-center text-stone-500 hover:text-black transition-colors duration-200"
+                aria-label="Instagram"
               >
                 <Instagram className="w-4 h-4" />
-                <span className="text-base">Instagram</span>
               </a>
             </div>
           </div>

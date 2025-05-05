@@ -1,6 +1,8 @@
 
 import React from "react";
 import { useProjects } from "@/hooks/useProjects";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type Props = {
   projectId: string;
@@ -17,8 +19,15 @@ export default function ProjectView({
 }: Props) {
   const { data: projects = [] } = useProjects();
   const project = projects.find(p => p.id === projectId);
+  const isMobile = useIsMobile();
 
   if (!project) return null;
+
+  // Find prev/next project
+  const categoryProjects = projects.filter(p => p.category === project.category);
+  const idx = categoryProjects.findIndex(p => p.id === projectId);
+  const prevProject = idx > 0 ? categoryProjects[idx - 1] : null;
+  const nextProject = idx >= 0 && idx < categoryProjects.length - 1 ? categoryProjects[idx + 1] : null;
 
   const handleNavigate = (id: string) => {
     onNavigate(id);
@@ -98,6 +107,29 @@ export default function ProjectView({
             </div>
           ))}
         </div>
+
+        {/* Botones de navegación para mobile */}
+        {isMobile && (
+          <div className="flex justify-between mt-8 px-2">
+            <button
+              onClick={() => prevProject && handleNavigate(prevProject.id)}
+              disabled={!prevProject}
+              className="text-stone-500 hover:text-black disabled:opacity-30 disabled:cursor-not-allowed"
+              aria-label="Proyecto anterior"
+            >
+              <ArrowLeft size={22} />
+            </button>
+            
+            <button
+              onClick={() => nextProject && handleNavigate(nextProject.id)}
+              disabled={!nextProject}
+              className="text-stone-500 hover:text-black disabled:opacity-30 disabled:cursor-not-allowed"
+              aria-label="Proyecto siguiente"
+            >
+              <ArrowRight size={22} />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
