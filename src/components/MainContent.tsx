@@ -48,14 +48,14 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
 
   if (isLoading) {
     content = (
-      <div className="w-full min-h-[40vh] flex items-center justify-center text-stone-400 text-lg font-inter">
+      <div className="w-full min-h-[40vh] flex items-center justify-center text-stone-400 text-lg font-inter pl-4">
         Cargando proyectos...
       </div>
     );
     fadeDeps = ["loading"];
   } else if (error) {
     content = (
-      <div className="w-full min-h-[40vh] flex items-center justify-center text-red-500 text-lg font-inter">
+      <div className="w-full min-h-[40vh] flex items-center justify-center text-red-500 text-lg font-inter pl-4">
         Error al cargar proyectos
       </div>
     );
@@ -67,7 +67,6 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
     content = <Contact minimal />;
     fadeDeps = ["contact"];
   } else if (main.type === "project") {
-    // Ya no necesitamos calcular prev/next porque se maneja desde el sidebar
     content = (
       <ProjectView
         projectId={main.id}

@@ -14,7 +14,7 @@ export default function ProjectGallery({ projects, onProjectClick, noOverlay }: 
 
   if (projects.length === 0) {
     return (
-      <div className="flex items-center justify-center w-full min-h-[40vh] text-stone-500">
+      <div className="flex items-center justify-center w-full min-h-[40vh] text-stone-500 pl-4">
         No hay proyectos para mostrar en esta categoría.
       </div>
     );
@@ -38,7 +38,7 @@ export default function ProjectGallery({ projects, onProjectClick, noOverlay }: 
 
   // 3 columnas masonry layout con margenes consistentemente pequeños y parejos
   return (
-    <div className="w-full flex gap-[10px] h-max pt-2">
+    <div className="w-full flex gap-[10px] h-max pt-2 pl-4">
       {[0,1,2].map(col => (
         <div className="flex flex-col flex-1 gap-[10px]" key={col}>
           {projects.filter((_, i) => i % 3 === col).map(p => (

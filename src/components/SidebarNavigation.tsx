@@ -1,6 +1,7 @@
 
 import React from "react";
 import { useProjects } from "@/hooks/useProjects";
+import { Instagram } from "lucide-react";
 
 type MenuEntry =
   | { type: "gallery"; label: string; filter?: string | null }
@@ -17,7 +18,6 @@ type Props = {
   setMenuOpen?: (open: boolean) => void;
 };
 
-// Responsive, resalta categoría activa según props, y usa font más pequeña
 export default function SidebarNavigation({
   main, setMain, menuEntries,
   activeCategory,
@@ -63,7 +63,7 @@ export default function SidebarNavigation({
               }}
               onClick={e => e.stopPropagation()}
             >
-              <nav className="flex flex-col gap-0.5">
+              <nav className="flex flex-col gap-0.5 flex-grow">
                 {menuEntries.map(entry => (
                   <button
                     key={entry.label}
@@ -90,6 +90,19 @@ export default function SidebarNavigation({
                   </button>
                 ))}
               </nav>
+              
+              {/* Instagram en mobile */}
+              <div className="mt-auto pb-8">
+                <a 
+                  href="https://www.instagram.com/ruizsantiago/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-stone-500 hover:text-black transition-colors duration-200"
+                >
+                  <Instagram className="w-4 h-4" />
+                  <span className="text-base">Instagram</span>
+                </a>
+              </div>
             </div>
           </div>
         )}
@@ -105,7 +118,8 @@ export default function SidebarNavigation({
         position: "sticky",
         top: 88,
         height: "fit-content",
-        marginLeft: "0px"
+        marginLeft: "0px",
+        paddingRight: "15px",
       }}
     >
       <div className="w-full pr-0">

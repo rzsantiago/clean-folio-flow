@@ -30,7 +30,7 @@ export default function ProjectView({
   };
 
   return (
-    <div className="relative w-full min-h-[70vh] select-none">
+    <div className="relative w-full min-h-[70vh] select-none pl-4">
       <div className="flex flex-col gap-3 w-full pb-10 md:pl-6 md:pr-6">
         {project.coverImage && (
           <div className="w-full rounded-xl overflow-hidden mb-6" style={{

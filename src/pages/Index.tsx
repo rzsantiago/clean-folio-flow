@@ -22,6 +22,8 @@ const menuEntries = [
 const Index = () => {
   const [main, setMain] = useState<MainSection>({ type: "gallery", filter: null });
   const [menuOpen, setMenuOpen] = useState(false);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
   const isMobile = useIsMobile();
   const { data: projects = [] } = useProjects();
 
@@ -57,6 +59,30 @@ const Index = () => {
     }
   };
 
+  // Manejo del gesto swipe para navegación móvil
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (main.type !== 'project') return;
+
+    const minSwipeDistance = 50;
+    if (touchStart - touchEnd > minSwipeDistance) {
+      // Swipe izquierda - Siguiente proyecto
+      if (nextProject) handleProjectNavigation('next');
+    }
+    
+    if (touchEnd - touchStart > minSwipeDistance) {
+      // Swipe derecha - Proyecto anterior
+      if (prevProject) handleProjectNavigation('prev');
+    }
+  };
+
   useEffect(() => {
     if (isMobile && menuOpen) {
       document.body.style.overflow = "hidden";
@@ -66,7 +92,12 @@ const Index = () => {
   }, [menuOpen, isMobile]);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col font-inter">
+    <div 
+      className="min-h-screen bg-white flex flex-col font-inter"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       <div className="flex-1 flex flex-row w-full max-w-screen-2xl mx-auto">
         <MainContent main={main} setMain={setMain} isMobile={isMobile} />
         
@@ -92,9 +123,9 @@ const Index = () => {
                   setMenuOpen={setMenuOpen}
                 />
                 
-                {/* Controles de navegación de proyecto */}
+                {/* Controles de navegación de proyecto - movido más abajo */}
                 {main.type === "project" && (
-                  <div className="flex justify-between mt-4 mb-2 px-0">
+                  <div className="flex justify-between mt-8 mb-2 px-0">
                     <button
                       onClick={() => handleProjectNavigation('prev')}
                       disabled={!prevProject}
@@ -116,6 +147,7 @@ const Index = () => {
                 )}
               </div>
               
+              {/* Instagram en desktop con el mismo tamaño de texto que el menú */}
               <a 
                 href="https://www.instagram.com/ruizsantiago/"
                 target="_blank"
@@ -123,7 +155,7 @@ const Index = () => {
                 className="flex items-center gap-2 text-stone-500 hover:text-black transition-colors duration-200"
               >
                 <Instagram className="w-4 h-4" />
-                <span className="text-sm">Instagram</span>
+                <span className="text-base">Instagram</span>
               </a>
             </div>
           </div>
@@ -148,59 +180,15 @@ const Index = () => {
               </button>
             </div>
 
-            {menuOpen && (
-              <div 
-                className="fixed inset-0 bg-white z-40 pt-20"
-                onClick={() => setMenuOpen(false)}
-              >
-                <div className="flex flex-col h-full justify-between pb-8 px-4">
-                  <div className="flex flex-col">
-                    <SidebarNavigation
-                      main={main}
-                      setMain={setMain}
-                      menuEntries={menuEntries}
-                      activeCategory={activeCategory}
-                      isMobile={isMobile}
-                      menuOpen={menuOpen}
-                      setMenuOpen={setMenuOpen}
-                    />
-                    
-                    {/* Controles de navegación de proyecto en móvil */}
-                    {main.type === "project" && (
-                      <div className="flex justify-between mt-4 mb-2">
-                        <button
-                          onClick={() => handleProjectNavigation('prev')}
-                          disabled={!prevProject}
-                          className="text-stone-500 hover:text-black disabled:opacity-30 disabled:cursor-not-allowed"
-                          aria-label="Proyecto anterior"
-                        >
-                          <ArrowLeft size={18} />
-                        </button>
-                        
-                        <button
-                          onClick={() => handleProjectNavigation('next')}
-                          disabled={!nextProject}
-                          className="text-stone-500 hover:text-black disabled:opacity-30 disabled:cursor-not-allowed"
-                          aria-label="Proyecto siguiente"
-                        >
-                          <ArrowRight size={18} />
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                  
-                  <a 
-                    href="https://www.instagram.com/ruizsantiago/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-stone-500 hover:text-black transition-colors duration-200"
-                  >
-                    <Instagram className="w-4 h-4" />
-                    <span className="text-sm">Instagram</span>
-                  </a>
-                </div>
-              </div>
-            )}
+            <SidebarNavigation
+              main={main}
+              setMain={setMain}
+              menuEntries={menuEntries}
+              activeCategory={activeCategory}
+              isMobile={isMobile}
+              menuOpen={menuOpen}
+              setMenuOpen={setMenuOpen}
+            />
           </>
         )}
       </div>
