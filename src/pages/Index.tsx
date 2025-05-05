@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Menu, Instagram, ArrowLeft, ArrowRight } from "lucide-react";
+import { Menu, ArrowLeft, ArrowRight } from "lucide-react";
 import MainContent, { MainSection } from "@/components/MainContent";
 import SidebarNavigation from "@/components/SidebarNavigation";
 import { useProjects } from "@/hooks/useProjects";
@@ -147,15 +147,14 @@ const Index = () => {
                 )}
               </div>
               
-              {/* Instagram en desktop sin el texto */}
+              {/* Instagram en desktop - solo texto */}
               <a 
                 href="https://www.instagram.com/ruizsantiago/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center text-stone-500 hover:text-black transition-colors duration-200"
-                aria-label="Instagram"
+                className="text-stone-500 hover:text-black transition-colors duration-200"
               >
-                <Instagram className="w-4 h-4" />
+                <span className="text-base">Instagram</span>
               </a>
             </div>
           </div>

@@ -1,7 +1,6 @@
 
 import React from "react";
 import { useProjects } from "@/hooks/useProjects";
-import { Instagram } from "lucide-react";
 
 type MenuEntry =
   | { type: "gallery"; label: string; filter?: string | null }
@@ -91,7 +90,7 @@ export default function SidebarNavigation({
                 ))}
               </nav>
               
-              {/* Instagram en mobile */}
+              {/* Instagram en mobile - solo texto */}
               <div className="mt-auto pb-8">
                 <a 
                   href="https://www.instagram.com/ruizsantiago/"
@@ -99,7 +98,6 @@ export default function SidebarNavigation({
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-stone-500 hover:text-black transition-colors duration-200"
                 >
-                  <Instagram className="w-4 h-4" />
                   <span className="text-base">Instagram</span>
                 </a>
               </div>
