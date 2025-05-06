@@ -54,7 +54,7 @@ export default function SidebarNavigation({
             onClick={() => setMenuOpen && setMenuOpen(false)}
           >
             <div
-              className="fixed right-0 top-0 bg-white h-full w-64 flex flex-col p-4 gap-1"
+              className="fixed right-0 top-0 bg-white h-full w-64 flex flex-col p-6 gap-1"
               style={{
                 paddingTop: 90,
                 zIndex: 100,
@@ -66,9 +66,9 @@ export default function SidebarNavigation({
                 {menuEntries.map(entry => (
                   <button
                     key={entry.label}
-                    className={`text-left w-full py-2 px-2 rounded-md text-xs font-normal ${
+                    className={`text-left w-full py-2 px-2 rounded-md text-base font-normal ${
                       isActive(entry)
-                        ? "text-black bg-stone-100 font-medium"
+                        ? "text-black bg-stone-100"
                         : "text-stone-500"
                     } hover:bg-stone-100`}
                     onClick={() => {
@@ -98,7 +98,7 @@ export default function SidebarNavigation({
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-stone-500 hover:text-black transition-colors duration-200"
                 >
-                  <span className="text-xs">Instagram</span>
+                  <span className="text-base">Instagram</span>
                 </a>
               </div>
             </div>
@@ -126,9 +126,9 @@ export default function SidebarNavigation({
           {menuPart1.map(entry => (
             <button
               key={entry.label}
-              className={`px-0 py-0.5 text-xs font-normal text-left transition-none ${
+              className={`px-0 py-0.5 text-base font-normal text-left transition-none ${
                 isActive(entry)
-                  ? "text-black font-medium"
+                  ? "text-black"
                   : "text-stone-500"
               } hover:text-black`}
               onClick={() => {
@@ -152,9 +152,9 @@ export default function SidebarNavigation({
           {menuPart2.map(entry => (
             <button
               key={entry.label}
-              className={`px-0 py-0.5 text-xs font-normal text-left transition-none ${
+              className={`px-0 py-0.5 text-base font-normal text-left transition-none ${
                 isActive(entry)
-                  ? "text-black font-medium"
+                  ? "text-black"
                   : "text-stone-500"
               } hover:text-black`}
               onClick={() => {
