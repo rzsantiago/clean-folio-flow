@@ -15,7 +15,7 @@ const About = ({ minimal }: { minimal?: boolean }) => (
       />
     </div>
     
-    <div className="text-sm space-y-4 pb-8">
+    <div className="text-xs space-y-4 pb-8">
       <p>
         I'm an industrial designer based in Tucumán, Argentina with a solid technical background in machinery, tools, and manufacturing processes. I'm passionate not only about the creative process of bringing new ideas to life, but also about the research and conceptual development that builds a strong foundation for any project.
       </p>
@@ -29,8 +29,8 @@ const About = ({ minimal }: { minimal?: boolean }) => (
       </p>
       
       <div className="mt-6">
-        <h2 className="font-semibold text-sm mb-2">Academic Background</h2>
-        <ul className="list-disc pl-5 space-y-1 text-sm">
+        <h2 className="font-semibold text-xs mb-2">Academic Background</h2>
+        <ul className="list-disc pl-5 space-y-1 text-xs">
           <li>Mechanical-Electrical Technician (2006–2013) — Instituto Técnico U.N.T.</li>
           <li>Industrial Engineering (2014) — Universidad Nacional de Tucumán</li>
           <li>Industrial Design (2015–2021) — Universidad de San Pablo Tucumán</li>

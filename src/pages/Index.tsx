@@ -105,7 +105,7 @@ const Index = () => {
         <div className="hidden md:flex flex-col w-[240px] min-w-[240px] pl-8">
           <div className="sticky top-0 flex flex-col pt-8 bg-white h-screen">
             <button
-              className="text-sm font-normal tracking-wider text-stone-700 duration-100 pb-12 text-left uppercase"
+              className="text-base font-normal tracking-wider text-stone-700 duration-100 pb-12 text-left uppercase"
               onClick={() => setMain({ type: "gallery", filter: null })}
             >
               Santiago Ruiz
@@ -165,7 +165,7 @@ const Index = () => {
           <>
             <div className="fixed top-0 left-0 right-0 flex justify-between items-center px-4 py-5 bg-white z-30">
               <button
-                className="text-sm tracking-wider text-stone-700 uppercase"
+                className="text-base tracking-wider text-stone-700 uppercase"
                 onClick={() => setMain({ type: "gallery", filter: null })}
               >
                 Santiago Ruiz
