@@ -129,10 +129,21 @@ const AdminPage = () => {
   async function handleEditProject(data: AddProjectFormData, projectId: string) {
     const payload = mapFormDataToDb(data);
 
+    // Convert the string projectId to a number for the database query
+    const numericProjectId = parseInt(projectId, 10);
+    if (isNaN(numericProjectId)) {
+      toast({
+        title: "Error al actualizar proyecto",
+        description: "ID del proyecto inválido",
+        variant: "destructive"
+      });
+      return;
+    }
+
     const { error } = await supabase
       .from("projects")
       .update(payload)
-      .eq("id", projectId);
+      .eq("id", numericProjectId);
 
     if (error) {
       toast({
@@ -162,10 +173,21 @@ const AdminPage = () => {
   }
 
   async function handleDeleteProject(projectId: string) {
+    // Convert the string projectId to a number for the database query
+    const numericProjectId = parseInt(projectId, 10);
+    if (isNaN(numericProjectId)) {
+      toast({
+        title: "Error al eliminar proyecto",
+        description: "ID del proyecto inválido",
+        variant: "destructive"
+      });
+      return;
+    }
+
     const { error } = await supabase
       .from("projects")
       .delete()
-      .eq("id", projectId);
+      .eq("id", numericProjectId);
 
     if (error) {
       toast({
