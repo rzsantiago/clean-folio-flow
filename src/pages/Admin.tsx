@@ -3,7 +3,10 @@ import React, { useEffect, useState } from "react";
 import AdminProjectsTable from "@/components/AdminProjectsTable";
 import { Button } from "@/components/ui/button";
 import AddProjectDialog, { AddProjectFormData } from "@/components/AddProjectDialog";
-import { Plus } from "lucide-react";
+import EditProjectDialog from "@/components/EditProjectDialog";
+import AdminLogin from "@/components/AdminLogin";
+import { useAdminAuth } from "@/hooks/useAdminAuth";
+import { Plus, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import type { Project } from "@/data/projects";
@@ -54,32 +57,38 @@ const mapDbToUiProject = (proj: SupabaseProject): Project => ({
 
 const AdminPage = () => {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
+  const { isAdmin, loading: authLoading, logout } = useAdminAuth();
 
   useEffect(() => {
-    async function fetchProjects() {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from("projects")
-        .select("*")
-        .order("id", { ascending: true });
-
-      if (error) {
-        toast({
-          title: "Error al cargar proyectos",
-          description: error.message,
-        });
-        setLoading(false);
-        return;
-      }
-      const uiProjects = (data as SupabaseProject[]).map(mapDbToUiProject);
-      setProjects(uiProjects);
-      setLoading(false);
+    if (isAdmin) {
+      fetchProjects();
     }
+  }, [isAdmin]);
 
-    fetchProjects();
-  }, []);
+  async function fetchProjects() {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("projects")
+      .select("*")
+      .order("id", { ascending: true });
+
+    if (error) {
+      toast({
+        title: "Error al cargar proyectos",
+        description: error.message,
+        variant: "destructive"
+      });
+      setLoading(false);
+      return;
+    }
+    const uiProjects = (data as SupabaseProject[]).map(mapDbToUiProject);
+    setProjects(uiProjects);
+    setLoading(false);
+  }
 
   async function handleAddProject(data: AddProjectFormData) {
     const payload = mapFormDataToDb(data);
@@ -93,6 +102,7 @@ const AdminPage = () => {
       toast({
         title: "Error al agregar proyecto",
         description: error.message,
+        variant: "destructive"
       });
       return;
     }
@@ -104,6 +114,7 @@ const AdminPage = () => {
       toast({
         title: "Error al agregar proyecto",
         description: "No se pudo recibir el proyecto creado.",
+        variant: "destructive"
       });
       return;
     }
@@ -115,20 +126,118 @@ const AdminPage = () => {
     });
   }
 
+  async function handleEditProject(data: AddProjectFormData, projectId: string) {
+    const payload = mapFormDataToDb(data);
+
+    const { error } = await supabase
+      .from("projects")
+      .update(payload)
+      .eq("id", projectId);
+
+    if (error) {
+      toast({
+        title: "Error al actualizar proyecto",
+        description: error.message,
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Actualizar el estado local
+    setProjects(prev => 
+      prev.map(p => p.id === projectId ? {
+        ...p,
+        ...data,
+        id: projectId,
+        coverColor: data.coverColor || p.coverColor,
+        coverImage: data.coverImage || p.coverImage,
+        contentImages: data.contentImages ? data.contentImages.split("\n").filter(Boolean) : p.contentImages,
+      } : p)
+    );
+
+    toast({
+      title: "Proyecto actualizado",
+      description: `El proyecto "${data.title}" fue actualizado correctamente.`,
+    });
+  }
+
+  async function handleDeleteProject(projectId: string) {
+    const { error } = await supabase
+      .from("projects")
+      .delete()
+      .eq("id", projectId);
+
+    if (error) {
+      toast({
+        title: "Error al eliminar proyecto",
+        description: error.message,
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Actualizar el estado local
+    setProjects(prev => prev.filter(p => p.id !== projectId));
+    
+    toast({
+      title: "Proyecto eliminado",
+      description: "El proyecto fue eliminado correctamente.",
+    });
+  }
+
+  function handleEdit(project: Project) {
+    setSelectedProject(project);
+    setEditDialogOpen(true);
+  }
+
+  // Si estamos cargando o el usuario no es administrador, mostrar pantalla de login
+  if (authLoading) {
+    return (
+      <div className="max-w-3xl mx-auto py-12 px-4 font-inter">
+        <h1 className="text-3xl font-bold mb-6">Cargando...</h1>
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
+    return <AdminLogin onLoginSuccess={() => fetchProjects()} />;
+  }
+
   return (
     <div className="max-w-3xl mx-auto py-12 px-4 font-inter">
-      <h1 className="text-3xl font-bold mb-6">Administrar proyectos</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Administrar proyectos</h1>
+        <Button 
+          variant="outline" 
+          className="ml-2"
+          onClick={logout}
+        >
+          <LogOut className="w-4 h-4 mr-1" />
+          Salir
+        </Button>
+      </div>
       <div className="mb-8 flex justify-end">
         <Button variant="default" onClick={() => setAddDialogOpen(true)}>
           <Plus className="w-4 h-4 mr-1" />
           Agregar proyecto
         </Button>
       </div>
-      <AdminProjectsTable projects={projects} loading={loading} />
+      <AdminProjectsTable 
+        projects={projects} 
+        loading={loading} 
+        onEdit={handleEdit}
+        onDelete={handleDeleteProject}
+      />
       <AddProjectDialog
         open={addDialogOpen}
         setOpen={setAddDialogOpen}
         onSubmit={handleAddProject}
+      />
+      <EditProjectDialog 
+        project={selectedProject}
+        open={editDialogOpen}
+        setOpen={setEditDialogOpen}
+        onSubmit={handleEditProject}
       />
     </div>
   );
