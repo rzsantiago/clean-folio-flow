@@ -1,6 +1,5 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from 'react-router-dom';
 import { toast } from "@/hooks/use-toast";
 
@@ -27,6 +26,10 @@ export function useAdminAuth() {
     if (password === ADMIN_PASSWORD) {
       localStorage.setItem('isAdminAuth', 'true');
       setIsAdmin(true);
+      toast({
+        title: "Autenticación exitosa",
+        description: "Has iniciado sesión como administrador",
+      });
       return true;
     } else {
       toast({
@@ -42,6 +45,10 @@ export function useAdminAuth() {
     localStorage.removeItem('isAdminAuth');
     setIsAdmin(false);
     navigate('/admin');
+    toast({
+      title: "Sesión finalizada",
+      description: "Has cerrado sesión como administrador",
+    });
   };
 
   return { isAdmin, loading, login, logout };
