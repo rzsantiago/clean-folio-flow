@@ -2,6 +2,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Project } from "@/data/projects";
+import { toast } from "@/hooks/use-toast";
 
 // Supabase → UI mapping
 function mapDbToUiProject(proj: any): Project {
@@ -25,14 +26,32 @@ async function fetchProjects() {
     .select("*")
     .order("id", { ascending: true });
 
-  if (error) throw new Error(error.message);
+  if (error) {
+    console.error("Error fetching projects:", error);
+    throw new Error(`Failed to fetch projects: ${error.message}`);
+  }
 
-  return (data ?? []).map(mapDbToUiProject) as Project[];
+  if (!data || data.length === 0) {
+    console.log("No projects found or empty response from Supabase");
+    return [];
+  }
+
+  return data.map(mapDbToUiProject) as Project[];
 }
 
 export function useProjects() {
   return useQuery({
     queryKey: ["projects"],
     queryFn: fetchProjects,
+    onError: (err: Error) => {
+      console.error("Project query error:", err);
+      toast({
+        title: "Error loading projects",
+        description: err.message,
+        variant: "destructive"
+      });
+    },
+    retry: 2,
+    staleTime: 1000 * 60 * 5, // 5 minutes
   });
 }

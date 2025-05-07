@@ -6,6 +6,7 @@ import Contact from "@/pages/Contact";
 import ProjectView from "@/components/ProjectView";
 import { useFadeTransition } from "@/hooks/useFadeTransition";
 import { useProjects } from "@/hooks/useProjects";
+import { Loader2 } from "lucide-react";
 
 export type MainSection =
   | { type: "gallery"; filter: string | null }
@@ -48,15 +49,16 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
 
   if (isLoading) {
     content = (
-      <div className="w-full min-h-[40vh] flex items-center justify-center text-stone-400 text-lg font-inter pl-4">
-        Cargando proyectos...
+      <div className="w-full min-h-[40vh] flex flex-col items-center justify-center text-stone-400 text-lg font-inter pl-4 gap-3">
+        <Loader2 className="h-6 w-6 animate-spin text-stone-400" />
+        <span>Cargando proyectos...</span>
       </div>
     );
     fadeDeps = ["loading"];
   } else if (error) {
     content = (
       <div className="w-full min-h-[40vh] flex items-center justify-center text-red-500 text-lg font-inter pl-4">
-        Error al cargar proyectos
+        Error al cargar proyectos: {error instanceof Error ? error.message : "Error desconocido"}
       </div>
     );
     fadeDeps = ["error"];
