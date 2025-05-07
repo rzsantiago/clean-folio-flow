@@ -43,15 +43,17 @@ export function useProjects() {
   return useQuery({
     queryKey: ["projects"],
     queryFn: fetchProjects,
-    onError: (err: Error) => {
-      console.error("Project query error:", err);
-      toast({
-        title: "Error loading projects",
-        description: err.message,
-        variant: "destructive"
-      });
-    },
     retry: 2,
     staleTime: 1000 * 60 * 5, // 5 minutes
+    meta: {
+      onError: (err: Error) => {
+        console.error("Project query error:", err);
+        toast({
+          title: "Error loading projects",
+          description: err.message,
+          variant: "destructive"
+        });
+      }
+    }
   });
 }
