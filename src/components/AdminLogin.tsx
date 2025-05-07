@@ -19,16 +19,14 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
     e.preventDefault();
     setIsLoading(true);
     
-    try {
-      const success = login(password);
-      if (success) {
-        onLoginSuccess();
-      }
-    } catch (error) {
-      console.error("Error durante el inicio de sesión:", error);
-    } finally {
-      setIsLoading(false);
+    // Intentamos hacer login y manejar el resultado
+    const success = login(password);
+    
+    if (success) {
+      onLoginSuccess();
     }
+    
+    setIsLoading(false);
   };
 
   return (
