@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -7,6 +6,7 @@ import { ImageUploader } from "@/components/ImageUploader";
 import { UseFormRegister, UseFormWatch, UseFormSetValue, FieldErrors } from "react-hook-form";
 import { AddProjectFormData } from "@/types/projects";
 import { CATEGORIES } from "../ProjectForm";
+import { ContentImageList } from './ContentImageList';
 
 type FormFieldProps = {
   register: UseFormRegister<AddProjectFormData>;

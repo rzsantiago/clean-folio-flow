@@ -1,33 +1,16 @@
 
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { 
-  Edit, 
-  Trash2, 
-  ArrowUp, 
-  ArrowDown,
-  Check,
-  X
-} from "lucide-react";
 import {
   Table,
   TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
 } from "@/components/ui/table";
 import type { Project } from "@/data/projects";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+  ProjectTableHeader,
+  ProjectRow,
+  DeleteConfirmDialog,
+  EmptyState
+} from "./projects/table";
 
 type SortField = "title" | "category" | "year";
 
@@ -84,116 +67,46 @@ const AdminProjectsTable = ({
     return 0;
   });
 
+  const handleDeleteClick = (projectId: string) => {
+    setDeleteConfirm(projectId);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (deleteConfirm) {
+      onDelete(deleteConfirm);
+      setDeleteConfirm(null);
+    }
+  };
+
   return (
     <div className="space-y-4">
       <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead 
-              className="cursor-pointer"
-              onClick={() => handleSort("title")}
-            >
-              <div className="flex items-center">
-                Título
-                {sortField === "title" && (
-                  sortDirection === "asc" ? <ArrowUp className="ml-1 h-4 w-4" /> : <ArrowDown className="ml-1 h-4 w-4" />
-                )}
-              </div>
-            </TableHead>
-            <TableHead 
-              className="cursor-pointer"
-              onClick={() => handleSort("category")}
-            >
-              <div className="flex items-center">
-                Categoría
-                {sortField === "category" && (
-                  sortDirection === "asc" ? <ArrowUp className="ml-1 h-4 w-4" /> : <ArrowDown className="ml-1 h-4 w-4" />
-                )}
-              </div>
-            </TableHead>
-            <TableHead 
-              className="cursor-pointer"
-              onClick={() => handleSort("year")}
-            >
-              <div className="flex items-center">
-                Año
-                {sortField === "year" && (
-                  sortDirection === "asc" ? <ArrowUp className="ml-1 h-4 w-4" /> : <ArrowDown className="ml-1 h-4 w-4" />
-                )}
-              </div>
-            </TableHead>
-            <TableHead className="text-center">Acciones</TableHead>
-          </TableRow>
-        </TableHeader>
+        <ProjectTableHeader 
+          sortField={sortField}
+          sortDirection={sortDirection}
+          handleSort={handleSort}
+        />
         <TableBody>
-          {loading ? (
-            <TableRow>
-              <TableCell colSpan={4} className="text-center py-8 text-muted-foreground">
-                Cargando proyectos...
-              </TableCell>
-            </TableRow>
-          ) : sortedProjects.length === 0 ? (
-            <TableRow>
-              <TableCell colSpan={4} className="text-center py-8 text-muted-foreground">
-                No hay proyectos registrados.
-              </TableCell>
-            </TableRow>
+          {loading || sortedProjects.length === 0 ? (
+            <EmptyState loading={loading} />
           ) : (
             sortedProjects.map((project) => (
-              <TableRow key={project.id} className="border-b last:border-b-0 hover:bg-stone-50">
-                <TableCell>{project.title}</TableCell>
-                <TableCell>{project.category}</TableCell>
-                <TableCell>{project.year || "-"}</TableCell>
-                <TableCell className="text-center">
-                  <Button 
-                    size="sm" 
-                    variant="secondary" 
-                    className="mr-2"
-                    onClick={() => onEdit(project)}
-                  >
-                    <Edit className="w-4 h-4 mr-1" />
-                    Editar
-                  </Button>
-                  <Button 
-                    size="sm" 
-                    variant="destructive"
-                    onClick={() => setDeleteConfirm(project.id)}
-                  >
-                    <Trash2 className="w-4 h-4 mr-1" />
-                    Borrar
-                  </Button>
-                </TableCell>
-              </TableRow>
+              <ProjectRow 
+                key={project.id} 
+                project={project} 
+                onEdit={onEdit}
+                onDelete={handleDeleteClick}
+              />
             ))
           )}
         </TableBody>
       </Table>
 
-      <AlertDialog open={!!deleteConfirm} onOpenChange={() => setDeleteConfirm(null)}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
-            <AlertDialogDescription>
-              Esta acción no se puede deshacer. Se eliminará permanentemente este proyecto 
-              de la base de datos.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction 
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              onClick={() => {
-                if (deleteConfirm) {
-                  onDelete(deleteConfirm);
-                  setDeleteConfirm(null);
-                }
-              }}
-            >
-              Eliminar
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <DeleteConfirmDialog 
+        open={!!deleteConfirm}
+        onOpenChange={() => setDeleteConfirm(null)}
+        onConfirm={handleDeleteConfirm}
+      />
     </div>
   );
 };
