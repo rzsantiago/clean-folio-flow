@@ -1,9 +1,8 @@
-
 import React, { useEffect, useState } from "react";
 import AdminProjectsTable from "@/components/AdminProjectsTable";
 import { Button } from "@/components/ui/button";
-import AddProjectDialog from "@/components/AddProjectDialog";
-import EditProjectDialog from "@/components/EditProjectDialog";
+import AddProjectDialog from "@/components/projects/AddProjectDialog";
+import EditProjectDialog from "@/components/projects/EditProjectDialog";
 import AdminLogin from "@/components/AdminLogin";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { Plus, LogOut } from "lucide-react";
