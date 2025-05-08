@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import {
   Dialog,
@@ -19,6 +18,7 @@ import { toast } from "@/hooks/use-toast";
 import { ImageUploader } from "./ImageUploader";
 import { AddProjectFormData } from "./AddProjectDialog";
 import type { Project } from "@/data/projects";
+import { ArrowUp, ArrowDown, Trash2 } from "lucide-react";
 
 type EditProjectDialogProps = {
   project: Project | null;
@@ -50,6 +50,8 @@ export default function EditProjectDialog({
   } = useForm<AddProjectFormData>();
 
   const coverImage = watch("coverImage");
+  const contentImagesString = watch("contentImages") || "";
+  const contentImagesList = contentImagesString.split("\n").filter(Boolean);
   
   // Cargar los datos del proyecto cuando se abre el diálogo
   useEffect(() => {
@@ -76,6 +78,24 @@ export default function EditProjectDialog({
       setOpen(false);
     }
   }
+  
+  const handleRemoveImage = (index: number) => {
+    const updatedImages = [...contentImagesList];
+    updatedImages.splice(index, 1);
+    setValue("contentImages", updatedImages.join("\n"));
+  };
+
+  const handleMoveImage = (index: number, direction: "up" | "down") => {
+    const updatedImages = [...contentImagesList];
+    if (direction === "up" && index > 0) {
+      // Intercambiar con la imagen anterior
+      [updatedImages[index], updatedImages[index - 1]] = [updatedImages[index - 1], updatedImages[index]];
+    } else if (direction === "down" && index < updatedImages.length - 1) {
+      // Intercambiar con la imagen siguiente
+      [updatedImages[index], updatedImages[index + 1]] = [updatedImages[index + 1], updatedImages[index]];
+    }
+    setValue("contentImages", updatedImages.join("\n"));
+  };
 
   if (!project) return null;
 
@@ -162,7 +182,7 @@ export default function EditProjectDialog({
               />
             </div>
             <div>
-              <Label>Imágenes de contenido <span className="text-muted-foreground text-xs">(sube las imágenes y las URLs se agregarán automáticamente)</span></Label>
+              <Label>Imágenes de contenido</Label>
               <ImageUploader
                 onChange={(url) => {
                   const current = watch("contentImages") || "";
@@ -171,11 +191,59 @@ export default function EditProjectDialog({
                   setValue("contentImages", images.join("\n"));
                 }}
               />
+              
+              {/* Mostrar miniaturas de imágenes con opciones para mover y eliminar */}
+              <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {contentImagesList.map((img, index) => (
+                  <div key={index} className="relative group">
+                    <div className="aspect-square w-full overflow-hidden rounded-md">
+                      <img 
+                        src={img} 
+                        alt={`Imagen de contenido ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="absolute top-1 right-1 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Button 
+                        type="button"
+                        variant="destructive" 
+                        size="icon" 
+                        className="h-7 w-7" 
+                        onClick={() => handleRemoveImage(index)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="absolute bottom-1 right-1 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <Button 
+                        type="button"
+                        variant="secondary" 
+                        size="icon" 
+                        className="h-7 w-7" 
+                        onClick={() => handleMoveImage(index, "up")}
+                        disabled={index === 0}
+                      >
+                        <ArrowUp className="h-4 w-4" />
+                      </Button>
+                      <Button 
+                        type="button"
+                        variant="secondary" 
+                        size="icon" 
+                        className="h-7 w-7" 
+                        onClick={() => handleMoveImage(index, "down")}
+                        disabled={index === contentImagesList.length - 1}
+                      >
+                        <ArrowDown className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              {/* Mantener el textarea original pero oculto visualmente */}
               <Textarea
                 {...register("contentImages")}
-                placeholder="Las URLs de las imágenes aparecerán aquí"
-                rows={3}
-                className="mt-2"
+                className="hidden"
               />
             </div>
             <div>
