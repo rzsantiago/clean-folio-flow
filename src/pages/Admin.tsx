@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import AdminProjectsTable from "@/components/AdminProjectsTable";
 import { Button } from "@/components/ui/button";
-import AddProjectDialog, { AddProjectFormData } from "@/components/AddProjectDialog";
+import AddProjectDialog from "@/components/AddProjectDialog";
 import EditProjectDialog from "@/components/EditProjectDialog";
 import AdminLogin from "@/components/AdminLogin";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
@@ -10,6 +10,7 @@ import { Plus, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import type { Project } from "@/data/projects";
+import { AddProjectFormData } from "@/types/projects";
 
 // Type representing a project row as returned from Supabase
 type SupabaseProject = {
