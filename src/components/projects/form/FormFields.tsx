@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -5,8 +6,9 @@ import { Label } from "@/components/ui/label";
 import { ImageUploader } from "@/components/ImageUploader";
 import { UseFormRegister, UseFormWatch, UseFormSetValue, FieldErrors } from "react-hook-form";
 import { AddProjectFormData } from "@/types/projects";
-import { CATEGORIES } from "../ProjectForm";
 import { ContentImageList } from './ContentImageList';
+import { ContentImagesField as ContentImagesComponent } from './ContentImagesField';
+import { CATEGORIES } from "../ProjectForm";
 
 type FormFieldProps = {
   register: UseFormRegister<AddProjectFormData>;
@@ -106,52 +108,7 @@ export function CoverFields({ register, setValue, watch }: FormFieldProps) {
 }
 
 export function ContentImagesField({ register, setValue, watch }: FormFieldProps) {
-  const contentImagesString = watch("contentImages") || "";
-  const contentImagesList = contentImagesString.split("\n").filter(Boolean);
-  
-  const handleRemoveImage = (index: number) => {
-    const updatedImages = [...contentImagesList];
-    updatedImages.splice(index, 1);
-    setValue("contentImages", updatedImages.join("\n"));
-  };
-
-  const handleMoveImage = (index: number, direction: "up" | "down") => {
-    const updatedImages = [...contentImagesList];
-    if (direction === "up" && index > 0) {
-      // Intercambiar con la imagen anterior
-      [updatedImages[index], updatedImages[index - 1]] = [updatedImages[index - 1], updatedImages[index]];
-    } else if (direction === "down" && index < updatedImages.length - 1) {
-      // Intercambiar con la imagen siguiente
-      [updatedImages[index], updatedImages[index + 1]] = [updatedImages[index + 1], updatedImages[index]];
-    }
-    setValue("contentImages", updatedImages.join("\n"));
-  };
-  
-  return (
-    <div>
-      <Label>Imágenes de contenido</Label>
-      <ImageUploader
-        onChange={(url) => {
-          const current = watch("contentImages") || "";
-          const images = current ? current.split("\n").filter(Boolean) : [];
-          images.push(url);
-          setValue("contentImages", images.join("\n"));
-        }}
-      />
-      
-      <ContentImageList 
-        images={contentImagesList}
-        onRemove={handleRemoveImage}
-        onMove={handleMoveImage}
-      />
-      
-      {/* Mantener el textarea original pero oculto visualmente */}
-      <Textarea
-        {...register("contentImages")}
-        className="hidden"
-      />
-    </div>
-  );
+  return <ContentImagesComponent register={register} setValue={setValue} watch={watch} />;
 }
 
 export function DescriptionField({ register, errors }: FormFieldProps) {
