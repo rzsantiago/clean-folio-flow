@@ -1,18 +1,21 @@
-
 import React from "react";
-
 const PHOTO_URL = "/lovable-uploads/fe43cc7a-4a41-4d42-863a-db719dbb6c7d.png";
-
-const About = ({ minimal }: { minimal?: boolean }) => (
-  <div className={`max-w-xl mx-auto font-inter text-stone-700 ${minimal ? "" : "bg-white rounded-xl shadow"} md:ml-0 md:mr-auto px-4 md:px-6`}>
-    <div className="w-full mb-8 rounded-xl overflow-hidden" style={{ height: 500, maxHeight: "60vw", minHeight: 240, background: "#eee" }}>
-      <img
-        src={PHOTO_URL}
-        alt="Santiago Ruiz"
-        className="w-full h-full object-cover object-center"
-        style={{ height: "100%", width: "100%", display: "block" }}
-        draggable={false}
-      />
+const About = ({
+  minimal
+}: {
+  minimal?: boolean;
+}) => <div className="">
+    <div className="w-full mb-8 rounded-xl overflow-hidden" style={{
+    height: 500,
+    maxHeight: "60vw",
+    minHeight: 240,
+    background: "#eee"
+  }}>
+      <img src={PHOTO_URL} alt="Santiago Ruiz" className="w-full h-full object-cover object-center" style={{
+      height: "100%",
+      width: "100%",
+      display: "block"
+    }} draggable={false} />
     </div>
     
     <div className="text-base space-y-4 pb-8">
@@ -41,7 +44,5 @@ const About = ({ minimal }: { minimal?: boolean }) => (
         Whether you're looking for collaboration, creative insight, or technical expertise — feel free to get in touch. I'm always open to new conversations and exciting projects.
       </p>
     </div>
-  </div>
-);
-
+  </div>;
 export default About;
