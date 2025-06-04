@@ -50,27 +50,30 @@ export default function SidebarNavigation({
       <>
         {menuOpen && (
           <div
-            className="fixed z-50 inset-0 bg-black/30"
+            className="fixed z-50 inset-0 bg-black/30 transition-opacity duration-300 animate-fade-in"
             onClick={() => setMenuOpen && setMenuOpen(false)}
           >
             <div
-              className="fixed right-0 top-0 bg-white h-full w-64 flex flex-col p-6 gap-1"
+              className="fixed right-0 top-0 bg-white h-full w-64 flex flex-col p-6 gap-1 animate-slide-in-right"
               style={{
                 paddingTop: 90,
                 zIndex: 100,
-                boxShadow: "none",
+                boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
               }}
               onClick={e => e.stopPropagation()}
             >
               <nav className="flex flex-col gap-0.5 flex-grow">
-                {menuEntries.map(entry => (
+                {menuEntries.map((entry, index) => (
                   <button
                     key={entry.label}
-                    className={`text-left w-full py-2 px-2 rounded-md text-base font-normal ${
+                    className={`text-left w-full py-2 px-2 rounded-md text-base font-normal smooth-hover ${
                       isActive(entry)
                         ? "text-black bg-stone-100"
                         : "text-stone-500"
-                    } hover:bg-stone-100`}
+                    } hover:bg-stone-100 hover:text-black`}
+                    style={{
+                      animationDelay: `${index * 50}ms`
+                    }}
                     onClick={() => {
                       setMenuOpen && setMenuOpen(false);
                       if (entry.type === "gallery") {
@@ -96,7 +99,7 @@ export default function SidebarNavigation({
                   href="https://www.instagram.com/ruizsantiago/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-stone-500 hover:text-black transition-colors duration-200"
+                  className="flex items-center gap-2 text-stone-500 hover:text-black smooth-hover"
                 >
                   <span className="text-base">Instagram</span>
                 </a>
@@ -123,14 +126,17 @@ export default function SidebarNavigation({
       <div className="w-full pr-0">
         <nav className="flex flex-col gap-0.5 mt-0 select-none">
           {/* Parte 1: Overview + categorias */}
-          {menuPart1.map(entry => (
+          {menuPart1.map((entry, index) => (
             <button
               key={entry.label}
-              className={`px-0 py-0.5 text-base font-normal text-left transition-none ${
+              className={`px-0 py-0.5 text-base font-normal text-left smooth-hover ${
                 isActive(entry)
                   ? "text-black"
                   : "text-stone-500"
               } hover:text-black`}
+              style={{
+                animationDelay: `${index * 100}ms`
+              }}
               onClick={() => {
                 if (entry.type === "gallery") {
                   setMain({
@@ -149,14 +155,17 @@ export default function SidebarNavigation({
           ))}
           <div className="border-t border-stone-200 my-2 md:my-3" /> 
           {/* Parte 2: About + Contact */}
-          {menuPart2.map(entry => (
+          {menuPart2.map((entry, index) => (
             <button
               key={entry.label}
-              className={`px-0 py-0.5 text-base font-normal text-left transition-none ${
+              className={`px-0 py-0.5 text-base font-normal text-left smooth-hover ${
                 isActive(entry)
                   ? "text-black"
                   : "text-stone-500"
               } hover:text-black`}
+              style={{
+                animationDelay: `${(menuPart1.length + index) * 100}ms`
+              }}
               onClick={() => {
                 if (entry.type === "about") {
                   setMain({ type: "about" });

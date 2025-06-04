@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useProjects } from "@/hooks/useProjects";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -20,6 +19,7 @@ export default function ProjectView({
   } = useProjects();
   const project = projects.find(p => p.id === projectId);
   const isMobile = useIsMobile();
+  
   if (!project) return null;
 
   // Find prev/next project
@@ -27,6 +27,7 @@ export default function ProjectView({
   const idx = categoryProjects.findIndex(p => p.id === projectId);
   const prevProject = idx > 0 ? categoryProjects[idx - 1] : null;
   const nextProject = idx >= 0 && idx < categoryProjects.length - 1 ? categoryProjects[idx + 1] : null;
+  
   const handleNavigate = (id: string) => {
     onNavigate(id);
     if (typeof window !== "undefined") {
@@ -38,17 +39,18 @@ export default function ProjectView({
       }, 10);
     }
   };
-  return <div className={`relative w-full min-h-[70vh] select-none px-0 ${isMobile ? '' : 'pl-4'}`}>
+  
+  return <div className={`relative w-full min-h-[70vh] select-none px-0 ${isMobile ? '' : 'pl-4'} animate-fade-in`}>
       <div className="flex flex-col gap-3 w-full pb-10 md:pl-6 md:pr-6">
-        {project.coverImage && <div className="w-full rounded-xl overflow-hidden mb-6" style={{
+        {project.coverImage && <div className="w-full rounded-xl overflow-hidden mb-6 smooth-lift" style={{
         aspectRatio: project.ratio === "3x4" ? "3/4" : "4/3",
         minHeight: 230,
         background: "#EEE"
       }}>
-            <img src={project.coverImage} alt={`Portada de ${project.title}`} className="w-full h-full object-cover object-center" draggable={false} />
+            <img src={project.coverImage} alt={`Portada de ${project.title}`} className="w-full h-full object-cover object-center transition-transform duration-500 ease-out hover:scale-105" draggable={false} />
           </div>}
         
-        {showProjectHeader && <div className="mb-6">
+        {showProjectHeader && <div className="mb-6 animate-fade-in" style={{ animationDelay: '200ms' }}>
             <h1 className="text-3xl md:text-4xl font-bold text-stone-900">
               {project.title}
             </h1>
@@ -73,19 +75,20 @@ export default function ProjectView({
           minHeight: 220,
           aspectRatio: project.ratio === "3x4" ? "3/4" : "4/3",
           margin: "0",
-          background: "#EEE"
-        }} className="w-full overflow-hidden">
-              <img src={img} alt={`Imagen del proyecto ${project.title} ${i + 1}`} className="w-full h-full object-cover object-center" draggable={false} />
+          background: "#EEE",
+          animationDelay: `${(i + 1) * 150}ms`
+        }} className="w-full overflow-hidden smooth-lift animate-fade-in">
+              <img src={img} alt={`Imagen del proyecto ${project.title} ${i + 1}`} className="w-full h-full object-cover object-center transition-transform duration-500 ease-out hover:scale-105" draggable={false} />
             </div>)}
         </div>
 
         {/* Botones de navegación para mobile */}
-        {isMobile && <div className="flex justify-between mt-8 px-2">
-            <button onClick={() => prevProject && handleNavigate(prevProject.id)} disabled={!prevProject} className="text-stone-500 hover:text-black disabled:opacity-30 disabled:cursor-not-allowed" aria-label="Proyecto anterior">
+        {isMobile && <div className="flex justify-between mt-8 px-2 animate-fade-in" style={{ animationDelay: '400ms' }}>
+            <button onClick={() => prevProject && handleNavigate(prevProject.id)} disabled={!prevProject} className="text-stone-500 hover:text-black disabled:opacity-30 disabled:cursor-not-allowed smooth-hover hover:scale-110" aria-label="Proyecto anterior">
               <ArrowLeft size={22} />
             </button>
             
-            <button onClick={() => nextProject && handleNavigate(nextProject.id)} disabled={!nextProject} className="text-stone-500 hover:text-black disabled:opacity-30 disabled:cursor-not-allowed" aria-label="Proyecto siguiente">
+            <button onClick={() => nextProject && handleNavigate(nextProject.id)} disabled={!nextProject} className="text-stone-500 hover:text-black disabled:opacity-30 disabled:cursor-not-allowed smooth-hover hover:scale-110" aria-label="Proyecto siguiente">
               <ArrowRight size={22} />
             </button>
           </div>}

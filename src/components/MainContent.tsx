@@ -27,7 +27,7 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
   useEffect(() => {
     if (main.type === "project") {
       mainContentRef.current?.scrollIntoView({ behavior: "auto" });
-      window.scrollTo({ top: 0, behavior: "instant" });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [main]);
 
@@ -49,7 +49,7 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
 
   if (isLoading) {
     content = (
-      <div className="w-full min-h-[40vh] flex flex-col items-center justify-center text-stone-400 text-lg font-inter pl-4 gap-3">
+      <div className="w-full min-h-[40vh] flex flex-col items-center justify-center text-stone-400 text-lg font-inter pl-4 gap-3 animate-fade-in">
         <Loader2 className="h-6 w-6 animate-spin text-stone-400" />
         <span>Cargando proyectos...</span>
       </div>
@@ -57,7 +57,7 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
     fadeDeps = ["loading"];
   } else if (error) {
     content = (
-      <div className="w-full min-h-[40vh] flex items-center justify-center text-red-500 text-lg font-inter pl-4">
+      <div className="w-full min-h-[40vh] flex items-center justify-center text-red-500 text-lg font-inter pl-4 animate-fade-in">
         Error al cargar proyectos: {error instanceof Error ? error.message : "Error desconocido"}
       </div>
     );
@@ -94,15 +94,15 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
     fadeDeps = [main.filter, "gallery"];
   }
 
-  const { fadeClass } = useFadeTransition(fadeDeps, 800);
+  const { fadeClass } = useFadeTransition(fadeDeps, 400);
 
   return (
     <main
       ref={mainContentRef}
-      className="w-full pb-14 md:pb-0 flex items-start justify-center transition-none"
+      className="w-full pb-14 md:pb-0 flex items-start justify-center"
     >
       <div
-        className={`w-full transition-all duration-800 ease-in-out ${fadeClass} ${
+        className={`w-full transition-all duration-400 ease-out ${fadeClass} ${
           isMobile ? "px-4 pt-20" : "pr-12 pt-8"
         }`}
         style={{
