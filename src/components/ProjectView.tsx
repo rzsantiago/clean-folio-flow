@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useProjects } from "@/hooks/useProjects";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -47,7 +48,7 @@ export default function ProjectView({
         minHeight: 230,
         background: "#EEE"
       }}>
-            <img src={project.coverImage} alt={`Portada de ${project.title}`} className="w-full h-full object-cover object-center transition-transform duration-500 ease-out hover:scale-105" draggable={false} />
+            <img src={project.coverImage} alt={`Portada de ${project.title}`} className="w-full h-full object-cover object-center" draggable={false} />
           </div>}
         
         {showProjectHeader && <div className="mb-6 animate-fade-in" style={{ animationDelay: '200ms' }}>
@@ -77,8 +78,8 @@ export default function ProjectView({
           margin: "0",
           background: "#EEE",
           animationDelay: `${(i + 1) * 150}ms`
-        }} className="w-full overflow-hidden smooth-lift animate-fade-in">
-              <img src={img} alt={`Imagen del proyecto ${project.title} ${i + 1}`} className="w-full h-full object-cover object-center transition-transform duration-500 ease-out hover:scale-105" draggable={false} />
+        }} className="w-full overflow-hidden animate-fade-in">
+              <img src={img} alt={`Imagen del proyecto ${project.title} ${i + 1}`} className="w-full h-full object-cover object-center" draggable={false} />
             </div>)}
         </div>
 

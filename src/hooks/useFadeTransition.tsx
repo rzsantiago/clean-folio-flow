@@ -1,12 +1,12 @@
 
 import { useState, useEffect } from "react";
 
-export function useFadeTransition(deps: any[], fadeMs = 400) {
+export function useFadeTransition(deps: any[], fadeMs = 600) {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     setVisible(false);
-    const t = setTimeout(() => setVisible(true), 50);
+    const t = setTimeout(() => setVisible(true), 80);
     return () => clearTimeout(t);
     // eslint-disable-next-line
   }, deps);

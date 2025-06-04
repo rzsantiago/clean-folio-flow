@@ -103,43 +103,43 @@
 }
 
 @layer utilities {
-  /* Animaciones de fade con desplazamiento */
+  /* Animaciones de fade con desplazamiento más suaves */
   .animate-fade-in {
-    animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
   
   .animate-fade-out {
-    animation: fadeOutDown 0.3s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+    animation: fadeOutDown 0.5s cubic-bezier(0.7, 0, 0.84, 0) forwards;
   }
   
   /* Animaciones de escala suave */
   .animate-scale-in {
-    animation: scaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
   
   .animate-scale-out {
-    animation: scaleOut 0.2s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+    animation: scaleOut 0.4s cubic-bezier(0.7, 0, 0.84, 0) forwards;
   }
   
-  /* Animaciones de deslizamiento lateral */
+  /* Animaciones de deslizamiento lateral más suaves */
   .animate-slide-in-right {
-    animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: slideInRight 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
   
   .animate-slide-out-right {
-    animation: slideOutRight 0.3s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+    animation: slideOutRight 0.5s cubic-bezier(0.7, 0, 0.84, 0) forwards;
   }
   
-  /* Transición suave para hover */
+  /* Transición suave para hover más lenta */
   .smooth-hover {
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
   
-  /* Efecto de elevación suave */
+  /* Efecto de elevación suave más sutil */
   .smooth-lift {
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
-                box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
+                box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
   
   .smooth-lift:hover {
@@ -151,7 +151,7 @@
 @keyframes fadeInUp {
   0% {
     opacity: 0;
-    transform: translateY(20px) scale(0.95);
+    transform: translateY(30px) scale(0.96);
   }
   100% {
     opacity: 1;
@@ -166,14 +166,14 @@
   }
   100% {
     opacity: 0;
-    transform: translateY(15px) scale(0.98);
+    transform: translateY(20px) scale(0.98);
   }
 }
 
 @keyframes scaleIn {
   0% {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.85);
   }
   100% {
     opacity: 1;
@@ -188,14 +188,14 @@
   }
   100% {
     opacity: 0;
-    transform: scale(0.95);
+    transform: scale(0.90);
   }
 }
 
 @keyframes slideInRight {
   0% {
     opacity: 0;
-    transform: translateX(100%) scale(0.95);
+    transform: translateX(100%) scale(0.94);
   }
   100% {
     opacity: 1;
@@ -210,6 +210,6 @@
   }
   100% {
     opacity: 0;
-    transform: translateX(100%) scale(0.98);
+    transform: translateX(100%) scale(0.96);
   }
 }
