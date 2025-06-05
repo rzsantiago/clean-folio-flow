@@ -19,7 +19,7 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				inter: ['Inter', 'sans-serif'],
+				fustat: ['Fustat', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',

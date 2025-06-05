@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect } from "react";
 import ProjectGallery from "@/components/ProjectGallery";
 import About from "@/pages/About";
@@ -49,7 +48,7 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
 
   if (isLoading) {
     content = (
-      <div className="w-full min-h-[40vh] flex flex-col items-center justify-center text-stone-400 text-lg font-inter pl-4 gap-3">
+      <div className="w-full min-h-[40vh] flex flex-col items-center justify-center text-stone-400 text-lg font-fustat pl-4 gap-3">
         <Loader2 className="h-6 w-6 animate-spin text-stone-400" />
         <span>Cargando proyectos...</span>
       </div>
@@ -57,7 +56,7 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
     fadeDeps = ["loading"];
   } else if (error) {
     content = (
-      <div className="w-full min-h-[40vh] flex items-center justify-center text-red-500 text-lg font-inter pl-4">
+      <div className="w-full min-h-[40vh] flex items-center justify-center text-red-500 text-lg font-fustat pl-4">
         Error al cargar proyectos: {error instanceof Error ? error.message : "Error desconocido"}
       </div>
     );

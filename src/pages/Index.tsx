@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Menu, ArrowLeft, ArrowRight } from "lucide-react";
@@ -93,7 +92,7 @@ const Index = () => {
 
   return (
     <div 
-      className="min-h-screen bg-white flex flex-col font-inter"
+      className="min-h-screen bg-white flex flex-col font-fustat"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}

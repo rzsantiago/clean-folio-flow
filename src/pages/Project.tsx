@@ -1,4 +1,3 @@
-
 import { useParams, useNavigate } from "react-router-dom";
 import { useProjects } from "@/hooks/useProjects";
 import { useEffect } from "react";
@@ -26,18 +25,18 @@ const ProjectPage = () => {
 
   if (!project)
     return (
-      <div className="py-16 text-center text-stone-500 font-inter">
+      <div className="py-16 text-center text-stone-500 font-fustat">
         Proyecto no encontrado.
       </div>
     );
 
   return (
-    <div className="max-w-2xl mx-auto pt-28 pb-12 font-inter px-4">
+    <div className="max-w-2xl mx-auto pt-28 pb-12 font-fustat px-4">
       <div className="flex items-center justify-between gap-2 mb-6">
         <button
           disabled={!prev}
           onClick={() => prev && navigate(`/project/${prev.id}`)}
-          className="text-stone-400 hover:text-stone-800 px-1 py-0 bg-none font-inter text-base disabled:opacity-40 transition-none"
+          className="text-stone-400 hover:text-stone-800 px-1 py-0 bg-none font-fustat text-base disabled:opacity-40 transition-none"
         >
           ← Anterior
         </button>
@@ -45,7 +44,7 @@ const ProjectPage = () => {
         <button
           disabled={!next}
           onClick={() => next && navigate(`/project/${next.id}`)}
-          className="text-stone-400 hover:text-stone-800 px-1 py-0 bg-none font-inter text-base disabled:opacity-40 transition-none"
+          className="text-stone-400 hover:text-stone-800 px-1 py-0 bg-none font-fustat text-base disabled:opacity-40 transition-none"
         >
           Siguiente →
         </button>
