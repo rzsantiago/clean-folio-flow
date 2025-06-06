@@ -3,6 +3,37 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Custom Font Face Declarations */
+@font-face {
+  font-family: 'CustomFont';
+  src: url('/fonts/custom-font.woff2') format('woff2'),
+       url('/fonts/custom-font.woff') format('woff'),
+       url('/fonts/custom-font.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('/fonts/custom-font-semibold.woff2') format('woff2'),
+       url('/fonts/custom-font-semibold.woff') format('woff'),
+       url('/fonts/custom-font-semibold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('/fonts/custom-font-bold.woff2') format('woff2'),
+       url('/fonts/custom-font-bold.woff') format('woff'),
+       url('/fonts/custom-font-bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
