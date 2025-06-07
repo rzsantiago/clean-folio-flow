@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { Menu, ArrowLeft, ArrowRight } from "lucide-react";
 import MainContent, { MainSection } from "@/components/MainContent";
 import SidebarNavigation from "@/components/SidebarNavigation";
 import { useProjects } from "@/hooks/useProjects";
@@ -166,23 +166,23 @@ const Index = () => {
         {/* Mobile: header and hamburger menu */}
         {isMobile && (
           <>
-            <div className="fixed top-0 left-0 right-0 flex justify-between items-center px-4 py-3 bg-white z-30" style={{ height: '60px' }}>
+            <div className="fixed top-0 left-0 right-0 flex justify-between items-start px-4 pt-3 bg-white z-30" style={{ height: '60px' }}>
               <button
                 className="font-helnow-bold text-[30px] leading-none tracking-wider text-black hover:text-[#cc3300] uppercase transition-colors"
                 onClick={() => setMain({ type: "gallery", filter: null })}
               >
-                <div className="flex flex-col">
+                <div className="flex flex-col items-start">
                   <span>Santiago</span>
                   <span className="-mt-1">Ruiz</span>
                 </div>
               </button>
               
               <button
-                className="p-2 rounded-md"
+                className="p-2 rounded-md mt-1"
                 onClick={() => setMenuOpen(v => !v)}
                 aria-label="Menu"
               >
-                <div className="w-3 h-3 rounded-full bg-[#cc3300]"></div>
+                <Menu className="w-6 h-6 text-black" />
               </button>
             </div>
 
