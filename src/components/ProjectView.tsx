@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useProjects } from "@/hooks/useProjects";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -50,7 +51,7 @@ export default function ProjectView({
           </div>}
         
         {showProjectHeader && <div className="mb-6">
-            <h1 className="font-helnow-bold text-3xl md:text-4xl text-stone-900">
+            <h1 className="font-helnow-bold text-3xl md:text-4xl text-stone-600">
               {project.title}
             </h1>
             {project.description && <p className="font-helnow-regular text-base md:text-lg text-stone-500 mt-2">

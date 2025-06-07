@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Menu, ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import MainContent, { MainSection } from "@/components/MainContent";
 import SidebarNavigation from "@/components/SidebarNavigation";
 import { useProjects } from "@/hooks/useProjects";
@@ -104,7 +105,7 @@ const Index = () => {
         <div className="hidden md:flex flex-col w-[240px] min-w-[240px] pl-8">
           <div className="sticky top-0 flex flex-col pt-8 bg-white h-screen">
             <button
-              className="font-helnow-bold text-[30px] leading-none tracking-wider text-stone-700 hover:text-[#cc3300] duration-100 pb-12 text-left uppercase transition-colors"
+              className="font-helnow-bold text-[30px] leading-none tracking-wider text-black hover:text-[#cc3300] duration-100 pb-12 text-left uppercase transition-colors"
               onClick={() => setMain({ type: "gallery", filter: null })}
             >
               <div className="flex flex-col">
@@ -165,9 +166,9 @@ const Index = () => {
         {/* Mobile: header and hamburger menu */}
         {isMobile && (
           <>
-            <div className="fixed top-0 left-0 right-0 flex justify-between items-center px-4 py-5 bg-white z-30">
+            <div className="fixed top-0 left-0 right-0 flex justify-between items-center px-4 py-3 bg-white z-30" style={{ height: '60px' }}>
               <button
-                className="font-helnow-bold text-[30px] leading-none tracking-wider text-stone-700 hover:text-[#cc3300] uppercase transition-colors"
+                className="font-helnow-bold text-[30px] leading-none tracking-wider text-black hover:text-[#cc3300] uppercase transition-colors"
                 onClick={() => setMain({ type: "gallery", filter: null })}
               >
                 <div className="flex flex-col">
@@ -181,7 +182,7 @@ const Index = () => {
                 onClick={() => setMenuOpen(v => !v)}
                 aria-label="Menu"
               >
-                <Menu className="w-6 h-6 text-stone-700" />
+                <div className="w-3 h-3 rounded-full bg-[#cc3300]"></div>
               </button>
             </div>
 
