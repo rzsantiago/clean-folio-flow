@@ -31,20 +31,20 @@ const ProjectPage = () => {
     );
 
   return (
-    <div className="max-w-2xl mx-auto pt-28 pb-12 font-fustat px-4">
+    <div className="max-w-2xl mx-auto pt-28 pb-12 font-helnow-regular px-4">
       <div className="flex items-center justify-between gap-2 mb-6">
         <button
           disabled={!prev}
           onClick={() => prev && navigate(`/project/${prev.id}`)}
-          className="text-stone-400 hover:text-stone-800 px-1 py-0 bg-none font-fustat text-base disabled:opacity-40 transition-none"
+          className="text-stone-400 hover:text-stone-800 px-1 py-0 bg-none font-helnow-regular text-base disabled:opacity-40 transition-none"
         >
           ← Anterior
         </button>
-        <span className="text-stone-400 font-light text-sm">{project.category}</span>
+        <span className="text-stone-400 font-helnow-light text-sm">{project.category}</span>
         <button
           disabled={!next}
           onClick={() => next && navigate(`/project/${next.id}`)}
-          className="text-stone-400 hover:text-stone-800 px-1 py-0 bg-none font-fustat text-base disabled:opacity-40 transition-none"
+          className="text-stone-400 hover:text-stone-800 px-1 py-0 bg-none font-helnow-regular text-base disabled:opacity-40 transition-none"
         >
           Siguiente →
         </button>
@@ -74,7 +74,7 @@ const ProjectPage = () => {
           />
         )}
       </div>
-      <h1 className="text-3xl font-bold mb-4 text-stone-900">{project.title}</h1>
+      <h1 className="font-helnow-bold text-3xl mb-4 text-stone-900">{project.title}</h1>
       {/* Galería de imágenes de contenido */}
       {project.contentImages && project.contentImages.length > 0 && (
         <div className="flex flex-wrap gap-6 mb-8">

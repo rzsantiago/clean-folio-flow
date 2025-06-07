@@ -2,6 +2,7 @@ import React from "react";
 import { useProjects } from "@/hooks/useProjects";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+
 type Props = {
   projectId: string;
   onNavigate: (id: string) => void;
@@ -9,6 +10,7 @@ type Props = {
   nextId?: string | null;
   showProjectHeader?: boolean;
 };
+
 export default function ProjectView({
   projectId,
   onNavigate,
@@ -48,13 +50,13 @@ export default function ProjectView({
           </div>}
         
         {showProjectHeader && <div className="mb-6">
-            <h1 className="text-3xl md:text-4xl text-stone-900 font-bold">
+            <h1 className="font-helnow-bold text-3xl md:text-4xl text-stone-900">
               {project.title}
             </h1>
-            {project.description && <p className="text-base md:text-lg text-stone-500 mt-2">
+            {project.description && <p className="font-helnow-regular text-base md:text-lg text-stone-500 mt-2">
                 {project.description}
               </p>}
-            {(project.client || project.year) && <div className="text-xs text-stone-400 mt-2 flex flex-row gap-3">
+            {(project.client || project.year) && <div className="font-helnow-light text-xs text-stone-400 mt-2 flex flex-row gap-3">
                 {project.client && <span>
                     <span className="font-medium">Cliente:</span> {project.client}
                   </span>}

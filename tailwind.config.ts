@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -20,7 +19,7 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				fustat: ['CustomFont', 'Fustat', 'sans-serif'],
+				helnow: ['HELNOW', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',

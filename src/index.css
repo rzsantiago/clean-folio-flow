@@ -3,32 +3,26 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom Font Face Declarations */
+/* HELNOW Font Face Declarations */
 @font-face {
-  font-family: 'CustomFont';
-  src: url('/fonts/custom-font.woff2') format('woff2'),
-       url('/fonts/custom-font.woff') format('woff'),
-       url('/fonts/custom-font.ttf') format('truetype');
+  font-family: 'HELNOW';
+  src: url('/fonts/HELNOW-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'HELNOW';
+  src: url('/fonts/HELNOW-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'CustomFont';
-  src: url('/fonts/custom-font-semibold.woff2') format('woff2'),
-       url('/fonts/custom-font-semibold.woff') format('woff'),
-       url('/fonts/custom-font-semibold.ttf') format('truetype');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'CustomFont';
-  src: url('/fonts/custom-font-bold.woff2') format('woff2'),
-       url('/fonts/custom-font-bold.woff') format('woff'),
-       url('/fonts/custom-font-bold.ttf') format('truetype');
+  font-family: 'HELNOW';
+  src: url('/fonts/HELNOW-Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -129,6 +123,27 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'HELNOW', sans-serif;
+    font-weight: 400;
     scrollbar-gutter: stable;
+  }
+}
+
+/* Custom utility classes for HELNOW fonts */
+@layer utilities {
+  .font-helnow-light {
+    font-family: 'HELNOW', sans-serif;
+    font-weight: 300;
+  }
+  
+  .font-helnow-regular {
+    font-family: 'HELNOW', sans-serif;
+    font-weight: 400;
+  }
+  
+  .font-helnow-bold {
+    font-family: 'HELNOW', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
   }
 }
