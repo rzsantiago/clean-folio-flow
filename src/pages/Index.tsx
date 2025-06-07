@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Menu, ArrowLeft, ArrowRight } from "lucide-react";
@@ -105,7 +104,7 @@ const Index = () => {
         <div className="hidden md:flex flex-col w-[240px] min-w-[240px] pl-8">
           <div className="sticky top-0 flex flex-col pt-8 bg-white h-screen">
             <button
-              className="font-helnow-bold text-lg font-normal tracking-wider text-stone-700 hover:underline duration-100 pb-12 text-left uppercase"
+              className="font-helnow-bold text-lg font-normal tracking-wider text-stone-700 hover:text-[#cc3300] duration-100 pb-12 text-left uppercase transition-colors"
               onClick={() => setMain({ type: "gallery", filter: null })}
             >
               Santiago Ruiz
@@ -165,7 +164,7 @@ const Index = () => {
           <>
             <div className="fixed top-0 left-0 right-0 flex justify-between items-center px-4 py-5 bg-white z-30">
               <button
-                className="font-helnow-bold text-lg tracking-wider text-stone-700 uppercase"
+                className="font-helnow-bold text-lg tracking-wider text-stone-700 hover:text-[#cc3300] uppercase transition-colors"
                 onClick={() => setMain({ type: "gallery", filter: null })}
               >
                 Santiago Ruiz

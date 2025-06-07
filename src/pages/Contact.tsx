@@ -12,12 +12,12 @@ const Contact = ({ minimal }: { minimal?: boolean }) => (
       
       <div className="mt-6">
         <p className="mb-2">
-          <a href="mailto:santiagoruiz.rz@gmail.com" className="text-blue-600 hover:underline">
+          <a href="mailto:santiagoruiz.rz@gmail.com" className="text-stone-900 hover:text-stone-600 transition-colors underline">
             santiagoruiz.rz@gmail.com
           </a>
         </p>
         <p>
-          <a href="https://wa.me/5493816155819" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+          <a href="https://wa.me/5493816155819" target="_blank" rel="noopener noreferrer" className="text-stone-900 hover:text-stone-600 transition-colors underline">
             +54 9 381 6155819
           </a>
         </p>

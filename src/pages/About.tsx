@@ -1,3 +1,4 @@
+
 import React from "react";
 
 const PHOTO_URL = "/lovable-uploads/fe43cc7a-4a41-4d42-863a-db719dbb6c7d.png";
@@ -20,7 +21,7 @@ const About = ({ minimal }: { minimal?: boolean }) => (
       </p>
       
       <p>
-        Currently, I work part-time as a designer at <a href="https://sich.design" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">sich.design</a> studio, where I lead and execute projects from their earliest stages — from research and ideation to the creation of all the technical materials required for final production. I collaborate closely with professionals from different fields to develop efficient, accelerated solutions with meaningful results. I also have advanced skills in 3D modeling and visualization, which I integrate seamlessly into my workflow.
+        Currently, I work part-time as a designer at <a href="https://sich.design" target="_blank" rel="noopener noreferrer" className="text-stone-900 hover:text-stone-600 transition-colors underline">sich.design</a> studio, where I lead and execute projects from their earliest stages — from research and ideation to the creation of all the technical materials required for final production. I collaborate closely with professionals from different fields to develop efficient, accelerated solutions with meaningful results. I also have advanced skills in 3D modeling and visualization, which I integrate seamlessly into my workflow.
       </p>
       
       <p>
