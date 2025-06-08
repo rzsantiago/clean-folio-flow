@@ -1,11 +1,12 @@
-
 import React from "react";
-
-const Contact = ({ minimal }: { minimal?: boolean }) => (
-  <div className={`max-w-xl mx-auto font-helnow-regular text-stone-700 ${minimal ? "" : "bg-white rounded-xl shadow"} md:ml-0 md:mr-auto`}>
-    <h1 className="font-helnow-regular text-3xl mb-4 text-stone-700 px-4 md:px-6">LET'S TALK</h1>
+const Contact = ({
+  minimal
+}: {
+  minimal?: boolean;
+}) => <div className={`max-w-xl mx-auto font-helnow-regular text-stone-700 ${minimal ? "" : "bg-white rounded-xl shadow"} md:ml-0 md:mr-auto px-4 md:px-6`}>
+    <h1 className="font-helnow-bold text-3xl mb-4 px-0">Let's Talk</h1>
     
-    <div className="text-base space-y-4 pb-8 px-4 md:px-6">
+    <div className="text-base space-y-4 pb-8 px-0">
       <p>
         Whether you have a project in mind, a question, or just want to connect — I'd love to hear from you. Feel free to reach out by email or WhatsApp:
       </p>
@@ -23,7 +24,5 @@ const Contact = ({ minimal }: { minimal?: boolean }) => (
         </p>
       </div>
     </div>
-  </div>
-);
-
+  </div>;
 export default Contact;
