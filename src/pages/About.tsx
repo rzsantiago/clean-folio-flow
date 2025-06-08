@@ -1,10 +1,9 @@
-
 import React from "react";
 
 const PHOTO_URL = "/lovable-uploads/fe43cc7a-4a41-4d42-863a-db719dbb6c7d.png";
 
 const About = ({ minimal }: { minimal?: boolean }) => (
-  <div className={`max-w-xl mx-auto font-helnow-regular text-stone-700 ${minimal ? "" : "bg-white rounded-xl shadow"} md:ml-0 md:mr-auto`}>
+  <div className={`max-w-xl mx-auto font-helnow-regular text-stone-700 ${minimal ? "" : "bg-white rounded-xl shadow"} md:ml-0 md:mr-auto ${minimal ? "" : "px-4 md:px-6"}`}>
     <div className="w-full mb-8 rounded-xl overflow-hidden" style={{ height: 500, maxHeight: "60vw", minHeight: 240, background: "#eee" }}>
       <img
         src={PHOTO_URL}
