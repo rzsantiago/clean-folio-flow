@@ -4,7 +4,7 @@ import React from "react";
 const PHOTO_URL = "/lovable-uploads/fe43cc7a-4a41-4d42-863a-db719dbb6c7d.png";
 
 const About = ({ minimal }: { minimal?: boolean }) => (
-  <div className={`max-w-xl mx-auto font-helnow-regular text-stone-700 ${minimal ? "" : "bg-white rounded-xl shadow"} md:ml-0 md:mr-auto px-4 md:px-6`}>
+  <div className={`max-w-xl mx-auto font-helnow-regular text-stone-700 ${minimal ? "" : "bg-white rounded-xl shadow"} md:ml-0 md:mr-auto`}>
     <div className="w-full mb-8 rounded-xl overflow-hidden" style={{ height: 500, maxHeight: "60vw", minHeight: 240, background: "#eee" }}>
       <img
         src={PHOTO_URL}
@@ -29,7 +29,7 @@ const About = ({ minimal }: { minimal?: boolean }) => (
       </p>
       
       <div className="mt-6">
-        <h2 className="font-helnow-bold text-lg mb-2">Academic Background</h2>
+        <h2 className="text-base mb-2">Academic Background</h2>
         <ul className="list-disc pl-5 space-y-1">
           <li>Mechanical-Electrical Technician (2006–2013) — Instituto Técnico U.N.T.</li>
           <li>Industrial Engineering (2014) — Universidad Nacional de Tucumán</li>

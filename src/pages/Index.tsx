@@ -166,9 +166,9 @@ const Index = () => {
         {/* Mobile: header and hamburger menu */}
         {isMobile && (
           <>
-            <div className="fixed top-0 left-0 right-0 flex justify-between items-start px-4 py-3 bg-white z-30" style={{ height: '70px' }}>
+            <div className="fixed top-0 left-0 right-0 flex justify-between items-start px-4 py-3 bg-white z-30" style={{ height: '75px' }}>
               <button
-                className="font-helnow-bold text-[30px] leading-none tracking-wider text-black hover:text-[#cc3300] uppercase transition-colors"
+                className="font-helnow-bold text-[30px] leading-none tracking-wider text-black hover:text-[#cc3300] uppercase transition-colors pb-2"
                 onClick={() => setMain({ type: "gallery", filter: null })}
               >
                 <div className="flex flex-col items-start">

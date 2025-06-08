@@ -103,7 +103,7 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
     >
       <div
         className={`w-full transition-all duration-800 ease-in-out ${fadeClass} ${
-          isMobile ? "px-4 pt-20" : "pr-12 pt-8"
+          isMobile ? "px-4 pt-24" : "pr-12 pt-8"
         }`}
         style={{
           minHeight: "75vh",
