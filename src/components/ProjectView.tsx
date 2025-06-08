@@ -48,7 +48,7 @@ export default function ProjectView({
           </div>}
         
         {showProjectHeader && <div className="mb-6">
-            <h1 className="font-helnow-bold text-3xl md:text-2xl font-normal text-stone-900">
+            <h1 className="font-helnow-regular text-3xl md:text-2xl font-normal text-stone-700">
               {project.title}
             </h1>
             {project.description && <p className="font-helnow-regular text-base md:text-lg text-stone-500 mt-2">
