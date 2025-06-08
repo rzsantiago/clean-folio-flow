@@ -1,7 +1,7 @@
 import React from "react";
 
 const Contact = ({ minimal }: { minimal?: boolean }) => (
-  <div className={`max-w-xl mx-auto font-helnow-regular text-stone-700 ${minimal ? "" : "bg-white rounded-xl shadow"} md:ml-0 md:mr-auto ${minimal ? "" : "px-4 md:px-6"}`}>
+  <div className={`max-w-xl mx-auto font-helnow-regular text-stone-700 ${minimal ? "" : "bg-white rounded-xl shadow px-4 md:px-6"} md:ml-0 md:mr-auto`}>
     <h1 className="font-helnow-regular text-3xl md:text-2xl text-stone-700 mb-4">LET'S TALK</h1>
     
     <div className="text-base space-y-4 pb-8">
