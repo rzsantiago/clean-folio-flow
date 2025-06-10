@@ -22,6 +22,8 @@ const menuEntries = [
 const Index = () => {
   const [main, setMain] = useState<MainSection>({ type: "gallery", filter: null });
   const [menuOpen, setMenuOpen] = useState(false);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
   const isMobile = useIsMobile();
   const { data: projects = [] } = useProjects();
 
@@ -57,6 +59,30 @@ const Index = () => {
     }
   };
 
+  // Manejo del gesto swipe para navegación móvil
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (main.type !== 'project') return;
+
+    const minSwipeDistance = 50;
+    if (touchStart - touchEnd > minSwipeDistance) {
+      // Swipe izquierda - Siguiente proyecto
+      if (nextProject) handleProjectNavigation('next');
+    }
+    
+    if (touchEnd - touchStart > minSwipeDistance) {
+      // Swipe derecha - Proyecto anterior
+      if (prevProject) handleProjectNavigation('prev');
+    }
+  };
+
   useEffect(() => {
     if (isMobile && menuOpen) {
       document.body.style.overflow = "hidden";
@@ -66,7 +92,12 @@ const Index = () => {
   }, [menuOpen, isMobile]);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col font-helnow-regular">
+    <div 
+      className="min-h-screen bg-white flex flex-col font-helnow-regular"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       <div className="flex-1 flex flex-row w-full max-w-screen-2xl mx-auto">
         <MainContent main={main} setMain={setMain} isMobile={isMobile} />
         
