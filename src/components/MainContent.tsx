@@ -46,7 +46,7 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
   }
 
   let content: React.ReactNode = null;
-  let fadeDeps: any[] = [];
+  let stateKey = "";
 
   if (isLoading) {
     content = (
@@ -55,20 +55,20 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
         <span>Cargando proyectos...</span>
       </div>
     );
-    fadeDeps = ["loading"];
+    stateKey = "loading";
   } else if (error) {
     content = (
       <div className="w-full min-h-[40vh] flex items-center justify-center text-red-500 text-lg font-fustat pl-4">
         Error al cargar proyectos: {error instanceof Error ? error.message : "Error desconocido"}
       </div>
     );
-    fadeDeps = ["error"];
+    stateKey = "error";
   } else if (main.type === "about") {
     content = <About minimal />;
-    fadeDeps = ["about"];
+    stateKey = "about";
   } else if (main.type === "contact") {
     content = <Contact minimal />;
-    fadeDeps = ["contact"];
+    stateKey = "contact";
   } else if (main.type === "project") {
     const currentProject = projects.find(p => p.id === main.id);
     const currentIndex = filteredProjects.findIndex(p => p.id === main.id);
@@ -98,7 +98,7 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
         />
       );
     }
-    fadeDeps = [main.id, "project"];
+    stateKey = `project-${main.id}`;
   } else if (main.type === "gallery") {
     content = (
       <ProjectGallery
@@ -113,10 +113,10 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
         noOverlay
       />
     );
-    fadeDeps = [main.filter, "gallery"];
+    stateKey = `gallery-${main.filter || 'all'}`;
   }
 
-  const { fadeClass } = useFadeTransition(fadeDeps, 800);
+  const { fadeClass } = useFadeTransition([stateKey], 800);
 
   return (
     <main
