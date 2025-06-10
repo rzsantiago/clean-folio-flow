@@ -4,6 +4,7 @@ import ProjectGallery from "@/components/ProjectGallery";
 import About from "@/pages/About";
 import Contact from "@/pages/Contact";
 import ProjectView from "@/components/ProjectView";
+import InteractiveProjectSwipe from "@/components/InteractiveProjectSwipe";
 import { useFadeTransition } from "@/hooks/useFadeTransition";
 import { useProjects } from "@/hooks/useProjects";
 import { Loader2 } from "lucide-react";
@@ -69,13 +70,34 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
     content = <Contact minimal />;
     fadeDeps = ["contact"];
   } else if (main.type === "project") {
-    content = (
-      <ProjectView
-        projectId={main.id}
-        onNavigate={id => setMain({ type: "project", id, fromFilter: main.fromFilter })}
-        showProjectHeader
-      />
-    );
+    const currentProject = projects.find(p => p.id === main.id);
+    const currentIndex = filteredProjects.findIndex(p => p.id === main.id);
+    const prevProject = currentIndex > 0 ? filteredProjects[currentIndex - 1] : null;
+    const nextProject = currentIndex >= 0 && currentIndex < filteredProjects.length - 1 
+      ? filteredProjects[currentIndex + 1] 
+      : null;
+
+    if (isMobile && currentProject) {
+      // Use interactive swipe on mobile
+      content = (
+        <InteractiveProjectSwipe
+          currentProject={currentProject}
+          prevProject={prevProject}
+          nextProject={nextProject}
+          onNavigate={id => setMain({ type: "project", id, fromFilter: main.fromFilter })}
+          fromFilter={main.fromFilter}
+        />
+      );
+    } else {
+      // Use regular ProjectView on desktop
+      content = (
+        <ProjectView
+          projectId={main.id}
+          onNavigate={id => setMain({ type: "project", id, fromFilter: main.fromFilter })}
+          showProjectHeader
+        />
+      );
+    }
     fadeDeps = [main.id, "project"];
   } else if (main.type === "gallery") {
     content = (
