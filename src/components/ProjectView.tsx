@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useProjects } from "@/hooks/useProjects";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -34,7 +35,7 @@ export default function ProjectView({
           top: 0,
           behavior: "smooth"
         });
-      }, 10);
+    }, 10);
     }
   };
   return <div className={`relative w-full min-h-[70vh] select-none px-0 ${isMobile ? '' : 'pl-4'}`}>
@@ -54,8 +55,8 @@ export default function ProjectView({
             {project.description && <p className="font-helnow-regular text-base md:text-lg text-stone-500 mt-2">
                 {project.description}
               </p>}
-            {(project.client || project.year) && <div className="font-helnow-light text-xs text-stone-400 mt-2 flex flex-row gap-3">
-                {project.client && <span className="font-normal text-sm">
+            {(project.client || project.year) && <div className="font-helnow-regular text-xs text-stone-400 mt-2 flex flex-row gap-3">
+                {project.client && <span className="text-sm">
                     <span className="font-medium">Cliente:</span> {project.client}
                   </span>}
                 {project.client && project.year && <span className="mx-2 text-sm">|</span>}
