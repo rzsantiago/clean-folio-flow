@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect } from "react";
 import ProjectGallery from "@/components/ProjectGallery";
 import About from "@/pages/About";
@@ -103,7 +102,7 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
     >
       <div
         className={`w-full transition-all duration-800 ease-in-out ${fadeClass} ${
-          isMobile ? "px-4 pt-24" : "pr-12 pt-8 pl-0 lg:pl-4"
+          isMobile ? "px-4 pt-24" : "pr-6 pt-8 pl-0 lg:pl-4"
         }`}
         style={{
           minHeight: "75vh",

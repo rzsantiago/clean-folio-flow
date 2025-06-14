@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Menu, ArrowLeft, ArrowRight } from "lucide-react";
@@ -102,7 +101,7 @@ const Index = () => {
         <MainContent main={main} setMain={setMain} isMobile={isMobile} />
         
         {/* Right sidebar container with header */}
-        <div className="hidden md:flex flex-col w-[240px] min-w-[240px] pl-8">
+        <div className="hidden md:flex flex-col w-[220px] min-w-[220px] pl-4">
           <div className="sticky top-0 flex flex-col pt-8 bg-white h-screen">
             <button
               className="font-helnow-bold text-[30px] leading-none tracking-wider text-black hover:text-[#cc3300] duration-100 pb-12 text-left uppercase transition-colors"
