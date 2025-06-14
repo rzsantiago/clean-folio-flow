@@ -5,13 +5,25 @@
     <meta charset="utf-8">
     <title>clean-folio-flow</title>
     <script type="text/javascript">
-      // Redirect to index.html with hash routing
-      var segmentCount = 0;
+      // Redirect to index.html with hash routing for GitHub Pages
       var l = window.location;
+      var pathSegments = l.pathname.split('/').filter(function(segment) {
+        return segment.length > 0;
+      });
+      
+      // Remove 'clean-folio-flow' from path if present
+      if (pathSegments[0] === 'clean-folio-flow') {
+        pathSegments.shift();
+      }
+      
+      var redirectPath = pathSegments.length > 0 ? pathSegments.join('/') : '';
+      
       l.replace(
         l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-        l.pathname.split('/').slice(0, 1 + segmentCount).join('/') + 
-        '/#/' + l.pathname.slice(1)
+        '/clean-folio-flow/' + 
+        '#/' + redirectPath +
+        (l.search || '') +
+        (l.hash || '')
       );
     </script>
   </head>
