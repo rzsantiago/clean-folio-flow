@@ -7,7 +7,9 @@ import { ImageUploader } from "@/components/ImageUploader";
 import { ContentItem } from "@/types/projects";
 import { UseFormSetValue, UseFormWatch } from "react-hook-form";
 import { AddProjectFormData } from "@/types/projects";
-import { Plus, X, MoveUp, MoveDown, Image, Type } from "lucide-react";
+import { Plus, X, MoveUp, MoveDown, Image, Type, Upload } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 
 type ContentMixedFieldProps = {
   setValue: UseFormSetValue<AddProjectFormData>;
@@ -19,6 +21,7 @@ export function ContentMixedField({ setValue, watch }: ContentMixedFieldProps) {
   const [showImageUpload, setShowImageUpload] = useState(false);
   const [showTextInput, setShowTextInput] = useState(false);
   const [newText, setNewText] = useState("");
+  const [uploading, setUploading] = useState(false);
 
   const addImage = (url: string) => {
     const newItem: ContentItem = {
@@ -27,7 +30,60 @@ export function ContentMixedField({ setValue, watch }: ContentMixedFieldProps) {
       id: `item-${Date.now()}-${Math.random()}`
     };
     setValue("contentItems", [...contentItems, newItem]);
-    setShowImageUpload(false);
+  };
+
+  const handleMultipleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+
+    setUploading(true);
+    
+    try {
+      const uploadPromises = Array.from(files).map(async (file) => {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${Math.random()}.${fileExt}`;
+        const filePath = `${fileName}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('projects')
+          .upload(filePath, file);
+
+        if (uploadError) {
+          throw uploadError;
+        }
+
+        const { data: { publicUrl } } = supabase.storage
+          .from('projects')
+          .getPublicUrl(filePath);
+
+        return publicUrl;
+      });
+
+      const uploadedUrls = await Promise.all(uploadPromises);
+      
+      const newItems: ContentItem[] = uploadedUrls.map(url => ({
+        type: 'image',
+        content: url,
+        id: `item-${Date.now()}-${Math.random()}`
+      }));
+
+      setValue("contentItems", [...contentItems, ...newItems]);
+      setShowImageUpload(false);
+      
+      toast({
+        title: "Imágenes subidas",
+        description: `${uploadedUrls.length} imágenes fueron subidas correctamente.`,
+      });
+    } catch (error) {
+      console.error('Error uploading images:', error);
+      toast({
+        title: "Error al subir imágenes",
+        description: "Ocurrió un error al subir las imágenes. Inténtalo de nuevo.",
+        variant: "destructive"
+      });
+    } finally {
+      setUploading(false);
+    }
   };
 
   const addText = () => {
@@ -89,15 +145,45 @@ export function ContentMixedField({ setValue, watch }: ContentMixedFieldProps) {
 
       {/* Upload de imagen */}
       {showImageUpload && (
-        <div className="border rounded-lg p-4 bg-slate-50">
-          <Label className="text-sm text-slate-600 mb-2 block">Subir nueva imagen</Label>
-          <ImageUploader onChange={addImage} />
+        <div className="border rounded-lg p-4 bg-slate-50 space-y-4">
+          <div>
+            <Label className="text-sm text-slate-600 mb-2 block">Subir imagen individual</Label>
+            <ImageUploader onChange={addImage} />
+          </div>
+          
+          <div className="border-t pt-4">
+            <Label className="text-sm text-slate-600 mb-2 block">O subir múltiples imágenes</Label>
+            <Button
+              variant="outline"
+              className="gap-2"
+              disabled={uploading}
+              asChild
+            >
+              <label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleMultipleImageUpload}
+                  className="hidden"
+                />
+                {uploading ? (
+                  "Subiendo..."
+                ) : (
+                  <>
+                    <Upload className="w-4 h-4" />
+                    Subir múltiples imágenes
+                  </>
+                )}
+              </label>
+            </Button>
+          </div>
+          
           <Button
             type="button"
             variant="ghost"
             size="sm"
             onClick={() => setShowImageUpload(false)}
-            className="mt-2"
           >
             Cancelar
           </Button>
