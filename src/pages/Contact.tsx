@@ -1,14 +1,13 @@
 
 import React from "react";
-import { useImprovedFadeTransition } from "@/hooks/useImprovedFadeTransition"; // Import the hook
 
 const Contact = ({ minimal }: { minimal?: boolean }) => {
-  const { transitionStyle } = useImprovedFadeTransition(['contact-page'], 600);
+  // const { transitionStyle } = useImprovedFadeTransition(['contact-page'], 600); // Eliminado
 
   return (
     <div 
       className={`max-w-xl mx-auto font-helnow-regular text-stone-700 ${minimal ? "" : "bg-white rounded-xl shadow px-4 md:px-6"} md:ml-0 md:mr-auto`}
-      style={transitionStyle} // Apply transition style
+      // style={transitionStyle} // Eliminado
     >
       <h1 className="font-helnow-regular text-3xl md:text-2xl text-stone-700 mb-4">LET'S TALK</h1>
       
@@ -35,4 +34,3 @@ const Contact = ({ minimal }: { minimal?: boolean }) => {
 };
 
 export default Contact;
-

@@ -1,16 +1,15 @@
 
 import React from "react";
-import { useImprovedFadeTransition } from "@/hooks/useImprovedFadeTransition"; // Import the hook
 
 const PHOTO_URL = "/lovable-uploads/fe43cc7a-4a41-4d42-863a-db719dbb6c7d.png";
 
 const About = ({ minimal }: { minimal?: boolean }) => {
-  const { transitionStyle } = useImprovedFadeTransition(['about-page'], 600);
+  // const { transitionStyle } = useImprovedFadeTransition(['about-page'], 600); // Eliminado
 
   return (
     <div 
       className={`max-w-xl mx-auto font-helnow-regular text-stone-700 ${minimal ? "" : "bg-white rounded-xl shadow px-4 md:px-6"} md:ml-0 md:mr-auto`}
-      style={transitionStyle} // Apply transition style
+      // style={transitionStyle} // Eliminado
     >
       <div className="w-full mb-8 rounded-xl overflow-hidden" style={{ height: 500, maxHeight: "60vw", minHeight: 240, background: "#eee" }}>
         <img
@@ -53,4 +52,3 @@ const About = ({ minimal }: { minimal?: boolean }) => {
 };
 
 export default About;
-
