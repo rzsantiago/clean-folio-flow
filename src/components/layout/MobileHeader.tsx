@@ -41,7 +41,7 @@ export default function MobileHeader({
         
         <button
           className="p-2 rounded-md mt-1"
-          onClick={() => setMenuOpen(v => !v)}
+          onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Menu"
         >
           <Menu className="w-6 h-6 text-black" />
