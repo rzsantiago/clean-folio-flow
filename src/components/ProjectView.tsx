@@ -24,9 +24,15 @@ export default function ProjectView({
   
   const project = projects.find(p => p.id === projectId);
   
-  // Find category projects and current index - handle null project case
-  const categoryProjects = project ? projects.filter(p => p.category === project.category) : [];
-  const currentIndex = project ? categoryProjects.findIndex(p => p.id === projectId) : -1;
+  // Find category projects and current index - handle null project case safely
+  const categoryProjects = React.useMemo(() => {
+    return project ? projects.filter(p => p.category === project.category) : [];
+  }, [project, projects]);
+  
+  const currentIndex = React.useMemo(() => {
+    return project ? categoryProjects.findIndex(p => p.id === projectId) : -1;
+  }, [project, categoryProjects, projectId]);
+  
   const prevProject = currentIndex > 0 ? categoryProjects[currentIndex - 1] : null;
   const nextProject = currentIndex >= 0 && currentIndex < categoryProjects.length - 1 ? categoryProjects[currentIndex + 1] : null;
 
@@ -55,7 +61,7 @@ export default function ProjectView({
     };
   }, [api, categoryProjects, projectId, onNavigate]);
 
-  const handleNavigate = (id: string) => {
+  const handleNavigate = React.useCallback((id: string) => {
     onNavigate(id);
     if (typeof window !== "undefined") {
       setTimeout(() => {
@@ -65,10 +71,16 @@ export default function ProjectView({
         });
       }, 10);
     }
-  };
+  }, [onNavigate]);
 
-  // Now it's safe to return null AFTER all hooks have been executed
-  if (!project) return null;
+  // Return early only after all hooks have been called
+  if (!project) {
+    return (
+      <div className="relative w-full min-h-[70vh] flex items-center justify-center text-stone-500">
+        <p>Proyecto no encontrado</p>
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full min-h-[70vh] select-none px-0">
