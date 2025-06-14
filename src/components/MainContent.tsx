@@ -46,7 +46,6 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
 
   let content: React.ReactNode = null;
   let fadeDeps: any[] = [];
-  let useSlideTransition = false;
 
   if (isLoading) {
     content = (
@@ -77,8 +76,6 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
         showProjectHeader
       />
     );
-    // For projects, we'll use a different transition approach
-    useSlideTransition = true;
     fadeDeps = [main.id, "project"];
   } else if (main.type === "gallery") {
     content = (
@@ -97,10 +94,7 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
     fadeDeps = [main.filter, "gallery"];
   }
 
-  // Use slide transition for projects, fade for everything else
-  const transitionClass = useSlideTransition 
-    ? "transition-transform duration-500 ease-in-out"
-    : useFadeTransition(fadeDeps, 400).fadeClass;
+  const { fadeClass } = useFadeTransition(fadeDeps, 800);
 
   return (
     <main
@@ -108,7 +102,7 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
       className="w-full pb-14 md:pb-0 flex items-start justify-center transition-none"
     >
       <div
-        className={`w-full ${transitionClass} ${
+        className={`w-full transition-all duration-800 ease-in-out ${fadeClass} ${
           isMobile ? "px-4 pt-24" : "px-6 pt-8"
         }`}
         style={{
