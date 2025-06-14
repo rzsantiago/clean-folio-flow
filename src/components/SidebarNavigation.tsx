@@ -108,10 +108,10 @@ export default function SidebarNavigation({
     );
   }
 
-  // Desktop sidebar
+  // Desktop sidebar - ancho fijo más consistente
   return (
     <section
-      className="hidden md:flex w-[29%] max-w-xs min-w-[180px] flex-col items-end"
+      className="hidden md:flex w-[220px] min-w-[220px] flex-col items-end"
       style={{
         position: "sticky",
         top: 88,
