@@ -24,12 +24,9 @@ export default function ProjectView({
   
   const project = projects.find(p => p.id === projectId);
   
-  // Now it's safe to have the early return AFTER all hooks are declared
-  if (!project) return null;
-
-  // Find category projects and current index
-  const categoryProjects = projects.filter(p => p.category === project.category);
-  const currentIndex = categoryProjects.findIndex(p => p.id === projectId);
+  // Find category projects and current index - handle null project case
+  const categoryProjects = project ? projects.filter(p => p.category === project.category) : [];
+  const currentIndex = project ? categoryProjects.findIndex(p => p.id === projectId) : -1;
   const prevProject = currentIndex > 0 ? categoryProjects[currentIndex - 1] : null;
   const nextProject = currentIndex >= 0 && currentIndex < categoryProjects.length - 1 ? categoryProjects[currentIndex + 1] : null;
 
@@ -69,6 +66,9 @@ export default function ProjectView({
       }, 10);
     }
   };
+
+  // Now it's safe to return null AFTER all hooks have been executed
+  if (!project) return null;
 
   return (
     <div className="relative w-full min-h-[70vh] select-none px-0">
