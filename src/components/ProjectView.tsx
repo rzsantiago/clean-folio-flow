@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from "react";
 import { useProjects } from "@/hooks/useProjects";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -176,27 +177,29 @@ export default function ProjectView({
 
   // Mobile carousel with peek effect
   if (isMobile) {
+    const visibleProjects = [];
+    if (prevProject) visibleProjects.push(prevProject);
+    visibleProjects.push(project);
+    if (nextProject) visibleProjects.push(nextProject);
+
     return (
       <div className="relative w-full min-h-[70vh] select-none overflow-hidden">
         <div 
           ref={carouselRef}
           className="flex transition-transform duration-300 ease-out"
           style={{
-            transform: `translateX(calc(-100% + ${dragOffset}px))`,
-            width: `${categoryProjects.length * 100}%`
+            transform: `translateX(calc(-${prevProject ? 100 : 0}% + ${dragOffset}px))`,
+            width: `${visibleProjects.length * 100}%`
           }}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
-          {/* Previous project */}
-          {prevProject && renderProject(prevProject, false)}
-          
-          {/* Current project */}
-          {renderProject(project, true)}
-          
-          {/* Next project */}
-          {nextProject && renderProject(nextProject, false)}
+          {visibleProjects.map((proj) => (
+            <div key={proj.id} style={{ width: `${100 / visibleProjects.length}%` }}>
+              {renderProject(proj, proj.id === projectId)}
+            </div>
+          ))}
         </div>
 
         {/* Navigation buttons */}
