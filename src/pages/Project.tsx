@@ -1,8 +1,9 @@
+
 import { useParams, useNavigate } from "react-router-dom";
 import { useProjects } from "@/hooks/useProjects";
 import { useEffect } from "react";
 
-// Muestra el proyecto, navegación y galería de imágenes (con imagen de portada si existe)
+// Muestra el proyecto, navegación y contenido mixto (imágenes y textos)
 const ProjectPage = () => {
   const { id } = useParams<{ id: string }>();
   const { data: projects = [] } = useProjects();
@@ -49,10 +50,12 @@ const ProjectPage = () => {
           Siguiente →
         </button>
       </div>
+      
+      {/* Imagen de portada */}
       <div
         className={`w-full mb-8 rounded-xl overflow-hidden`}
         style={{
-          aspectRatio: project.ratio === "4x3" ? "4/3" : "3/4",
+          aspectRatio: "4/3",
           minHeight: 200,
           background: project.coverImage ? undefined : project.coverColor,
         }}
@@ -66,7 +69,7 @@ const ProjectPage = () => {
               borderRadius: 16,
               width: "100%",
               height: "100%",
-              aspectRatio: project.ratio === "4x3" ? "4/3" : "3/4",
+              aspectRatio: "4/3",
               minHeight: 200,
               display: "block"
             }}
@@ -74,35 +77,43 @@ const ProjectPage = () => {
           />
         )}
       </div>
+      
       <h1 className="font-helnow-bold text-3xl mb-4 text-stone-900">{project.title}</h1>
-      {/* Galería de imágenes de contenido */}
-      {project.contentImages && project.contentImages.length > 0 && (
-        <div className="flex flex-wrap gap-6 mb-8">
-          {project.contentImages.map((img, i) => (
-            <div
-              key={i}
-              className="w-full overflow-hidden"
-              style={{
-                borderRadius: 16,
-                aspectRatio: "4/3",
-                minWidth: 120,
-                minHeight: 94,
-                flex: "1 0 31%",
-                maxWidth: "30%",
-                background: "#EEE"
-              }}
-            >
-              <img
-                src={img}
-                alt={`Imagen del proyecto ${project.title} ${i + 1}`}
-                className="w-full h-full object-cover object-center"
-                draggable={false}
-              />
+      
+      {/* Contenido mixto (imágenes y textos) */}
+      {project.contentItems && project.contentItems.length > 0 && (
+        <div className="flex flex-col gap-6 mb-8">
+          {project.contentItems.map((item, i) => (
+            <div key={item.id || i}>
+              {item.type === 'image' ? (
+                <div
+                  className="w-full overflow-hidden"
+                  style={{
+                    borderRadius: 16,
+                    aspectRatio: "4/3",
+                    minWidth: 120,
+                    minHeight: 94,
+                    background: "#EEE"
+                  }}
+                >
+                  <img
+                    src={item.content}
+                    alt={`Imagen del proyecto ${project.title} ${i + 1}`}
+                    className="w-full h-full object-cover object-center"
+                    draggable={false}
+                  />
+                </div>
+              ) : (
+                <div className="w-full">
+                  <p className="font-helnow-regular text-base text-stone-600 leading-relaxed">
+                    {item.content}
+                  </p>
+                </div>
+              )}
             </div>
           ))}
         </div>
       )}
-      {/* Texto u otros contenidos si lo hubiese */}
     </div>
   );
 }

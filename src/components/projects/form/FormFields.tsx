@@ -6,8 +6,7 @@ import { Label } from "@/components/ui/label";
 import { ImageUploader } from "@/components/ImageUploader";
 import { UseFormRegister, UseFormWatch, UseFormSetValue, FieldErrors } from "react-hook-form";
 import { AddProjectFormData } from "@/types/projects";
-import { ContentImageList } from './ContentImageList';
-import { ContentImagesField as ContentImagesComponent } from './ContentImagesField';
+import { ContentMixedField } from './ContentMixedField';
 import { CATEGORIES } from "../ProjectForm";
 
 type FormFieldProps = {
@@ -57,18 +56,6 @@ export function BasicInfoFields({ register, errors }: FormFieldProps) {
         {errors.year && <span className="text-destructive text-xs">{errors.year.message}</span>}
       </div>
       <div>
-        <Label htmlFor="ratio">Ratio</Label>
-        <select
-          id="ratio"
-          className="w-full border border-input rounded-md px-3 py-2 text-base bg-background"
-          {...register("ratio", { required: "Selecciona el ratio" })}
-        >
-          <option value="4x3">4x3</option>
-          <option value="3x4">3x4</option>
-        </select>
-        {errors.ratio && <span className="text-destructive text-xs">{errors.ratio.message}</span>}
-      </div>
-      <div>
         <Label htmlFor="client">Cliente <span className="text-muted-foreground text-xs">(opcional)</span></Label>
         <Input
           id="client"
@@ -107,8 +94,8 @@ export function CoverFields({ register, setValue, watch }: FormFieldProps) {
   );
 }
 
-export function ContentImagesField({ register, setValue, watch }: FormFieldProps) {
-  return <ContentImagesComponent register={register} setValue={setValue} watch={watch} />;
+export function ContentImagesField({ setValue, watch }: FormFieldProps) {
+  return <ContentMixedField setValue={setValue} watch={watch} />;
 }
 
 export function DescriptionField({ register, errors }: FormFieldProps) {

@@ -32,8 +32,8 @@ export function ProjectForm({ defaultValues, onSubmit, isSubmitting = false }: P
     formState: { errors }
   } = useForm<AddProjectFormData>({
     defaultValues: defaultValues || {
-      ratio: "4x3",
       coverColor: "#D6BCFA",
+      contentItems: []
     }
   });
   

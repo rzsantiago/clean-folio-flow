@@ -36,11 +36,10 @@ export default function EditProjectDialog({
     description: project.description,
     category: project.category,
     year: project.year?.toString() || "",
-    ratio: project.ratio,
     client: project.client || "",
     coverColor: project.coverColor || "#D6BCFA",
     coverImage: project.coverImage || "",
-    contentImages: project.contentImages.join("\n"),
+    contentItems: project.contentItems || [],
   };
 
   return (
