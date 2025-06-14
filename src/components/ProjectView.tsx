@@ -1,15 +1,8 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { useProjects } from "@/hooks/useProjects";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 
 type Props = {
   projectId: string;
@@ -29,6 +22,10 @@ export default function ProjectView({
   } = useProjects();
   const project = projects.find(p => p.id === projectId);
   const isMobile = useIsMobile();
+  
+  // Touch navigation states
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
 
   if (!project) return null;
 
@@ -50,8 +47,37 @@ export default function ProjectView({
     }
   };
 
+  // Touch handlers for swipe navigation
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe && nextProject) {
+      handleNavigate(nextProject.id);
+    }
+    if (isRightSwipe && prevProject) {
+      handleNavigate(prevProject.id);
+    }
+  };
+
   return (
-    <div className={`relative w-full min-h-[70vh] select-none px-0`}>
+    <div 
+      className={`relative w-full min-h-[70vh] select-none px-0`}
+      onTouchStart={isMobile ? handleTouchStart : undefined}
+      onTouchMove={isMobile ? handleTouchMove : undefined}
+      onTouchEnd={isMobile ? handleTouchEnd : undefined}
+    >
       <div className="flex flex-col gap-3 w-full pb-10 px-0">
         {project.coverImage && (
           <div 
@@ -99,50 +125,25 @@ export default function ProjectView({
           </div>
         )}
 
-        {/* Carrusel solo para móvil */}
-        {isMobile && project.contentImages.length > 0 ? (
-          <Carousel className="w-full">
-            <CarouselContent>
-              {project.contentImages.map((img, i) => (
-                <CarouselItem key={i}>
-                  <div 
-                    className="w-full overflow-hidden" 
-                    style={{ borderRadius: 8, background: "#EEE" }}
-                  >
-                    <img 
-                      src={img} 
-                      alt={`Imagen del proyecto ${project.title} ${i + 1}`} 
-                      className="w-full h-auto object-cover object-center" 
-                      draggable={false} 
-                    />
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className="left-2" />
-            <CarouselNext className="right-2" />
-          </Carousel>
-        ) : (
-          // Vista tradicional para desktop o cuando no hay imágenes
-          <div className="flex flex-col gap-2">
-            {project.contentImages.map((img, i) => (
-              <div 
-                key={i} 
-                className="w-full overflow-hidden" 
-                style={{ borderRadius: 8, background: "#EEE" }}
-              >
-                <img 
-                  src={img} 
-                  alt={`Imagen del proyecto ${project.title} ${i + 1}`} 
-                  className="w-full h-auto object-cover object-center" 
-                  draggable={false} 
-                />
-              </div>
-            ))}
-          </div>
-        )}
+        {/* Content images - simple vertical layout */}
+        <div className="flex flex-col gap-2">
+          {project.contentImages.map((img, i) => (
+            <div 
+              key={i} 
+              className="w-full overflow-hidden" 
+              style={{ borderRadius: 8, background: "#EEE" }}
+            >
+              <img 
+                src={img} 
+                alt={`Imagen del proyecto ${project.title} ${i + 1}`} 
+                className="w-full h-auto object-cover object-center" 
+                draggable={false} 
+              />
+            </div>
+          ))}
+        </div>
 
-        {/* Botones de navegación para mobile */}
+        {/* Navigation buttons for mobile */}
         {isMobile && (
           <div className="flex justify-between mt-8 px-2">
             <button
