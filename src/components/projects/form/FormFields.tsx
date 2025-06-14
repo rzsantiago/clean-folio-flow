@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -83,19 +82,40 @@ export function BasicInfoFields({ register, errors }: FormFieldProps) {
 
 export function CoverFields({ setValue, watch }: FormFieldProps) {
   const coverImage = watch("coverImage");
+  const thumbnailImage = watch("thumbnailImage");
   
   return (
-    <div className="space-y-2 md:col-span-2">
-      <Label className="text-sm font-medium text-slate-700">
-        Imagen de Portada
-      </Label>
-      <div className="border-2 border-dashed border-slate-300 rounded-lg p-4 bg-slate-50">
-        <ImageUploader
-          onChange={(url) => setValue("coverImage", url)}
-          initialImage={coverImage}
-        />
+    <>
+      <div className="space-y-2">
+        <Label className="text-sm font-medium text-slate-700">
+          Imagen de Portada
+        </Label>
+        <div className="border-2 border-dashed border-slate-300 rounded-lg p-4 bg-slate-50">
+          <ImageUploader
+            onChange={(url) => setValue("coverImage", url)}
+            initialImage={coverImage}
+          />
+        </div>
+        <p className="text-xs text-slate-500">
+          Esta imagen se mostrará cuando se abra el proyecto completo
+        </p>
       </div>
-    </div>
+
+      <div className="space-y-2">
+        <Label className="text-sm font-medium text-slate-700">
+          Imagen de Miniatura
+        </Label>
+        <div className="border-2 border-dashed border-slate-300 rounded-lg p-4 bg-slate-50">
+          <ImageUploader
+            onChange={(url) => setValue("thumbnailImage", url)}
+            initialImage={thumbnailImage}
+          />
+        </div>
+        <p className="text-xs text-slate-500">
+          Esta imagen se mostrará en la galería de proyectos
+        </p>
+      </div>
+    </>
   );
 }
 

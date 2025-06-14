@@ -2,6 +2,9 @@
 import { Project } from "@/data/projects";
 
 export default function ProjectCard({ project, noOverlay }: { project: Project, noOverlay?: boolean }) {
+  // Usar thumbnailImage si existe, sino usar coverImage como fallback
+  const displayImage = project.thumbnailImage || project.coverImage;
+  
   return (
     <div
       tabIndex={0}
@@ -14,13 +17,13 @@ export default function ProjectCard({ project, noOverlay }: { project: Project, 
         marginBottom: 0,
         boxShadow: "none",
         borderRadius: 8,
-        background: project.coverImage ? undefined : (project.coverColor || "#EEE"),
+        background: displayImage ? undefined : (project.coverColor || "#EEE"),
       }}
     >
-      {project.coverImage && (
+      {displayImage && (
         <>
           <img
-            src={project.coverImage}
+            src={displayImage}
             alt={project.title}
             className="w-full h-full object-cover object-center rounded-lg transition-all duration-500 group-hover:scale-[1.02]"
             style={{

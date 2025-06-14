@@ -11,6 +11,7 @@ export type SupabaseProject = {
   year: number | null;
   covercolor: string | null;
   coverimage: string | null;
+  thumbnailimage: string | null; // Nueva columna para miniatura
   contentitems: any[] | null; // Contenido mixto (imágenes y textos)
   client: string | null;
   display_order: number | null;
@@ -58,6 +59,7 @@ export const mapFormDataToDb = (data: AddProjectFormData) => ({
   year: data.year ? Number(data.year) : null,
   covercolor: data.coverColor || "#D6BCFA",
   coverimage: data.coverImage || "",
+  thumbnailimage: data.thumbnailImage || "", // Mapear nueva imagen de miniatura
   contentitems: data.contentItems || [],
   client: data.client?.trim() || null,
 });
@@ -71,6 +73,7 @@ export const mapDbToUiProject = (proj: SupabaseProject): Project => ({
   year: proj.year || undefined,
   coverColor: proj.covercolor || "#D6BCFA",
   coverImage: proj.coverimage ?? undefined,
+  thumbnailImage: proj.thumbnailimage ?? undefined, // Mapear nueva imagen de miniatura
   contentItems: normalizeContentItems(proj.contentitems),
   client: proj.client ?? undefined,
   display_order: proj.display_order ?? undefined,

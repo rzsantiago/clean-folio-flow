@@ -39,6 +39,7 @@ export default function EditProjectDialog({
     client: project.client || "",
     coverColor: project.coverColor || "#D6BCFA",
     coverImage: project.coverImage || "",
+    thumbnailImage: project.thumbnailImage || "", // Incluir imagen de miniatura
     contentItems: project.contentItems || [],
   };
 

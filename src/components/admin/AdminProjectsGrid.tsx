@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Edit, Trash2, GripVertical } from "lucide-react";
@@ -55,6 +54,9 @@ const ProjectGridItem = ({
     zIndex: isDragging ? 1 : 0,
   };
 
+  // Usar thumbnailImage si existe, sino usar coverImage como fallback
+  const displayImage = project.thumbnailImage || project.coverImage;
+
   return (
     <div
       ref={setNodeRef}
@@ -78,12 +80,12 @@ const ProjectGridItem = ({
       <div 
         className="w-full h-32 relative"
         style={{
-          background: project.coverImage ? undefined : (project.coverColor || "#E2E8F0"),
+          background: displayImage ? undefined : (project.coverColor || "#E2E8F0"),
         }}
       >
-        {project.coverImage ? (
+        {displayImage ? (
           <img
-            src={project.coverImage}
+            src={displayImage}
             alt={project.title}
             className="w-full h-full object-cover"
             draggable={false}

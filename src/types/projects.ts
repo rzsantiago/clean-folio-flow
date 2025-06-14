@@ -13,5 +13,6 @@ export type AddProjectFormData = {
   client?: string;
   coverColor?: string;
   coverImage?: string;
+  thumbnailImage?: string; // Nueva imagen de miniatura
   contentItems?: ContentItem[]; // Reemplaza contentImages
 };

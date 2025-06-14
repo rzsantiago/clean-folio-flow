@@ -8,6 +8,7 @@ export type Project = {
   category: string,
   coverColor: string,
   coverImage?: string,
+  thumbnailImage?: string, // Nueva imagen de miniatura
   contentItems: ContentItem[], // Reemplaza contentImages y ratio
   client?: string,
   year?: string | number,
