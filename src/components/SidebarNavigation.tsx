@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useProjects } from "@/hooks/useProjects";
 
@@ -108,19 +107,10 @@ export default function SidebarNavigation({
     );
   }
 
-  // Desktop sidebar - ancho fijo más consistente
+  // Desktop sidebar - sin ancho fijo ya que está en contenedor fijo
   return (
-    <section
-      className="hidden md:flex w-[220px] min-w-[220px] flex-col items-end"
-      style={{
-        position: "sticky",
-        top: 88,
-        height: "fit-content",
-        marginLeft: "0px",
-        paddingRight: "15px",
-      }}
-    >
-      <div className="w-full pr-0">
+    <section className="flex flex-col w-full">
+      <div className="w-full">
         <nav className="flex flex-col gap-0.5 mt-0 select-none">
           {/* Parte 1: Overview + categorias */}
           {menuPart1.map(entry => (
