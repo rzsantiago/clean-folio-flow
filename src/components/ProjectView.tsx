@@ -19,14 +19,13 @@ export default function ProjectView({
   showProjectHeader
 }: Props) {
   const { data: projects = [] } = useProjects();
-  const project = projects.find(p => p.id === projectId);
-  
-  // Move the early return BEFORE any hooks that depend on project data
-  if (!project) return null;
-
-  // Now it's safe to call hooks since we know project exists
   const isMobile = useIsMobile();
   const [api, setApi] = React.useState<CarouselApi>();
+  
+  const project = projects.find(p => p.id === projectId);
+  
+  // Now it's safe to have the early return AFTER all hooks are declared
+  if (!project) return null;
 
   // Find category projects and current index
   const categoryProjects = projects.filter(p => p.category === project.category);
@@ -54,7 +53,9 @@ export default function ProjectView({
     };
 
     api.on("select", onSelect);
-    return () => api.off("select", onSelect);
+    return () => {
+      api.off("select", onSelect);
+    };
   }, [api, categoryProjects, projectId, onNavigate]);
 
   const handleNavigate = (id: string) => {
