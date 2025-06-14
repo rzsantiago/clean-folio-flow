@@ -60,6 +60,20 @@ export function ProjectForm({ defaultValues, onSubmit, isSubmitting = false }: P
           </div>
         </div>
 
+        {/* Descripción - MOVIDA AL SEGUNDO LUGAR */}
+        <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+          <h3 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
+            <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+            Descripción
+          </h3>
+          <DescriptionField 
+            register={register}
+            watch={watch}
+            setValue={setValue}
+            errors={errors}
+          />
+        </div>
+
         {/* Portada en grid */}
         <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
           <h3 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
@@ -83,20 +97,6 @@ export function ProjectForm({ defaultValues, onSubmit, isSubmitting = false }: P
             Contenido del Proyecto
           </h3>
           <ContentImagesField 
-            register={register}
-            watch={watch}
-            setValue={setValue}
-            errors={errors}
-          />
-        </div>
-
-        {/* Descripción */}
-        <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-          <h3 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
-            <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-            Descripción
-          </h3>
-          <DescriptionField 
             register={register}
             watch={watch}
             setValue={setValue}
