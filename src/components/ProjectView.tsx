@@ -1,4 +1,5 @@
 
+
 import React from "react";
 import { useProjects } from "@/hooks/useProjects";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -67,15 +68,8 @@ export default function ProjectView({
           </div>}
 
         <div className="flex flex-col gap-2">
-          {project.contentImages.map((img, i) => <div key={i} style={{
-          borderRadius: 8,
-          width: "100%",
-          minHeight: 220,
-          aspectRatio: project.ratio === "3x4" ? "3/4" : "4/3",
-          margin: "0",
-          background: "#EEE"
-        }} className="w-full overflow-hidden">
-              <img src={img} alt={`Imagen del proyecto ${project.title} ${i + 1}`} className="w-full h-full object-cover object-center" draggable={false} />
+          {project.contentImages.map((img, i) => <div key={i} className="w-full overflow-hidden" style={{ borderRadius: 8, background: "#EEE" }}>
+              <img src={img} alt={`Imagen del proyecto ${project.title} ${i + 1}`} className="w-full h-auto object-cover object-center" draggable={false} />
             </div>)}
         </div>
 
@@ -92,3 +86,4 @@ export default function ProjectView({
       </div>
     </div>;
 }
+
