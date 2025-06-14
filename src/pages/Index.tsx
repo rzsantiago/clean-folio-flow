@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Menu, ArrowLeft, ArrowRight } from "lucide-react";
@@ -98,69 +99,74 @@ const Index = () => {
       onTouchEnd={handleTouchEnd}
     >
       <div className="flex-1 flex flex-row w-full max-w-screen-2xl mx-auto">
-        <MainContent main={main} setMain={setMain} isMobile={isMobile} />
+        {/* Main content - ajuste de ancho para desktop */}
+        <div className={`flex-1 ${!isMobile ? 'max-w-[calc(100%-220px)]' : ''}`}>
+          <MainContent main={main} setMain={setMain} isMobile={isMobile} />
+        </div>
         
         {/* Right sidebar container with header */}
-        <div className="hidden md:flex flex-col w-[220px] min-w-[220px] pl-4">
-          <div className="sticky top-0 flex flex-col pt-8 bg-white h-screen">
-            <button
-              className="font-helnow-bold text-[30px] leading-none tracking-wider text-black hover:text-[#cc3300] duration-100 pb-12 text-left uppercase transition-colors"
-              onClick={() => setMain({ type: "gallery", filter: null })}
-            >
-              <div className="flex flex-col">
-                <span>Santiago</span>
-                <span className="-mt-1">Ruiz</span>
-              </div>
-            </button>
-            
-            <div className="flex flex-col justify-between h-full pb-8">
-              <div className="flex flex-col">
-                <SidebarNavigation
-                  main={main}
-                  setMain={setMain}
-                  menuEntries={menuEntries}
-                  activeCategory={activeCategory}
-                  isMobile={isMobile}
-                  menuOpen={menuOpen}
-                  setMenuOpen={setMenuOpen}
-                />
-                
-                {/* Controles de navegación de proyecto - movido más abajo */}
-                {main.type === "project" && (
-                  <div className="flex justify-between mt-8 mb-2 px-0">
-                    <button
-                      onClick={() => handleProjectNavigation('prev')}
-                      disabled={!prevProject}
-                      className="text-stone-500 hover:text-black disabled:opacity-30 disabled:cursor-not-allowed"
-                      aria-label="Proyecto anterior"
-                    >
-                      <ArrowLeft size={18} />
-                    </button>
-                    
-                    <button
-                      onClick={() => handleProjectNavigation('next')}
-                      disabled={!nextProject}
-                      className="text-stone-500 hover:text-black disabled:opacity-30 disabled:cursor-not-allowed"
-                      aria-label="Proyecto siguiente"
-                    >
-                      <ArrowRight size={18} />
-                    </button>
-                  </div>
-                )}
-              </div>
-              
-              {/* Instagram en desktop - solo texto */}
-              <a 
-                href="https://www.instagram.com/ruizsantiago/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-stone-500 hover:text-black transition-colors duration-200"
+        {!isMobile && (
+          <div className="w-[220px] min-w-[220px] pl-4">
+            <div className="sticky top-0 flex flex-col pt-8 bg-white h-screen">
+              <button
+                className="font-helnow-bold text-[30px] leading-none tracking-wider text-black hover:text-[#cc3300] duration-100 pb-12 text-left uppercase transition-colors"
+                onClick={() => setMain({ type: "gallery", filter: null })}
               >
-                <span className="text-base">Instagram</span>
-              </a>
+                <div className="flex flex-col">
+                  <span>Santiago</span>
+                  <span className="-mt-1">Ruiz</span>
+                </div>
+              </button>
+              
+              <div className="flex flex-col justify-between h-full pb-8">
+                <div className="flex flex-col">
+                  <SidebarNavigation
+                    main={main}
+                    setMain={setMain}
+                    menuEntries={menuEntries}
+                    activeCategory={activeCategory}
+                    isMobile={isMobile}
+                    menuOpen={menuOpen}
+                    setMenuOpen={setMenuOpen}
+                  />
+                  
+                  {/* Controles de navegación de proyecto */}
+                  {main.type === "project" && (
+                    <div className="flex justify-between mt-8 mb-2 px-0">
+                      <button
+                        onClick={() => handleProjectNavigation('prev')}
+                        disabled={!prevProject}
+                        className="text-stone-500 hover:text-black disabled:opacity-30 disabled:cursor-not-allowed"
+                        aria-label="Proyecto anterior"
+                      >
+                        <ArrowLeft size={18} />
+                      </button>
+                      
+                      <button
+                        onClick={() => handleProjectNavigation('next')}
+                        disabled={!nextProject}
+                        className="text-stone-500 hover:text-black disabled:opacity-30 disabled:cursor-not-allowed"
+                        aria-label="Proyecto siguiente"
+                      >
+                        <ArrowRight size={18} />
+                      </button>
+                    </div>
+                  )}
+                </div>
+                
+                {/* Instagram en desktop */}
+                <a 
+                  href="https://www.instagram.com/ruizsantiago/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-stone-500 hover:text-black transition-colors duration-200"
+                >
+                  <span className="text-base">Instagram</span>
+                </a>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Mobile: header and hamburger menu */}
         {isMobile && (
