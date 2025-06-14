@@ -22,8 +22,19 @@ async function fetchProjects() {
     return [];
   }
 
+  console.log("Raw project data from Supabase:", data);
+
   // Cast the data to SupabaseProject type since we know the structure
-  return (data as unknown as SupabaseProject[]).map(mapDbToUiProject);
+  const mappedProjects = (data as unknown as SupabaseProject[]).map(proj => {
+    console.log(`Mapping project ${proj.title}:`, {
+      id: proj.id,
+      contentitems: proj.contentitems
+    });
+    return mapDbToUiProject(proj);
+  });
+
+  console.log("Mapped projects:", mappedProjects);
+  return mappedProjects;
 }
 
 export function useProjects() {

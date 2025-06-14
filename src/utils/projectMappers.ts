@@ -16,6 +16,40 @@ export type SupabaseProject = {
   display_order: number | null;
 };
 
+// Helper function to normalize content items
+const normalizeContentItems = (contentitems: any[] | null): ContentItem[] => {
+  if (!contentitems || !Array.isArray(contentitems)) {
+    return [];
+  }
+
+  return contentitems.map((item, index) => {
+    // Si el item es solo una string (formato anterior), convertirlo al nuevo formato
+    if (typeof item === 'string') {
+      return {
+        type: 'image' as const,
+        content: item,
+        id: `migrated-${index}-${Date.now()}`
+      };
+    }
+    
+    // Si ya está en el nuevo formato, asegurar que tenga todas las propiedades
+    if (typeof item === 'object' && item !== null) {
+      return {
+        type: item.type || 'image',
+        content: item.content || item.url || item, // Fallback para diferentes formatos
+        id: item.id || `migrated-${index}-${Date.now()}`
+      };
+    }
+    
+    // Fallback para casos inesperados
+    return {
+      type: 'image' as const,
+      content: String(item),
+      id: `fallback-${index}-${Date.now()}`
+    };
+  });
+};
+
 // Map AddProjectFormData to Supabase insert shape (DB column names)
 export const mapFormDataToDb = (data: AddProjectFormData) => ({
   title: data.title,
@@ -37,7 +71,7 @@ export const mapDbToUiProject = (proj: SupabaseProject): Project => ({
   year: proj.year || undefined,
   coverColor: proj.covercolor || "#D6BCFA",
   coverImage: proj.coverimage ?? undefined,
-  contentItems: Array.isArray(proj.contentitems) ? proj.contentitems : [],
+  contentItems: normalizeContentItems(proj.contentitems),
   client: proj.client ?? undefined,
   display_order: proj.display_order ?? undefined,
 });
