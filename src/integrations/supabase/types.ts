@@ -13,7 +13,7 @@ export type Database = {
         Row: {
           category: string
           client: string | null
-          contentimages: Json | null
+          contentitems: Json | null
           covercolor: string | null
           coverimage: string | null
           description: string
@@ -26,7 +26,7 @@ export type Database = {
         Insert: {
           category: string
           client?: string | null
-          contentimages?: Json | null
+          contentitems?: Json | null
           covercolor?: string | null
           coverimage?: string | null
           description: string
@@ -39,7 +39,7 @@ export type Database = {
         Update: {
           category?: string
           client?: string | null
-          contentimages?: Json | null
+          contentitems?: Json | null
           covercolor?: string | null
           coverimage?: string | null
           description?: string
