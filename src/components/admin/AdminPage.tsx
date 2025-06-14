@@ -3,16 +3,20 @@ import React, { useState, useEffect, useCallback } from "react";
 import { AdminHeader } from "./AdminHeader";
 import { AdminActionBar } from "./AdminActionBar";
 import AdminProjectsTable from "@/components/AdminProjectsTable";
+import AdminProjectsGrid from "./AdminProjectsGrid";
 import AddProjectDialog from "@/components/projects/AddProjectDialog";
 import EditProjectDialog from "@/components/projects/EditProjectDialog";
 import AdminLogin from "@/components/AdminLogin";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { useProjectOperations } from "@/hooks/useProjectOperations";
+import { Button } from "@/components/ui/button";
+import { Grid3x3, List } from "lucide-react";
 import type { Project } from "@/data/projects";
 
 export default function AdminPage() {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
   const { isAdmin, loading: authLoading, logout } = useAdminAuth();
   
   const {
@@ -71,20 +75,56 @@ export default function AdminPage() {
             <AdminHeader onLogout={logout} />
           </div>
           
-          {/* Action Bar */}
+          {/* Action Bar con toggle de vista */}
           <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-slate-200/50 shadow-sm p-6">
-            <AdminActionBar onAddProject={() => setAddDialogOpen(true)} />
+            <div className="flex justify-between items-center">
+              <AdminActionBar onAddProject={() => setAddDialogOpen(true)} />
+              
+              {/* View Toggle */}
+              <div className="flex items-center gap-2 bg-slate-100 rounded-lg p-1">
+                <Button
+                  variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setViewMode('grid')}
+                  className="h-8 px-3"
+                >
+                  <Grid3x3 className="w-4 h-4 mr-1" />
+                  Grid
+                </Button>
+                <Button
+                  variant={viewMode === 'table' ? 'default' : 'ghost'}
+                  size="sm"
+                  onClick={() => setViewMode('table')}
+                  className="h-8 px-3"
+                >
+                  <List className="w-4 h-4 mr-1" />
+                  Tabla
+                </Button>
+              </div>
+            </div>
           </div>
 
-          {/* Projects Table */}
+          {/* Projects View */}
           <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-slate-200/50 shadow-sm overflow-hidden">
-            <AdminProjectsTable 
-              projects={projects} 
-              loading={loading} 
-              onEdit={handleProjectEdit}
-              onDelete={handleDeleteProject}
-              onReorder={handleReorderProjects}
-            />
+            <div className="p-6">
+              {viewMode === 'grid' ? (
+                <AdminProjectsGrid 
+                  projects={projects} 
+                  loading={loading} 
+                  onEdit={handleProjectEdit}
+                  onDelete={handleDeleteProject}
+                  onReorder={handleReorderProjects}
+                />
+              ) : (
+                <AdminProjectsTable 
+                  projects={projects} 
+                  loading={loading} 
+                  onEdit={handleProjectEdit}
+                  onDelete={handleDeleteProject}
+                  onReorder={handleReorderProjects}
+                />
+              )}
+            </div>
           </div>
         </div>
 

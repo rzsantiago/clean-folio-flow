@@ -30,8 +30,8 @@ export function ProjectDialog({
 }: ProjectDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="max-w-4xl max-h-[95vh] w-[95vw] p-0 bg-gradient-to-br from-slate-50 to-white">
-        <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-sm border-b border-slate-200 p-6">
+      <DialogContent className="max-w-5xl max-h-[90vh] w-[95vw] p-0 bg-gradient-to-br from-slate-50 to-white flex flex-col">
+        <div className="flex-shrink-0 bg-white/80 backdrop-blur-sm border-b border-slate-200 p-6">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-slate-900 tracking-tight">
               {title}
@@ -39,13 +39,13 @@ export function ProjectDialog({
           </DialogHeader>
         </div>
         
-        <ScrollArea className="flex-1 px-6 pb-6">
-          <div className="py-2">
+        <ScrollArea className="flex-1 min-h-0">
+          <div className="p-6">
             {children}
           </div>
         </ScrollArea>
         
-        <div className="sticky bottom-0 z-10 bg-white/80 backdrop-blur-sm border-t border-slate-200 p-6">
+        <div className="flex-shrink-0 bg-white/80 backdrop-blur-sm border-t border-slate-200 p-6">
           <DialogFooter className="gap-3">
             <DialogClose asChild>
               <Button 
