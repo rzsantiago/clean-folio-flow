@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useProjects } from "@/hooks/useProjects";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -35,11 +34,11 @@ export default function ProjectView({
           top: 0,
           behavior: "smooth"
         });
-    }, 10);
+      }, 10);
     }
   };
   return <div className={`relative w-full min-h-[70vh] select-none px-0 ${isMobile ? '' : 'pl-4'}`}>
-      <div className="flex flex-col gap-3 w-full pb-10 md:pl-6 md:pr-6">
+      <div className="flex flex-col gap-3 w-full pb-10 md:pl-6 md:pr-6 px-0">
         {project.coverImage && <div className="w-full rounded-xl overflow-hidden mb-6" style={{
         aspectRatio: project.ratio === "3x4" ? "3/4" : "4/3",
         minHeight: 230,
