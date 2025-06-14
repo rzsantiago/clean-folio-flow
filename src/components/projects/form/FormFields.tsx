@@ -81,40 +81,21 @@ export function BasicInfoFields({ register, errors }: FormFieldProps) {
   );
 }
 
-export function CoverFields({ register, setValue, watch }: FormFieldProps) {
+export function CoverFields({ setValue, watch }: FormFieldProps) {
   const coverImage = watch("coverImage");
   
   return (
-    <>
-      <div className="space-y-2">
-        <Label htmlFor="coverColor" className="text-sm font-medium text-slate-700">
-          Color de Portada
-        </Label>
-        <div className="flex items-center gap-3">
-          <Input
-            id="coverColor"
-            type="color"
-            {...register("coverColor")}
-            className="h-11 w-20 p-1 border-slate-300"
-            defaultValue="#D6BCFA"
-            title="Color de portada"
-          />
-          <span className="text-sm text-slate-500">Selecciona el color de fondo</span>
-        </div>
+    <div className="space-y-2 md:col-span-2">
+      <Label className="text-sm font-medium text-slate-700">
+        Imagen de Portada
+      </Label>
+      <div className="border-2 border-dashed border-slate-300 rounded-lg p-4 bg-slate-50">
+        <ImageUploader
+          onChange={(url) => setValue("coverImage", url)}
+          initialImage={coverImage}
+        />
       </div>
-
-      <div className="space-y-2">
-        <Label className="text-sm font-medium text-slate-700">
-          Imagen de Portada
-        </Label>
-        <div className="border-2 border-dashed border-slate-300 rounded-lg p-4 bg-slate-50">
-          <ImageUploader
-            onChange={(url) => setValue("coverImage", url)}
-            initialImage={coverImage}
-          />
-        </div>
-      </div>
-    </>
+    </div>
   );
 }
 
