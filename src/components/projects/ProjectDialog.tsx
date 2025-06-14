@@ -30,23 +30,41 @@ export function ProjectDialog({
 }: ProjectDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="max-h-screen sm:max-h-[90vh]">
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-        </DialogHeader>
-        <ScrollArea className="max-h-[calc(90vh-10rem)] pr-4">
-          {children}
+      <DialogContent className="max-w-4xl max-h-[95vh] w-[95vw] p-0 bg-gradient-to-br from-slate-50 to-white">
+        <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-sm border-b border-slate-200 p-6">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-slate-900 tracking-tight">
+              {title}
+            </DialogTitle>
+          </DialogHeader>
+        </div>
+        
+        <ScrollArea className="flex-1 px-6 pb-6">
+          <div className="py-2">
+            {children}
+          </div>
         </ScrollArea>
-        <DialogFooter className="mt-4">
-          <DialogClose asChild>
-            <Button type="button" variant="ghost">
-              Cancelar
+        
+        <div className="sticky bottom-0 z-10 bg-white/80 backdrop-blur-sm border-t border-slate-200 p-6">
+          <DialogFooter className="gap-3">
+            <DialogClose asChild>
+              <Button 
+                type="button" 
+                variant="outline"
+                className="px-6 hover:bg-slate-50"
+              >
+                Cancelar
+              </Button>
+            </DialogClose>
+            <Button 
+              type="submit" 
+              form="project-form"
+              className="px-8 bg-slate-900 hover:bg-slate-800 text-white shadow-lg"
+            >
+              {submitButtonText}
             </Button>
-          </DialogClose>
-          <Button type="submit" form="project-form">
-            {submitButtonText}
-          </Button>
-        </DialogFooter>
+          </DialogFooter>
+        </div>
       </DialogContent>
     </Dialog>
   );

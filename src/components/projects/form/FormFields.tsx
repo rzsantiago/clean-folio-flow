@@ -19,21 +19,27 @@ type FormFieldProps = {
 export function BasicInfoFields({ register, errors }: FormFieldProps) {
   return (
     <>
-      <div>
-        <Label htmlFor="title">Título</Label>
+      <div className="space-y-2">
+        <Label htmlFor="title" className="text-sm font-medium text-slate-700">
+          Título del Proyecto
+        </Label>
         <Input
           id="title"
           {...register("title", { required: "Título requerido" })}
-          placeholder="Escribe el título"
+          placeholder="Nombre del proyecto"
           autoFocus
+          className="h-11 border-slate-300 focus:border-slate-900 focus:ring-slate-900"
         />
-        {errors.title && <span className="text-destructive text-xs">{errors.title.message}</span>}
+        {errors.title && <span className="text-red-500 text-xs">{errors.title.message}</span>}
       </div>
-      <div>
-        <Label htmlFor="category">Categoría</Label>
+
+      <div className="space-y-2">
+        <Label htmlFor="category" className="text-sm font-medium text-slate-700">
+          Categoría
+        </Label>
         <select
           id="category"
-          className="w-full border border-input rounded-md px-3 py-2 text-base bg-background"
+          className="w-full h-11 border border-slate-300 rounded-md px-3 py-2 text-base bg-white focus:border-slate-900 focus:ring-2 focus:ring-slate-900/20 focus:outline-none"
           {...register("category", { required: "Seleccione una categoría" })}
         >
           <option value="">Selecciona una categoría</option>
@@ -41,10 +47,13 @@ export function BasicInfoFields({ register, errors }: FormFieldProps) {
             <option value={cat} key={cat}>{cat}</option>
           ))}
         </select>
-        {errors.category && <span className="text-destructive text-xs">{errors.category.message}</span>}
+        {errors.category && <span className="text-red-500 text-xs">{errors.category.message}</span>}
       </div>
-      <div>
-        <Label htmlFor="year">Año</Label>
+
+      <div className="space-y-2">
+        <Label htmlFor="year" className="text-sm font-medium text-slate-700">
+          Año
+        </Label>
         <Input
           id="year"
           type="number"
@@ -52,15 +61,20 @@ export function BasicInfoFields({ register, errors }: FormFieldProps) {
           max="2099"
           {...register("year", { required: "Año requerido" })}
           placeholder="ej. 2024"
+          className="h-11 border-slate-300 focus:border-slate-900 focus:ring-slate-900"
         />
-        {errors.year && <span className="text-destructive text-xs">{errors.year.message}</span>}
+        {errors.year && <span className="text-red-500 text-xs">{errors.year.message}</span>}
       </div>
-      <div>
-        <Label htmlFor="client">Cliente <span className="text-muted-foreground text-xs">(opcional)</span></Label>
+
+      <div className="space-y-2">
+        <Label htmlFor="client" className="text-sm font-medium text-slate-700">
+          Cliente <span className="text-slate-400 text-xs font-normal">(opcional)</span>
+        </Label>
         <Input
           id="client"
           {...register("client")}
-          placeholder="Nombre del cliente (opcional)"
+          placeholder="Nombre del cliente"
+          className="h-11 border-slate-300 focus:border-slate-900 focus:ring-slate-900"
         />
       </div>
     </>
@@ -72,43 +86,60 @@ export function CoverFields({ register, setValue, watch }: FormFieldProps) {
   
   return (
     <>
-      <div>
-        <Label htmlFor="coverColor">Color de portada <span className="text-muted-foreground text-xs">(hex ej. #D6BCFA)</span></Label>
-        <Input
-          id="coverColor"
-          type="color"
-          {...register("coverColor")}
-          className="h-10 w-16 p-1"
-          defaultValue="#D6BCFA"
-          title="Color de portada"
-        />
+      <div className="space-y-2">
+        <Label htmlFor="coverColor" className="text-sm font-medium text-slate-700">
+          Color de Portada
+        </Label>
+        <div className="flex items-center gap-3">
+          <Input
+            id="coverColor"
+            type="color"
+            {...register("coverColor")}
+            className="h-11 w-20 p-1 border-slate-300"
+            defaultValue="#D6BCFA"
+            title="Color de portada"
+          />
+          <span className="text-sm text-slate-500">Selecciona el color de fondo</span>
+        </div>
       </div>
-      <div>
-        <Label>Imagen de portada</Label>
-        <ImageUploader
-          onChange={(url) => setValue("coverImage", url)}
-          initialImage={coverImage}
-        />
+
+      <div className="space-y-2">
+        <Label className="text-sm font-medium text-slate-700">
+          Imagen de Portada
+        </Label>
+        <div className="border-2 border-dashed border-slate-300 rounded-lg p-4 bg-slate-50">
+          <ImageUploader
+            onChange={(url) => setValue("coverImage", url)}
+            initialImage={coverImage}
+          />
+        </div>
       </div>
     </>
   );
 }
 
 export function ContentImagesField({ setValue, watch }: FormFieldProps) {
-  return <ContentMixedField setValue={setValue} watch={watch} />;
+  return (
+    <div className="space-y-4">
+      <ContentMixedField setValue={setValue} watch={watch} />
+    </div>
+  );
 }
 
 export function DescriptionField({ register, errors }: FormFieldProps) {
   return (
-    <div>
-      <Label htmlFor="description">Descripción</Label>
+    <div className="space-y-2">
+      <Label htmlFor="description" className="text-sm font-medium text-slate-700">
+        Descripción del Proyecto
+      </Label>
       <Textarea
         id="description"
         {...register("description", { required: "Descripción requerida" })}
-        placeholder="Describe brevemente el proyecto"
-        rows={3}
+        placeholder="Describe brevemente el proyecto, su propósito y características principales..."
+        rows={4}
+        className="border-slate-300 focus:border-slate-900 focus:ring-slate-900 resize-none"
       />
-      {errors.description && <span className="text-destructive text-xs">{errors.description.message}</span>}
+      {errors.description && <span className="text-red-500 text-xs">{errors.description.message}</span>}
     </div>
   );
 }

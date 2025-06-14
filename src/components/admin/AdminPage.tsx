@@ -9,7 +9,6 @@ import AdminLogin from "@/components/AdminLogin";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { useProjectOperations } from "@/hooks/useProjectOperations";
 import type { Project } from "@/data/projects";
-import { Card } from "@/components/ui/card";
 
 export default function AdminPage() {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
@@ -43,10 +42,13 @@ export default function AdminPage() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-900 mx-auto"></div>
-          <p className="text-slate-600 text-lg">Cargando panel de administración...</p>
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 flex items-center justify-center">
+        <div className="text-center space-y-6 p-8">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-slate-900 mx-auto"></div>
+          <div className="space-y-2">
+            <p className="text-slate-900 text-xl font-medium">Cargando panel de administración</p>
+            <p className="text-slate-500">Verificando credenciales...</p>
+          </div>
         </div>
       </div>
     );
@@ -54,23 +56,28 @@ export default function AdminPage() {
 
   if (!isAdmin) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
         <AdminLogin onLoginSuccess={() => fetchProjects()} />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      <div className="max-w-6xl mx-auto p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100">
+      <div className="max-w-7xl mx-auto p-6 lg:p-8">
         <div className="space-y-8">
-          <AdminHeader onLogout={logout} />
+          {/* Header con estilo mejorado */}
+          <div className="bg-white/70 backdrop-blur-sm rounded-2xl border border-slate-200/50 shadow-sm p-8">
+            <AdminHeader onLogout={logout} />
+          </div>
           
-          <Card className="p-6 bg-white shadow-sm border-slate-200">
+          {/* Action Bar */}
+          <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-slate-200/50 shadow-sm p-6">
             <AdminActionBar onAddProject={() => setAddDialogOpen(true)} />
-          </Card>
+          </div>
 
-          <Card className="bg-white shadow-sm border-slate-200 overflow-hidden">
+          {/* Projects Table */}
+          <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-slate-200/50 shadow-sm overflow-hidden">
             <AdminProjectsTable 
               projects={projects} 
               loading={loading} 
@@ -78,7 +85,7 @@ export default function AdminPage() {
               onDelete={handleDeleteProject}
               onReorder={handleReorderProjects}
             />
-          </Card>
+          </div>
         </div>
 
         <AddProjectDialog
