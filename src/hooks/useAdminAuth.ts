@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from "@/hooks/use-toast";
 
 // Contraseña hardcodeada para acceso administrativo (en producción deberías usar algo más seguro)
-const ADMIN_PASSWORD = "admin123";
+const ADMIN_PASSWORD = "san71450ad";
 
 export function useAdminAuth() {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
