@@ -1,3 +1,4 @@
+
 import { useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
@@ -15,7 +16,7 @@ export function useProjectOperations(initialProjects: Project[] = []) {
     const { data, error } = await supabase
       .from("projects")
       .select("*")
-      .order("display_order", { ascending: true, nullsLast: true })
+      .order("display_order", { ascending: true, nullsFirst: false })
       .order("id", { ascending: true });
 
     if (error) {

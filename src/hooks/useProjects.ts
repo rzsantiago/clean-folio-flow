@@ -3,15 +3,13 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Project } from "@/data/projects";
 import { toast } from "@/hooks/use-toast";
-import { mapDbToUiProject } from "@/utils/projectMappers"; // Direct import
-
-// Removed local mapDbToUiProject function, using the one from utils directly
+import { mapDbToUiProject } from "@/utils/projectMappers";
 
 async function fetchProjects() {
   const { data, error } = await supabase
     .from("projects")
     .select("*")
-    .order("display_order", { ascending: true, nullsLast: true })
+    .order("display_order", { ascending: true, nullsFirst: false })
     .order("id", { ascending: true });
 
   if (error) {
@@ -24,7 +22,7 @@ async function fetchProjects() {
     return [];
   }
 
-  return data.map(mapDbToUiProject); // Use imported mapper directly
+  return data.map(mapDbToUiProject);
 }
 
 export function useProjects() {
