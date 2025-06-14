@@ -3,27 +3,15 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Project } from "@/data/projects";
 import { toast } from "@/hooks/use-toast";
+import { mapDbToUiProject } from "@/utils/projectMappers"; // Direct import
 
-// Supabase → UI mapping
-function mapDbToUiProject(proj: any): Project {
-  return {
-    id: proj.id.toString(),
-    title: proj.title,
-    description: proj.description,
-    category: proj.category,
-    year: proj.year || undefined,
-    coverColor: proj.covercolor || "#D6BCFA",
-    coverImage: proj.coverimage ?? undefined,
-    ratio: (proj.ratio === "3x4" || proj.ratio === "4x3") ? proj.ratio : "4x3",
-    contentImages: Array.isArray(proj.contentimages) ? proj.contentimages : [],
-    client: proj.client ?? undefined,
-  };
-}
+// Removed local mapDbToUiProject function, using the one from utils directly
 
 async function fetchProjects() {
   const { data, error } = await supabase
     .from("projects")
     .select("*")
+    .order("display_order", { ascending: true, nullsLast: true })
     .order("id", { ascending: true });
 
   if (error) {
@@ -36,7 +24,7 @@ async function fetchProjects() {
     return [];
   }
 
-  return data.map(mapDbToUiProject) as Project[];
+  return data.map(mapDbToUiProject); // Use imported mapper directly
 }
 
 export function useProjects() {

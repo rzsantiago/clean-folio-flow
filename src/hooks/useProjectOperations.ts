@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { AddProjectFormData } from "@/types/projects";
@@ -11,11 +10,12 @@ export function useProjectOperations(initialProjects: Project[] = []) {
   const [loading, setLoading] = useState(true);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  async function fetchProjects() {
+  const fetchProjects = useCallback(async () => {
     setLoading(true);
     const { data, error } = await supabase
       .from("projects")
       .select("*")
+      .order("display_order", { ascending: true, nullsLast: true })
       .order("id", { ascending: true });
 
     if (error) {
@@ -32,14 +32,20 @@ export function useProjectOperations(initialProjects: Project[] = []) {
     setProjects(uiProjects);
     setLoading(false);
     return uiProjects;
-  }
+  }, []);
 
   async function handleAddProject(data: AddProjectFormData) {
     const payload = mapFormDataToDb(data);
 
+    // Determine the next display_order
+    const maxOrder = projects.reduce((max, p) => Math.max(max, p.display_order || 0), 0);
+    const nextDisplayOrder = maxOrder + 1;
+
+    const payloadWithOrder = { ...payload, display_order: nextDisplayOrder };
+
     const { data: createdArr, error } = await supabase
       .from("projects")
-      .insert([payload])
+      .insert([payloadWithOrder])
       .select();
 
     if (error) {
@@ -51,7 +57,6 @@ export function useProjectOperations(initialProjects: Project[] = []) {
       return;
     }
 
-    // The response is an array; grab the first item.
     const created = (createdArr && createdArr[0]) as SupabaseProject | undefined;
 
     if (!created) {
@@ -62,8 +67,8 @@ export function useProjectOperations(initialProjects: Project[] = []) {
       });
       return;
     }
-
-    setProjects((prev) => [...prev, mapDbToUiProject(created)]);
+    
+    setProjects((prev) => [...prev, mapDbToUiProject(created)].sort((a, b) => (a.display_order || 0) - (b.display_order || 0)));
     toast({
       title: "Proyecto agregado",
       description: `El proyecto "${created.title}" fue agregado correctamente.`,
@@ -155,6 +160,41 @@ export function useProjectOperations(initialProjects: Project[] = []) {
     setSelectedProject(project);
   }
 
+  async function handleReorderProjects(reorderedProjects: Project[]) {
+    setLoading(true);
+    try {
+      const updates = reorderedProjects.map((project, index) => 
+        supabase
+          .from("projects")
+          .update({ display_order: index })
+          .eq("id", parseInt(project.id, 10))
+      );
+      
+      const results = await Promise.all(updates.map(p => p.then(res => res.error ? res : null)));
+      const firstError = results.find(res => res && res.error);
+
+      if (firstError) {
+        throw firstError.error;
+      }
+
+      setProjects(reorderedProjects.map((p, index) => ({ ...p, display_order: index })));
+      toast({
+        title: "Orden de proyectos actualizado",
+        description: "El orden de los proyectos se guardó correctamente.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error al reordenar proyectos",
+        description: error.message,
+        variant: "destructive",
+      });
+      // Optionally refetch or revert local state
+      await fetchProjects(); // Refetch to ensure consistency
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return {
     projects,
     loading,
@@ -164,6 +204,7 @@ export function useProjectOperations(initialProjects: Project[] = []) {
     handleAddProject,
     handleEditProject,
     handleDeleteProject,
-    handleEdit
+    handleEdit,
+    handleReorderProjects
   };
 }

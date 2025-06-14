@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { AdminHeader } from "./AdminHeader";
 import { AdminActionBar } from "./AdminActionBar";
 import AdminProjectsTable from "@/components/AdminProjectsTable";
@@ -8,6 +7,7 @@ import EditProjectDialog from "@/components/projects/EditProjectDialog";
 import AdminLogin from "@/components/AdminLogin";
 import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { useProjectOperations } from "@/hooks/useProjectOperations";
+import type { Project } from "@/data/projects";
 
 export default function AdminPage() {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
@@ -18,26 +18,27 @@ export default function AdminPage() {
     projects,
     loading,
     selectedProject,
-    setSelectedProject,
     fetchProjects,
     handleAddProject,
     handleEditProject,
     handleDeleteProject,
-    handleEdit
+    handleEdit,
+    handleReorderProjects,
   } = useProjectOperations();
+
+  const stableFetchProjects = useCallback(fetchProjects, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (isAdmin) {
       fetchProjects();
     }
-  }, [isAdmin]);
+  }, [isAdmin, fetchProjects]);
 
-  const handleProjectEdit = (project: any) => {
+  const handleProjectEdit = (project: Project) => {
     handleEdit(project);
     setEditDialogOpen(true);
   };
 
-  // Si estamos cargando o el usuario no es administrador, mostrar pantalla de login
   if (authLoading) {
     return (
       <div className="max-w-3xl mx-auto py-12 px-4 font-inter">
@@ -59,6 +60,7 @@ export default function AdminPage() {
         loading={loading} 
         onEdit={handleProjectEdit}
         onDelete={handleDeleteProject}
+        onReorder={handleReorderProjects}
       />
       <AddProjectDialog
         open={addDialogOpen}

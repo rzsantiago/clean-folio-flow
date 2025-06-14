@@ -1,15 +1,15 @@
-
 export type Project = {
   id: string,
   title: string,
   description: string,
   category: string,
   coverColor: string,
-  coverImage?: string, // Nueva portada con imagen
+  coverImage?: string,
   ratio: "3x4" | "4x3",
   contentImages: string[],
   client?: string,
   year?: string | number,
+  display_order?: number;
 };
 
 // Simple deterministic "random" color generator (por compatiblidad durante la transición)
@@ -107,4 +107,3 @@ export const projects: Project[] = [
   // ... continuar igual para los demás proyectos
   // Puedes seguir agregando o reemplazando imágenes según lo desees
 ];
-

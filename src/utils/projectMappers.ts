@@ -14,6 +14,7 @@ export type SupabaseProject = {
   ratio: string | null;
   contentimages: any[] | null;
   client: string | null;
+  display_order: number | null; // Added display_order
 };
 
 // Map AddProjectFormData to Supabase insert shape (DB column names)
@@ -30,6 +31,8 @@ export const mapFormDataToDb = (data: AddProjectFormData) => ({
     ? data.contentImages.split("\n").map(s => s.trim()).filter(Boolean)
     : [],
   client: data.client?.trim() || null,
+  // display_order will be set after insert or by a trigger/default in DB
+  // For now, we handle it in useProjectOperations after insert.
 });
 
 // Convert DB shape to UI shape for AdminProjectsTable (map id:number -> id:string)
@@ -44,4 +47,5 @@ export const mapDbToUiProject = (proj: SupabaseProject): Project => ({
   ratio: (proj.ratio === "3x4" || proj.ratio === "4x3") ? proj.ratio : "4x3",
   contentImages: Array.isArray(proj.contentimages) ? proj.contentimages : [],
   client: proj.client ?? undefined,
+  display_order: proj.display_order ?? undefined, // Added display_order
 });

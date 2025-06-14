@@ -17,6 +17,7 @@ export type Database = {
           covercolor: string | null
           coverimage: string | null
           description: string
+          display_order: number | null
           id: number
           ratio: string | null
           title: string
@@ -29,6 +30,7 @@ export type Database = {
           covercolor?: string | null
           coverimage?: string | null
           description: string
+          display_order?: number | null
           id?: number
           ratio?: string | null
           title: string
@@ -41,6 +43,7 @@ export type Database = {
           covercolor?: string | null
           coverimage?: string | null
           description?: string
+          display_order?: number | null
           id?: number
           ratio?: string | null
           title?: string
