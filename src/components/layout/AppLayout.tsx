@@ -6,7 +6,6 @@ import DesktopSidebar from "./DesktopSidebar";
 import MobileHeader from "./MobileHeader";
 import { useProjects } from "@/hooks/useProjects";
 import { useProjectNavigation } from "@/hooks/useProjectNavigation";
-import { useTouchNavigation } from "@/hooks/useTouchNavigation";
 
 const categories = [
   "Industrial Design",
@@ -38,12 +37,6 @@ export default function AppLayout({ main, setMain }: Props) {
     handleProjectNavigation
   } = useProjectNavigation(main, setMain, projects);
 
-  const {
-    handleTouchStart,
-    handleTouchMove,
-    handleTouchEnd
-  } = useTouchNavigation();
-
   useEffect(() => {
     if (isMobile && menuOpen) {
       document.body.style.overflow = "hidden";
@@ -53,12 +46,7 @@ export default function AppLayout({ main, setMain }: Props) {
   }, [menuOpen, isMobile]);
 
   return (
-    <div 
-      className="min-h-screen bg-white flex flex-col font-helnow-regular"
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={() => handleTouchEnd(main, handleProjectNavigation, prevProject, nextProject)}
-    >
+    <div className="min-h-screen bg-white flex flex-col font-helnow-regular">
       <div className="flex-1 flex flex-row w-full overflow-hidden">
         {/* Main content */}
         <div className={`flex-1 min-w-0 ${!isMobile ? 'pr-[220px]' : ''}`}>
