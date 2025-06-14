@@ -2,7 +2,7 @@
 import type { Project } from "@/data/projects";
 import { AddProjectFormData, ContentItem } from "@/types/projects";
 
-// Type representing a project row as returned from Supabase
+// Type representing a project row as returned from Supabase (actualizado)
 export type SupabaseProject = {
   id: number;
   title: string;

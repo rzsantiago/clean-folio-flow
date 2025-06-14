@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Project } from "@/data/projects";
 import { toast } from "@/hooks/use-toast";
-import { mapDbToUiProject } from "@/utils/projectMappers";
+import { mapDbToUiProject, SupabaseProject } from "@/utils/projectMappers";
 
 async function fetchProjects() {
   const { data, error } = await supabase
@@ -22,7 +22,8 @@ async function fetchProjects() {
     return [];
   }
 
-  return data.map(mapDbToUiProject);
+  // Cast the data to SupabaseProject type since we know the structure
+  return (data as unknown as SupabaseProject[]).map(mapDbToUiProject);
 }
 
 export function useProjects() {

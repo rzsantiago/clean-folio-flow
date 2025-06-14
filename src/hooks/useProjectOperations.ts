@@ -1,3 +1,4 @@
+
 import { useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
@@ -28,7 +29,8 @@ export function useProjectOperations(initialProjects: Project[] = []) {
       return;
     }
     
-    const uiProjects = (data as SupabaseProject[]).map(mapDbToUiProject);
+    // Cast the data to SupabaseProject type since we know the structure
+    const uiProjects = (data as unknown as SupabaseProject[]).map(mapDbToUiProject);
     setProjects(uiProjects);
     setLoading(false);
     return uiProjects;
@@ -57,7 +59,7 @@ export function useProjectOperations(initialProjects: Project[] = []) {
       return;
     }
 
-    const created = (createdArr && createdArr[0]) as SupabaseProject | undefined;
+    const created = (createdArr && createdArr[0]) as unknown as SupabaseProject | undefined;
 
     if (!created) {
       toast({

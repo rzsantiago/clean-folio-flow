@@ -8,7 +8,7 @@ export default function ProjectCard({ project, noOverlay }: { project: Project, 
       aria-label={project.title}
       className="block relative overflow-hidden rounded-lg outline-none transition-none cursor-pointer group"
       style={{
-        aspectRatio: project.ratio === "3x4" ? "3/4" : "4/3",
+        aspectRatio: "4/3", // Usar aspecto fijo 4/3 para todos los proyectos
         minHeight: 180,
         width: "100%",
         marginBottom: 0,
@@ -24,7 +24,7 @@ export default function ProjectCard({ project, noOverlay }: { project: Project, 
             alt={project.title}
             className="w-full h-full object-cover object-center rounded-lg transition-all duration-500 group-hover:scale-[1.02]"
             style={{
-              aspectRatio: project.ratio === "3x4" ? "3/4" : "4/3",
+              aspectRatio: "4/3", // Usar aspecto fijo 4/3
               minHeight: 180,
               width: "100%",
               height: "100%",
