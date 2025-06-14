@@ -49,12 +49,12 @@ export default function ProjectGallery({
     );
   }
 
-  // Tablet: 2 columnas
+  // Tablet: 2 columnas con gap reducido
   if (isTablet) {
     return (
-      <div className="w-full flex gap-[10px] h-max pt-2 pb-8 px-0">
+      <div className="w-full flex gap-[8px] h-max pt-2 pb-8 px-0">
         {[0, 1].map(col => (
-          <div className="flex flex-col flex-1 gap-[10px]" key={col}>
+          <div className="flex flex-col flex-1 gap-[8px]" key={col}>
             {projects.filter((_, i) => i % 2 === col).map(p => (
               <div key={p.id} onClick={() => onProjectClick?.(p.id)} className="w-full">
                 <ProjectCard project={p} noOverlay={noOverlay} />
