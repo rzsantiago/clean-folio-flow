@@ -98,15 +98,15 @@ const Index = () => {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      <div className="flex-1 flex flex-row w-full">
+      <div className="flex-1 flex flex-row w-full overflow-hidden">
         {/* Main content */}
-        <div className={`flex-1 ${!isMobile ? 'pr-[220px]' : ''}`}>
+        <div className={`flex-1 min-w-0 ${!isMobile ? 'pr-[220px]' : ''}`}>
           <MainContent main={main} setMain={setMain} isMobile={isMobile} />
         </div>
         
         {/* Right sidebar container with header */}
         {!isMobile && (
-          <div className="fixed right-0 top-0 w-[220px] h-screen bg-white">
+          <div className="fixed right-0 top-0 w-[220px] h-screen bg-white z-10">
             <div className="flex flex-col pt-8 px-4 h-full">
               <button
                 className="font-helnow-bold text-[30px] leading-none tracking-wider text-black hover:text-[#cc3300] duration-100 pb-12 text-left uppercase transition-colors"
