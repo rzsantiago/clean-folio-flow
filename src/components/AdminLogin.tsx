@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,14 +15,19 @@ export default function AdminLogin({ onLoginSuccess }: AdminLoginProps) {
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useAdminAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
     const success = login(password);
     
     if (success) {
-      onLoginSuccess();
+      // Pequeño delay para permitir que el toast se muestre antes de la redirección
+      setTimeout(() => {
+        onLoginSuccess();
+        // Forzar re-render del componente padre
+        window.location.reload();
+      }, 500);
     }
     
     setIsLoading(false);

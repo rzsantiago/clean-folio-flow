@@ -15,7 +15,8 @@ export function useAdminAuth() {
     // Verificar si ya está autenticado en localStorage
     const checkAuth = () => {
       const isAdminAuth = localStorage.getItem('isAdminAuth');
-      setIsAdmin(isAdminAuth === 'true');
+      const authValue = isAdminAuth === 'true';
+      setIsAdmin(authValue);
       setLoading(false);
     };
 
