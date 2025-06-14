@@ -20,6 +20,7 @@ export type Database = {
           display_order: number | null
           id: number
           ratio: string | null
+          thumbnailimage: string | null
           title: string
           year: number | null
         }
@@ -33,6 +34,7 @@ export type Database = {
           display_order?: number | null
           id?: number
           ratio?: string | null
+          thumbnailimage?: string | null
           title: string
           year?: number | null
         }
@@ -46,6 +48,7 @@ export type Database = {
           display_order?: number | null
           id?: number
           ratio?: string | null
+          thumbnailimage?: string | null
           title?: string
           year?: number | null
         }
