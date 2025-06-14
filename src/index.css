@@ -147,24 +147,3 @@
     letter-spacing: -0.02em;
   }
 }
-
-/* Enhanced animations for smooth transitions */
-@layer components {
-  .smooth-fade {
-    transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-  
-  .stagger-fade {
-    transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
-                transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-  
-  .enhanced-hover {
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                filter 0.4s ease;
-  }
-  
-  .enhanced-hover:hover {
-    transform: scale(1.02);
-  }
-}

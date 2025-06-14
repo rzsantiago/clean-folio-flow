@@ -4,7 +4,7 @@ import ProjectGallery from "@/components/ProjectGallery";
 import About from "@/pages/About";
 import Contact from "@/pages/Contact";
 import ProjectView from "@/components/ProjectView";
-import { useImprovedFadeTransition } from "@/hooks/useImprovedFadeTransition";
+import { useFadeTransition } from "@/hooks/useFadeTransition";
 import { useProjects } from "@/hooks/useProjects";
 import { Loader2 } from "lucide-react";
 
@@ -94,21 +94,20 @@ export default function MainContent({ main, setMain, isMobile }: Props) {
     fadeDeps = [main.filter, "gallery"];
   }
 
-  const { transitionStyle } = useImprovedFadeTransition(fadeDeps, 600);
+  const { fadeClass } = useFadeTransition(fadeDeps, 800);
 
   return (
     <main
       ref={mainContentRef}
-      className="w-full pb-14 md:pb-0 flex items-start justify-center"
+      className="w-full pb-14 md:pb-0 flex items-start justify-center transition-none"
     >
       <div
-        className={`w-full ${
+        className={`w-full transition-all duration-800 ease-in-out ${fadeClass} ${
           isMobile ? "px-4 pt-24" : "pr-12 pt-8 pl-4"
         }`}
         style={{
           minHeight: "75vh",
           marginBottom: 0,
-          ...transitionStyle
         }}
       >
         {content}
