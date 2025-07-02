@@ -1,9 +1,8 @@
 
-import React, { useState } from "react";
+import React from "react";
 import { useProjects } from "@/hooks/useProjects";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { ImageZoomModal } from "./ImageZoomModal";
 
 type Props = {
   projectId: string;
@@ -23,7 +22,6 @@ export default function ProjectView({
   } = useProjects();
   const project = projects.find(p => p.id === projectId);
   const isMobile = useIsMobile();
-  const [zoomImage, setZoomImage] = useState<{ src: string; alt: string } | null>(null);
 
   if (!project) return null;
 
@@ -45,10 +43,6 @@ export default function ProjectView({
     }
   };
 
-  const handleImageClick = (src: string, alt: string) => {
-    setZoomImage({ src, alt });
-  };
-
   return (
     <div className={`relative w-full min-h-[70vh] select-none px-0`}>
       <div className="flex flex-col gap-3 w-full pb-10 px-0">
@@ -58,7 +52,7 @@ export default function ProjectView({
             style={{
               aspectRatio: "4/3",
               minHeight: 230,
-              backgroundColor: project.coverImage.endsWith('.png') ? '#fbfbfb' : '#EEE'
+              background: "#EEE"
             }}
           >
             <img 
@@ -104,12 +98,8 @@ export default function ProjectView({
             <div key={item.id || i}>
               {item.type === 'image' ? (
                 <div 
-                  className="w-full overflow-hidden cursor-pointer hover:opacity-90 transition-opacity" 
-                  style={{ 
-                    borderRadius: 8, 
-                    backgroundColor: item.content.endsWith('.png') ? '#fbfbfb' : '#EEE'
-                  }}
-                  onClick={() => handleImageClick(item.content, `Imagen del proyecto ${project.title} ${i + 1}`)}
+                  className="w-full overflow-hidden" 
+                  style={{ borderRadius: 8, background: "#EEE" }}
                 >
                   <img 
                     src={item.content} 
@@ -152,14 +142,6 @@ export default function ProjectView({
           </div>
         )}
       </div>
-
-      {/* Modal de zoom */}
-      <ImageZoomModal
-        isOpen={!!zoomImage}
-        onClose={() => setZoomImage(null)}
-        imageSrc={zoomImage?.src || ""}
-        imageAlt={zoomImage?.alt || ""}
-      />
     </div>
   );
 }

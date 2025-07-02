@@ -1,15 +1,13 @@
 
 import { useParams, useNavigate } from "react-router-dom";
 import { useProjects } from "@/hooks/useProjects";
-import { useEffect, useState } from "react";
-import { ImageZoomModal } from "@/components/ImageZoomModal";
+import { useEffect } from "react";
 
 // Muestra el proyecto, navegación y contenido mixto (imágenes y textos)
 const ProjectPage = () => {
   const { id } = useParams<{ id: string }>();
   const { data: projects = [] } = useProjects();
   const project = projects.find(p => p.id === id);
-  const [zoomImage, setZoomImage] = useState<{ src: string; alt: string } | null>(null);
 
   // Adjacent by category
   const categoryProjects = project
@@ -25,10 +23,6 @@ const ProjectPage = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" })
   }, [id]);
-
-  const handleImageClick = (src: string, alt: string) => {
-    setZoomImage({ src, alt });
-  };
 
   if (!project)
     return (
@@ -63,9 +57,7 @@ const ProjectPage = () => {
         style={{
           aspectRatio: "4/3",
           minHeight: 200,
-          backgroundColor: project.coverImage 
-            ? (project.coverImage.endsWith('.png') ? '#fbfbfb' : 'transparent')
-            : project.coverColor,
+          background: project.coverImage ? undefined : project.coverColor,
         }}
       >
         {project.coverImage && (
@@ -95,15 +87,14 @@ const ProjectPage = () => {
             <div key={item.id || i}>
               {item.type === 'image' ? (
                 <div
-                  className="w-full overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
+                  className="w-full overflow-hidden"
                   style={{
                     borderRadius: 16,
                     aspectRatio: "4/3",
                     minWidth: 120,
                     minHeight: 94,
-                    backgroundColor: item.content.endsWith('.png') ? '#fbfbfb' : '#EEE'
+                    background: "#EEE"
                   }}
-                  onClick={() => handleImageClick(item.content, `Imagen del proyecto ${project.title} ${i + 1}`)}
                 >
                   <img
                     src={item.content}
@@ -123,14 +114,6 @@ const ProjectPage = () => {
           ))}
         </div>
       )}
-
-      {/* Modal de zoom */}
-      <ImageZoomModal
-        isOpen={!!zoomImage}
-        onClose={() => setZoomImage(null)}
-        imageSrc={zoomImage?.src || ""}
-        imageAlt={zoomImage?.alt || ""}
-      />
     </div>
   );
 }

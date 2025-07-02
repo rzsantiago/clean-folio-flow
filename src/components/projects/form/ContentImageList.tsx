@@ -16,12 +16,7 @@ export function ContentImageList({ images, onRemove, onMove }: ContentImageListP
     <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-3">
       {images.map((img, index) => (
         <div key={index} className="relative group">
-          <div 
-            className="aspect-square w-full overflow-hidden rounded-md"
-            style={{
-              backgroundColor: img.endsWith('.png') ? '#fbfbfb' : 'transparent'
-            }}
-          >
+          <div className="aspect-square w-full overflow-hidden rounded-md">
             <img 
               src={img} 
               alt={`Imagen de contenido ${index + 1}`}
