@@ -1,8 +1,9 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { useProjects } from "@/hooks/useProjects";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { ImageZoomModal } from "./ImageZoomModal";
 
 type Props = {
   projectId: string;
@@ -22,6 +23,7 @@ export default function ProjectView({
   } = useProjects();
   const project = projects.find(p => p.id === projectId);
   const isMobile = useIsMobile();
+  const [zoomedImage, setZoomedImage] = useState<{ src: string; alt: string } | null>(null);
 
   if (!project) return null;
 
@@ -43,6 +45,14 @@ export default function ProjectView({
     }
   };
 
+  const handleImageClick = (src: string, alt: string) => {
+    setZoomedImage({ src, alt });
+  };
+
+  const isPngImage = (src: string) => {
+    return src.toLowerCase().includes('.png');
+  };
+
   return (
     <div className={`relative w-full min-h-[70vh] select-none px-0`}>
       <div className="flex flex-col gap-3 w-full pb-10 px-0">
@@ -52,14 +62,15 @@ export default function ProjectView({
             style={{
               aspectRatio: "4/3",
               minHeight: 230,
-              background: "#EEE"
+              background: isPngImage(project.coverImage) ? "#fbfbfb" : "#EEE"
             }}
           >
             <img 
               src={project.coverImage} 
               alt={`Portada de ${project.title}`} 
-              className="w-full h-full object-cover object-center" 
-              draggable={false} 
+              className="w-full h-full object-cover object-center cursor-pointer" 
+              draggable={false}
+              onClick={() => handleImageClick(project.coverImage!, `Portada de ${project.title}`)}
             />
           </div>
         )}
@@ -98,8 +109,12 @@ export default function ProjectView({
             <div key={item.id || i}>
               {item.type === 'image' ? (
                 <div 
-                  className="w-full overflow-hidden" 
-                  style={{ borderRadius: 8, background: "#EEE" }}
+                  className="w-full overflow-hidden cursor-pointer" 
+                  style={{ 
+                    borderRadius: 8, 
+                    background: isPngImage(item.content) ? "#fbfbfb" : "#EEE" 
+                  }}
+                  onClick={() => handleImageClick(item.content, `Imagen del proyecto ${project.title} ${i + 1}`)}
                 >
                   <img 
                     src={item.content} 
@@ -142,6 +157,13 @@ export default function ProjectView({
           </div>
         )}
       </div>
+
+      <ImageZoomModal
+        src={zoomedImage?.src || ""}
+        alt={zoomedImage?.alt || ""}
+        isOpen={!!zoomedImage}
+        onClose={() => setZoomedImage(null)}
+      />
     </div>
   );
 }
