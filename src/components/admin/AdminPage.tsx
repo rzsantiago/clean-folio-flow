@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { AdminHeader } from "./AdminHeader";
 import { AdminActionBar } from "./AdminActionBar";
+import { SiteConfigSection } from "./SiteConfigSection";
 import AdminProjectsTable from "@/components/AdminProjectsTable";
 import AdminProjectsGrid from "./AdminProjectsGrid";
 import AddProjectDialog from "@/components/projects/AddProjectDialog";
@@ -73,6 +74,13 @@ export default function AdminPage() {
           {/* Header con estilo mejorado */}
           <div className="bg-white/70 backdrop-blur-sm rounded-2xl border border-slate-200/50 shadow-sm p-8">
             <AdminHeader onLogout={logout} />
+          </div>
+          
+          {/* Site Configuration Section */}
+          <div className="bg-white/70 backdrop-blur-sm rounded-xl border border-slate-200/50 shadow-sm overflow-hidden">
+            <div className="p-6">
+              <SiteConfigSection />
+            </div>
           </div>
           
           {/* Action Bar con toggle de vista */}
