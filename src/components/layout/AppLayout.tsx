@@ -55,9 +55,9 @@ export default function AppLayout({ main, setMain }: Props) {
   return (
     <div 
       className="min-h-screen bg-white flex flex-col font-helnow-regular"
-      onTouchStart={isMobile ? handleTouchStart : undefined}
-      onTouchMove={isMobile ? handleTouchMove : undefined}
-      onTouchEnd={isMobile ? () => handleTouchEnd(main, handleProjectNavigation, prevProject, nextProject) : undefined}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={() => handleTouchEnd(main, handleProjectNavigation, prevProject, nextProject)}
     >
       <div className="flex-1 flex flex-row w-full overflow-hidden">
         {/* Main content */}

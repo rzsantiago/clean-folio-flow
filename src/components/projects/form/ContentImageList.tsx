@@ -12,18 +12,11 @@ type ContentImageListProps = {
 export function ContentImageList({ images, onRemove, onMove }: ContentImageListProps) {
   if (!images.length) return null;
   
-  const isPngImage = (src: string) => {
-    return src.toLowerCase().includes('.png');
-  };
-  
   return (
     <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-3">
       {images.map((img, index) => (
         <div key={index} className="relative group">
-          <div 
-            className="aspect-square w-full overflow-hidden rounded-md"
-            style={{ background: isPngImage(img) ? "#fbfbfb" : "#EEE" }}
-          >
+          <div className="aspect-square w-full overflow-hidden rounded-md">
             <img 
               src={img} 
               alt={`Imagen de contenido ${index + 1}`}

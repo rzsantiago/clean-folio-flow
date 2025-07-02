@@ -1,15 +1,13 @@
 
 import { useParams, useNavigate } from "react-router-dom";
 import { useProjects } from "@/hooks/useProjects";
-import { useEffect, useState } from "react";
-import { ImageZoomModal } from "@/components/ImageZoomModal";
+import { useEffect } from "react";
 
 // Muestra el proyecto, navegación y contenido mixto (imágenes y textos)
 const ProjectPage = () => {
   const { id } = useParams<{ id: string }>();
   const { data: projects = [] } = useProjects();
   const project = projects.find(p => p.id === id);
-  const [zoomedImage, setZoomedImage] = useState<{ src: string; alt: string } | null>(null);
 
   // Adjacent by category
   const categoryProjects = project
@@ -25,14 +23,6 @@ const ProjectPage = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" })
   }, [id]);
-
-  const handleImageClick = (src: string, alt: string) => {
-    setZoomedImage({ src, alt });
-  };
-
-  const isPngImage = (src: string) => {
-    return src.toLowerCase().includes('.png');
-  };
 
   if (!project)
     return (
@@ -63,13 +53,12 @@ const ProjectPage = () => {
       
       {/* Imagen de portada */}
       <div
-        className={`w-full mb-8 rounded-xl overflow-hidden cursor-pointer`}
+        className={`w-full mb-8 rounded-xl overflow-hidden`}
         style={{
           aspectRatio: "4/3",
           minHeight: 200,
-          background: project.coverImage ? (isPngImage(project.coverImage) ? "#fbfbfb" : undefined) : project.coverColor,
+          background: project.coverImage ? undefined : project.coverColor,
         }}
-        onClick={() => project.coverImage && handleImageClick(project.coverImage, project.title)}
       >
         {project.coverImage && (
           <img
@@ -98,15 +87,14 @@ const ProjectPage = () => {
             <div key={item.id || i}>
               {item.type === 'image' ? (
                 <div
-                  className="w-full overflow-hidden cursor-pointer"
+                  className="w-full overflow-hidden"
                   style={{
                     borderRadius: 16,
                     aspectRatio: "4/3",
                     minWidth: 120,
                     minHeight: 94,
-                    background: isPngImage(item.content) ? "#fbfbfb" : "#EEE"
+                    background: "#EEE"
                   }}
-                  onClick={() => handleImageClick(item.content, `Imagen del proyecto ${project.title} ${i + 1}`)}
                 >
                   <img
                     src={item.content}
@@ -126,13 +114,6 @@ const ProjectPage = () => {
           ))}
         </div>
       )}
-
-      <ImageZoomModal
-        src={zoomedImage?.src || ""}
-        alt={zoomedImage?.alt || ""}
-        isOpen={!!zoomedImage}
-        onClose={() => setZoomedImage(null)}
-      />
     </div>
   );
 }
